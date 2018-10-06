@@ -1,6 +1,5 @@
 let preloadState = function() {
     
-    
 };
 
 preloadState.prototype.preload = function () {

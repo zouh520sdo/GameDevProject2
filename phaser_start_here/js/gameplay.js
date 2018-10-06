@@ -6,6 +6,22 @@ gameplayState.prototype.create = function() {
     // Turn on physics before anything else
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
+    // Set up heights for different area
+    this.cardAreaHeight = 315;
+    this.laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
+    
+    // debug line
+    this.line1 = new Phaser.Line(0, this.laneHeight, game.world.width, this.laneHeight);
+    this.line2 = new Phaser.Line(0, this.laneHeight*2, game.world.width, this.laneHeight*2);
+    this.line3 = new Phaser.Line(0, this.laneHeight*3, game.world.width, this.laneHeight*3);
+    
+    console.log(this.laneHeight);
+    
+    // Set up timer
+    this.gameplayTimer = game.time.create(true);
+    this.gameplayTimer.add(10000, this.gotoGameWinState, this);
+    //this.gameplayTimer.start();
+    
     game.add.sprite(0,0, "sky");
     
     // Platforms
@@ -71,10 +87,50 @@ gameplayState.prototype.update = function() {
     if (this.cursors.up.isDown && this.player.body.touching.down) {
         this.player.body.velocity.y = -350;
     }
+    
+    if (game.input.activePointer.leftButton.isDown) {
+        let mouseY = game.input.activePointer.y;
+        console.log(game.input.mousePointer.y);
+        if (0<=mouseY && mouseY <this.laneHeight) {
+            console.log("Lane1");
+        }
+        else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
+            console.log("Lane2");
+        }
+        else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
+            console.log("Lane3");
+        }
+        else if (this.laneHeight*3<=mouseY && mouseY<=game.world.height) {
+            console.log("Cards");
+        }
+    }
+};
+
+gameplayState.prototype.render = function() {
+    game.debug.geom(this.line1);
+    game.debug.geom(this.line2);
+    game.debug.geom(this.line3);
 };
 
 gameplayState.prototype.collectStar = function(player, star) {
     star.kill();
     this.score += 10;
     this.scoreText.text = "Score: " + this.score;
+};
+
+gameplayState.prototype.gotoGameWinState = function() {
+    game.state.start("GameWin");
+};
+
+// Card draging effect
+gameplayState.prototype.dragCardStart() {
+    
+};
+
+gameplayState.prototype.dragCardUpdate(sprite, pointer, dragX, dragY, snapPoint) {
+    
+};
+
+gameplayState.prototype.dragCardStop() {
+    
 };
