@@ -24,8 +24,8 @@ gameplayState.prototype.create = function() {
     
     // Set up timer
     this.gameplayTimer = game.time.create(true);
-    this.gameplayTimer.add(10000, this.gotoGameWinState, this);
-    //this.gameplayTimer.start();
+    this.gameplayTimer.add(180000, this.gotoGameWinState, this);
+    this.gameplayTimer.start();
     
     game.add.sprite(0,0, "sky");
     
@@ -70,8 +70,8 @@ gameplayState.prototype.create = function() {
         star.body.bounce.y = .2 + Math.random() * .2;
     }
     
-    // Score UI
-    this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#000000"});
+    // Timer UI
+    this.scoreText = game.add.text(16,16,"Time Left: 3:00", {fontSize:"32px", fill:"#000000"});
     
     this.cursors = game.input.keyboard.createCursorKeys();
 };
@@ -100,6 +100,9 @@ gameplayState.prototype.update = function() {
         this.player.body.velocity.y = -350;
     }
     
+    // Update timer
+    this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
+    
 };
 
 gameplayState.prototype.render = function() {
@@ -111,7 +114,6 @@ gameplayState.prototype.render = function() {
 gameplayState.prototype.collectStar = function(player, star) {
     star.kill();
     this.score += 10;
-    this.scoreText.text = "Score: " + this.score;
 };
 
 gameplayState.prototype.gotoGameWinState = function() {
@@ -152,3 +154,13 @@ gameplayState.prototype.dragCardStop = function(sprite, pointer) {
         console.log("None");
     }
 };
+
+gameplayState.prototype.msToTime = function(s) {
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+    return mins + ':' + secs;
+}
