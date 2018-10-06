@@ -1,8 +1,8 @@
-let gameplayState = function() {
+let gameplayState = function(){
     this.score = 0;
-};
+}
 
-gameplayState.prototype.create = function() {
+gameplayState.prototype.create = function(){
     // Turn on physics before anything else
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
@@ -17,14 +17,35 @@ gameplayState.prototype.create = function() {
     
     console.log(this.laneHeight);
     
+	//groups of friendly units on lanes
+	this.friendlyUnit1 = game.add.group();
+	this.friendlyUnit2 = game.add.group();
+	this.friendlyUnit3 = game.add.group();
+	
+	this.friendlyUnit1.enableBody = true;
+	this.friendlyUnit2.enableBody = true;
+	this.friendlyUnit3.enableBody = true;
+	
+	//groups of enemy units on lanes
+	this.enemyUnit1 = game.add.group();
+	this.enemyUnit2 = game.add.group();
+	this.enemyUnit3 = game.add.group();
+	
+	this.enemyUnit1.enableBody = true;
+	this.enemyUnit2.enableBody = true;
+	this.enemyUnit3.enableBody = true;
+
+	
+	
     // Set up timer
     this.gameplayTimer = game.time.create(true);
     this.gameplayTimer.add(10000, this.gotoGameWinState, this);
     //this.gameplayTimer.start();
     
-    game.add.sprite(0,0, "sky");
+    //game.add.sprite(0,0, "sky");
     
     // Platforms
+	/*
     this.platforms = game.add.group();
     this.platforms.enableBody = true;
     
@@ -57,20 +78,28 @@ gameplayState.prototype.create = function() {
         star.body.gravity.y = 300;
         star.body.bounce.y = .2 + Math.random() * .2;
     }
-    
+    */
     // Score UI
     this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#000000"});
-    
-    this.cursors = game.input.keyboard.createCursorKeys();
-};
+    //add units to lanes by pressing Q,W,E (testing purpose)
+    this.keyboard = new keyboard(game);
+	this.keyboard.addCallBacks(Phaser.KeyCode.Q, this.addUnit1);
+	this.keyboard.addCallBacks(Phaser.KeyCode.W, this.addUnit2);
+	this.keyboard.addCallBacks(Phaser.KeyCode.E, this.addUnit3);
+}
 
-gameplayState.prototype.update = function() {
+gameplayState.prototype.update = function(){
+	/*
     game.physics.arcade.collide(this.player, this.platforms);
     game.physics.arcade.collide(this.stars, this.platforms);
     game.physics.arcade.overlap(this.player, this.stars, this.collectStar, null, this);
-
-    
-    
+	*/
+	
+	//faito
+	//simply do health - enemy_damage
+    game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit1, this.fight ,null, this);
+	
+    /*
     this.player.body.velocity.x = 0;
     if (this.cursors.left.isDown) {
         this.player.body.velocity.x = -150;
@@ -87,7 +116,25 @@ gameplayState.prototype.update = function() {
     if (this.cursors.up.isDown && this.player.body.touching.down) {
         this.player.body.velocity.y = -350;
     }
-    
+    */
+	
+	//units with health lower than 0 are killed
+	for (unit in friendlyUnit1){
+		if (unit.health <= 0){
+			unit.kill;
+		}
+	}
+	for (unit in friendlyUnit2){
+		if (unit.health <= 0){
+			unit.kill;
+		}
+	}
+	for (unit in friendlyUnit3){
+		if (unit.health <= 0){
+			unit.kill;
+		}
+	}
+	
     if (game.input.activePointer.leftButton.isDown) {
         let mouseY = game.input.activePointer.y;
         console.log(game.input.mousePointer.y);
@@ -104,25 +151,27 @@ gameplayState.prototype.update = function() {
             console.log("Cards");
         }
     }
-};
+}
 
-gameplayState.prototype.render = function() {
+gameplayState.prototype.render = function(){
     game.debug.geom(this.line1);
     game.debug.geom(this.line2);
     game.debug.geom(this.line3);
-};
-
+}
+/*
 gameplayState.prototype.collectStar = function(player, star) {
     star.kill();
     this.score += 10;
     this.scoreText.text = "Score: " + this.score;
 };
+*/
 
-gameplayState.prototype.gotoGameWinState = function() {
+gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
-};
+}
 
 // Card draging effect
+/*
 gameplayState.prototype.dragCardStart() {
     
 };
@@ -134,3 +183,19 @@ gameplayState.prototype.dragCardUpdate(sprite, pointer, dragX, dragY, snapPoint)
 gameplayState.prototype.dragCardStop() {
     
 };
+*/
+gameplayState.prototype.addUnit1() = function(){
+	new basicUnit(this.friendlyUnit1 ,0, this.laneHeight);
+}
+gameplayState.prototype.addUnit2() = function(){
+	new basicUnit(this.friendlyUnit2 ,0, this.laneHeight*2);
+}
+gameplayState.prototype.addUnit3() = function(){
+	new basicUnit(this.friendlyUnit3 ,0, this.laneHeight*3);
+}
+gameplayState.prototype.fight() = function(unit, enemy){
+	unit.body.velocity.x = 0;
+	enemy.body.velocity.x = 0;
+	unit.health -= enemy.damage;
+	enemy.health -= unit.damage;
+}
