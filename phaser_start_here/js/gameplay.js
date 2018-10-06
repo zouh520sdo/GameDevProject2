@@ -119,18 +119,22 @@ gameplayState.prototype.gotoGameWinState = function() {
 };
 
 // Card draging effect
-gameplayState.prototype.dragCardStart = function() {
-    
+gameplayState.prototype.dragCardStart = function(sprite, pointer, dragX, dragY) {
+    sprite.alpha = 0.5;
 };
 
 gameplayState.prototype.dragCardUpdate = function(sprite, pointer, dragX, dragY, snapPoint) {
     
 };
 
-gameplayState.prototype.dragCardStop = function() {
-    let mouseY = game.input.activePointer.y;
-    console.log(game.input.activePointer.y);
+gameplayState.prototype.dragCardStop = function(sprite, pointer) {
+    let mouseY = pointer.y;
+    console.log(pointer.y);
     console.log(laneHeight);
+    
+    // May need to invoke some functions to take effect of card or take it back to card area
+    sprite.alpha = 1;
+
     if (0<=mouseY && mouseY <laneHeight) {
         console.log("Lane1");
     }
@@ -142,6 +146,7 @@ gameplayState.prototype.dragCardStop = function() {
     }
     else if (laneHeight*3<=mouseY && mouseY<=game.world.height) {
         console.log("Cards");
+        // Back to original position
     }
     else {
         console.log("None");
