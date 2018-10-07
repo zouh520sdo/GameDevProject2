@@ -104,6 +104,25 @@ gameplayState.prototype.create = function() {
     this.cardInfoText = game.add.text(game.world.width*0.75, this.laneHeight*3, "Card Info", {fontSize:"32px", fill:"#ffffff"});
     this.cardInfoText.alpha = 0;  // Hide when game starts
     
+        //group of cards for the game
+   
+    let cardGroup = game.add.group();
+    let tempCard = game.add.group();
+    for(let i = 1; i < 10; i++)
+    {
+        let rantemp = this.game.rnd.integerInRange(0,10);
+        let cardtemp = new Cards(this.game, i);
+        cardtemp.inputEnabled = true;
+        cardtemp.input.enableDrag();
+        cardtemp.events.onDragStart.add(this.dragCardStart,this);
+        cardtemp.events.onDragUpdate.add(this.dragCardUpdate,this);
+        cardtemp.events.onDragStop.add(this.dragCardStop,this);
+        tempCard.add(cardtemp);
+        
+    }
+    
+    //Card Drag
+    
     /*
     this.cursors = game.input.keyboard.createCursorKeys();
 };
