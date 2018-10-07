@@ -1,0 +1,15 @@
+Defender_SpriteSheet1 - Contains Neutral Stance, Spawn Animation, and Run Animation for Israelite Soldier
+=======================
+File Dimensions = 2470x180
+Sprite Dimension = 190x180
+Spawn Order = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+Neutral Stance = [8]
+Run Cycle Order = [9, 10, 11, 12] 
+
+Invader_SpriteSheet1 - Contains Neutral Stance and Run Animation Assyrian Soldier
+=======================
+File Dimensions = 950x180
+Sprite Dimension = 190x180
+Neutral Stance = [0]
+Run Cycle Order = [1, 2, 3, 4]
+
