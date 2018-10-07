@@ -112,7 +112,7 @@ gameplayState.prototype.create = function() {
 	this.Wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 	this.Ekey = game.input.keyboard.addKey(Phaser.Keyboard.E);
 	*/
-}
+};
 
 gameplayState.prototype.update = function(){
 	/*
@@ -171,13 +171,13 @@ gameplayState.prototype.update = function(){
 
 gameplayState.prototype.addUnit = function(group, mult) {
 	new basicUnit(group , 0, 40 + this.laneHeight*mult);
-}
+};
 
 gameplayState.prototype.render = function(){
     game.debug.geom(this.line1);
     game.debug.geom(this.line2);
     game.debug.geom(this.line3);
-}
+};
 /*
 gameplayState.prototype.collectStar = function(player, star) {
     star.kill();
@@ -187,7 +187,7 @@ gameplayState.prototype.collectStar = function(player, star) {
 
 gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
-}
+};
 
 // Card draging effect
 gameplayState.prototype.dragCardStart = function(sprite, pointer, dragX, dragY) {
@@ -234,7 +234,7 @@ gameplayState.prototype.fight = function(unit, enemy){
 	enemy.body.velocity.x = 0;
 	unit.health -= enemy.damage;
 	enemy.health -= unit.damage;
-}
+};
 gameplayState.prototype.laneUpdate = function(group){
 	if (group.length > 0){
 		console.log("------------------------");
@@ -263,7 +263,7 @@ gameplayState.prototype.laneUpdate = function(group){
 		}
 		group.next();
 	}
-}
+};
 
 gameplayState.prototype.msToTime = function(s) {
     var ms = s % 1000;
@@ -273,4 +273,4 @@ gameplayState.prototype.msToTime = function(s) {
     var mins = s % 60;
     var hrs = (s - mins) / 60;
     return mins + ':' + secs;
-}
+};
