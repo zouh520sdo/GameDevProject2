@@ -1,4 +1,4 @@
-let gameplayState = function() {
+let gameplayState = function(){
     this.score = 0;
     this.laneHeight = 0;
 };
@@ -22,14 +22,35 @@ gameplayState.prototype.create = function() {
     
     console.log("Lane height " + this.laneHeight);
     
+	//groups of friendly units on lanes
+	this.friendlyUnit1 = game.add.group();
+	this.friendlyUnit2 = game.add.group();
+	this.friendlyUnit3 = game.add.group();
+	
+	this.friendlyUnit1.enableBody = true;
+	this.friendlyUnit2.enableBody = true;
+	this.friendlyUnit3.enableBody = true;
+	
+	//groups of enemy units on lanes
+	this.enemyUnit1 = game.add.group();
+	this.enemyUnit2 = game.add.group();
+	this.enemyUnit3 = game.add.group();
+	
+	this.enemyUnit1.enableBody = true;
+	this.enemyUnit2.enableBody = true;
+	this.enemyUnit3.enableBody = true;
+
+	
+	
     // Set up timer
     this.gameplayTimer = game.time.create(true);
     this.gameplayTimer.add(180000, this.gotoGameWinState, this);
     this.gameplayTimer.start();
     
-    game.add.sprite(0,0, "sky");
+    //game.add.sprite(0,0, "sky");
     
     // Platforms
+	/*
     this.platforms = game.add.group();
     this.platforms.enableBody = true;
     
@@ -75,14 +96,41 @@ gameplayState.prototype.create = function() {
     
     this.cursors = game.input.keyboard.createCursorKeys();
 };
+    */
+    // Score UI
+    //this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#000000"});
+    //add units to lanes by pressing Q,W,E (testing purpose)
+    this.Qkey = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+	this.Wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
+	this.Ekey = game.input.keyboard.addKey(Phaser.Keyboard.E);
+}
 
-gameplayState.prototype.update = function() {
+gameplayState.prototype.update = function(){
+	/*
     game.physics.arcade.collide(this.player, this.platforms);
     game.physics.arcade.collide(this.stars, this.platforms);
     game.physics.arcade.overlap(this.player, this.stars, this.collectStar, null, this);
-
-    
-    
+	*/
+	
+	//faito
+	//simply do health - enemy_damage
+    game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit1, this.fight ,null, this);
+	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit2, this.fight ,null, this);
+	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit3, this.fight ,null, this);
+	
+	if(this.Qkey.isDown){
+		console.log("q pressed");
+		this.addUnit(this.friendlyUnit1, 0);
+	}
+	if(this.Wkey.isDown){
+		console.log("w pressed");
+		this.addUnit(this.friendlyUnit2, 1);
+	}
+	if(this.Ekey.isDown){
+		console.log("w pressed");
+		this.addUnit(this.friendlyUnit3, 2);
+	}
+    /*
     this.player.body.velocity.x = 0;
     if (this.cursors.left.isDown) {
         this.player.body.velocity.x = -150;
@@ -99,26 +147,30 @@ gameplayState.prototype.update = function() {
     if (this.cursors.up.isDown && this.player.body.touching.down) {
         this.player.body.velocity.y = -350;
     }
-    
+    */
     // Update timer
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
     
 };
+	this.laneUpdate(this.friendlyUnit1);
+	this.laneUpdate(this.friendlyUnit2);
+	this.laneUpdate(this.friendlyUnit3);
 
-gameplayState.prototype.render = function() {
+gameplayState.prototype.render = function(){
     game.debug.geom(this.line1);
     game.debug.geom(this.line2);
     game.debug.geom(this.line3);
-};
-
+}
+/*
 gameplayState.prototype.collectStar = function(player, star) {
     star.kill();
     this.score += 10;
 };
+*/
 
-gameplayState.prototype.gotoGameWinState = function() {
+gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
-};
+}
 
 // Card draging effect
 gameplayState.prototype.dragCardStart = function(sprite, pointer, dragX, dragY) {
@@ -154,6 +206,46 @@ gameplayState.prototype.dragCardStop = function(sprite, pointer) {
         console.log("None");
     }
 };
+*/
+gameplayState.prototype.addUnit = function(group, mult){
+	new basicUnit(group , 0, 40 + this.laneHeight*mult);
+};
+gameplayState.prototype.fight = function(unit, enemy){
+	//stop both sides
+	unit.body.velocity.x = 0;
+	enemy.body.velocity.x = 0;
+	unit.health -= enemy.damage;
+	enemy.health -= unit.damage;
+}
+gameplayState.prototype.laneUpdate = function(group){
+	if (group.length > 0){
+		console.log("------------------------");
+		//iterate through all elements except last one
+		while(group.cursorIndex < group.length - 1){
+			//show unit health (testing purpose)
+			console.log(group.cursor.body.x);
+			if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
+				console.log(group.length);
+				console.log("kill");
+				group.cursor.kill();
+				group.remove(group.cursor);
+				console.log(group.length);
+			}
+			group.next();
+			
+		}
+		//now it's the last one
+		console.log(group.cursor.body.x);
+		if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
+			console.log(group.length);
+			console.log("kill");
+			group.cursor.kill();
+			group.remove(group.cursor);
+			console.log(group.length);
+		}
+		group.next();
+	}
+}
 
 gameplayState.prototype.msToTime = function(s) {
     var ms = s % 1000;
