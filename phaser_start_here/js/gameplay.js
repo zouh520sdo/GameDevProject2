@@ -175,7 +175,14 @@ gameplayState.prototype.update = function(){
 	
     
 };
+/*
+	parameters:
+		group - the friendlyUnit group this unit would join
+		mult - a variable used to control spawning position
 
+	units are actually added into the group when the constructor of 
+	basicUnit is called
+*/
 gameplayState.prototype.addUnit = function(group, mult) {
 	new basicUnit(group , 0, 40 + this.laneHeight*mult);
 };
@@ -272,7 +279,7 @@ gameplayState.prototype.laneUpdate = function(group){
 		//iterate through all elements except last one
 		while(group.cursorIndex < group.length - 1){
 			//show unit health (testing purpose)
-			console.log(group.cursor.body.x);
+			//console.log(group.cursor.body.x);
 			if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
 				console.log(group.length);
 				console.log("kill");
@@ -284,15 +291,20 @@ gameplayState.prototype.laneUpdate = function(group){
 			
 		}
 		//now it's the last one
-		console.log(group.cursor.body.x);
+		//console.log(group.cursor.body.x);
 		if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
 			console.log(group.length);
 			console.log("kill");
 			group.cursor.kill();
 			group.remove(group.cursor);
 			console.log(group.length);
+			if(group.length === 0){
+				group.destroy(true,true);
+			}
+			else{
+				group.next();
+			}
 		}
-		group.next();
 	}
 };
 
