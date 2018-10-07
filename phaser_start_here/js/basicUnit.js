@@ -20,5 +20,4 @@ basicUnit.prototype.create = function(){
 	game.physics.arcade.enable(this.unit);
 	this.unit.body.velocity.x = this.speed;
 	
-	//super.friendlyUnit1.add(this.unit);
 }

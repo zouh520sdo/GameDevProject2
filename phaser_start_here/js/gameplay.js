@@ -101,7 +101,7 @@ gameplayState.prototype.create = function() {
 };
     */
     // Score UI
-    //this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#000000"});
+    this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#000000"});
     //add units to lanes by pressing Q,W,E (testing purpose)
     this.Qkey = game.input.keyboard.addKey(Phaser.Keyboard.Q);
 	this.Wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -133,6 +133,11 @@ gameplayState.prototype.update = function(){
 		console.log("w pressed");
 		this.addUnit(this.friendlyUnit3, 2);
 	}
+	
+	this.laneUpdate(this.friendlyUnit1);
+	this.laneUpdate(this.friendlyUnit2);
+	this.laneUpdate(this.friendlyUnit3);
+	
     /*
     this.player.body.velocity.x = 0;
     if (this.cursors.left.isDown) {
@@ -153,12 +158,10 @@ gameplayState.prototype.update = function(){
     */
     // Update timer
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
+	
     
 };
-	this.laneUpdate(this.friendlyUnit1);
-	this.laneUpdate(this.friendlyUnit2);
-	this.laneUpdate(this.friendlyUnit3);
-
+	
 gameplayState.prototype.render = function(){
     game.debug.geom(this.line1);
     game.debug.geom(this.line2);
@@ -209,7 +212,7 @@ gameplayState.prototype.dragCardStop = function(sprite, pointer) {
         console.log("None");
     }
 };
-*/
+
 gameplayState.prototype.addUnit = function(group, mult){
 	new basicUnit(group , 0, 40 + this.laneHeight*mult);
 };
