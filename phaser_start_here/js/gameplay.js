@@ -196,7 +196,7 @@ gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
 };
 
-// On input hover on card
+// On input down on card
 gameplayState.prototype.showHideCardInfo = function(sprite, pointer) {
     
     this.cardInfoText.alpha = 1;
