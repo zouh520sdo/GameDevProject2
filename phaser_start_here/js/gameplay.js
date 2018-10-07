@@ -197,9 +197,6 @@ gameplayState.prototype.dragCardUpdate = function(sprite, pointer, dragX, dragY,
 
 gameplayState.prototype.dragCardStop = function(sprite, pointer) {
     let mouseY = pointer.y;
-    console.log(pointer.y);
-    console.log(this);
-    console.log(this.laneHeight);
     
     // May need to invoke some functions to take effect of card or take it back to card area
     sprite.alpha = 1;
