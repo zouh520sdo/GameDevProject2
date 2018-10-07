@@ -80,12 +80,11 @@ gameplayState.prototype.create = function(){
     }
     */
     // Score UI
-    this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#000000"});
+    //this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#000000"});
     //add units to lanes by pressing Q,W,E (testing purpose)
-    this.keyboard = new keyboard(game);
-	this.keyboard.addCallBacks(Phaser.KeyCode.Q, this.addUnit1);
-	this.keyboard.addCallBacks(Phaser.KeyCode.W, this.addUnit2);
-	this.keyboard.addCallBacks(Phaser.KeyCode.E, this.addUnit3);
+    this.Qkey = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+	this.Wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
+	this.Ekey = game.input.keyboard.addKey(Phaser.Keyboard.E);
 }
 
 gameplayState.prototype.update = function(){
@@ -98,7 +97,21 @@ gameplayState.prototype.update = function(){
 	//faito
 	//simply do health - enemy_damage
     game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit1, this.fight ,null, this);
+	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit2, this.fight ,null, this);
+	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit3, this.fight ,null, this);
 	
+	if(this.Qkey.isDown){
+		console.log("q pressed");
+		this.addUnit(this.friendlyUnit1, 0);
+	}
+	if(this.Wkey.isDown){
+		console.log("w pressed");
+		this.addUnit(this.friendlyUnit2, 1);
+	}
+	if(this.Ekey.isDown){
+		console.log("w pressed");
+		this.addUnit(this.friendlyUnit3, 2);
+	}
     /*
     this.player.body.velocity.x = 0;
     if (this.cursors.left.isDown) {
@@ -118,22 +131,11 @@ gameplayState.prototype.update = function(){
     }
     */
 	
-	//units with health lower than 0 are killed
-	for (unit in friendlyUnit1){
-		if (unit.health <= 0){
-			unit.kill;
-		}
-	}
-	for (unit in friendlyUnit2){
-		if (unit.health <= 0){
-			unit.kill;
-		}
-	}
-	for (unit in friendlyUnit3){
-		if (unit.health <= 0){
-			unit.kill;
-		}
-	}
+	//units with health lower than 0 or out of bounds are killed
+	//first lane
+	this.laneUpdate(this.friendlyUnit1);
+	this.laneUpdate(this.friendlyUnit2);
+	this.laneUpdate(this.friendlyUnit3);
 	
     if (game.input.activePointer.leftButton.isDown) {
         let mouseY = game.input.activePointer.y;
@@ -179,23 +181,47 @@ gameplayState.prototype.dragCardStart() {
 gameplayState.prototype.dragCardUpdate(sprite, pointer, dragX, dragY, snapPoint) {
     
 };
-
+b
 gameplayState.prototype.dragCardStop() {
     
 };
 */
-gameplayState.prototype.addUnit1() = function(){
-	new basicUnit(this.friendlyUnit1 ,0, this.laneHeight);
-}
-gameplayState.prototype.addUnit2() = function(){
-	new basicUnit(this.friendlyUnit2 ,0, this.laneHeight*2);
-}
-gameplayState.prototype.addUnit3() = function(){
-	new basicUnit(this.friendlyUnit3 ,0, this.laneHeight*3);
-}
-gameplayState.prototype.fight() = function(unit, enemy){
+gameplayState.prototype.addUnit = function(group, mult){
+	new basicUnit(group , 0, 40 + this.laneHeight*mult);
+};
+gameplayState.prototype.fight = function(unit, enemy){
+	//stop both sides
 	unit.body.velocity.x = 0;
 	enemy.body.velocity.x = 0;
 	unit.health -= enemy.damage;
 	enemy.health -= unit.damage;
+}
+gameplayState.prototype.laneUpdate = function(group){
+	if (group.length > 0){
+		console.log("------------------------");
+		//iterate through all elements except last one
+		while(group.cursorIndex < group.length - 1){
+			//show unit health (testing purpose)
+			console.log(group.cursor.body.x);
+			if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
+				console.log(group.length);
+				console.log("kill");
+				group.cursor.kill();
+				group.remove(group.cursor);
+				console.log(group.length);
+			}
+			group.next();
+			
+		}
+		//now it's the last one
+		console.log(group.cursor.body.x);
+		if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
+			console.log(group.length);
+			console.log("kill");
+			group.cursor.kill();
+			group.remove(group.cursor);
+			console.log(group.length);
+		}
+		group.next();
+	}
 }
