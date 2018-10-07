@@ -3,9 +3,6 @@ let gameplayState = function(){
     this.laneHeight = 0;
 };
 
-// this.laneHeight is undefined in dragCardStop() function
-// therefore, create a global laneHeight variable for it
-let laneHeight = 0;
 
 gameplayState.prototype.create = function() {
     // Turn on physics before anything else
@@ -13,7 +10,7 @@ gameplayState.prototype.create = function() {
     
     // Set up heights for different area
     this.cardAreaHeight = 315;
-    this.laneHeight = laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
+    this.laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
     
     // debug line
     this.line1 = new Phaser.Line(0, this.laneHeight, game.world.width, this.laneHeight);
@@ -78,9 +75,9 @@ gameplayState.prototype.create = function() {
     // Enable dragging effect for sprite
     this.player.inputEnabled = true;
     this.player.input.enableDrag();
-    this.player.events.onDragStart.add(this.dragCardStart);
-    this.player.events.onDragUpdate.add(this.dragCardUpdate);
-    this.player.events.onDragStop.add(this.dragCardStop);
+    this.player.events.onDragStart.add(this.dragCardStart,this);
+    this.player.events.onDragUpdate.add(this.dragCardUpdate,this);
+    this.player.events.onDragStop.add(this.dragCardStop,this);
     /*
     // Create animations
     this.player.animations.add("left", [0,1,2,3], 10, true);
@@ -201,24 +198,25 @@ gameplayState.prototype.dragCardUpdate = function(sprite, pointer, dragX, dragY,
 gameplayState.prototype.dragCardStop = function(sprite, pointer) {
     let mouseY = pointer.y;
     console.log(pointer.y);
-    console.log(laneHeight);
+    console.log(this);
+    console.log(this.laneHeight);
     
     // May need to invoke some functions to take effect of card or take it back to card area
     sprite.alpha = 1;
 
-    if (0<=mouseY && mouseY <laneHeight) {
+    if (0<=mouseY && mouseY <this.laneHeight) {
         console.log("Lane1");
 		
     }
-    else if (laneHeight<=mouseY && mouseY <laneHeight*2) {
+    else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
         console.log("Lane2");
 		
     }
-    else if (laneHeight*2<=mouseY && mouseY <laneHeight*3) {
+    else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
         console.log("Lane3");
 		
     }
-    else if (laneHeight*3<=mouseY && mouseY<=game.world.height) {
+    else if (this.laneHeight*3<=mouseY && mouseY<=game.world.height) {
         console.log("Cards");
         // Back to original position
     }
