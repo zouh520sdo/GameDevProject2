@@ -51,6 +51,9 @@ gameplayState.prototype.create = function() {
     this.player.body.bounce.y = 0.3;
     this.player.body.collideWorldBounds = true;
     
+    // Change the origin of texture to be on the center bottom
+    this.player.anchor.set(0.5, 1);
+    
     // Enable dragging effect for sprite
     this.player.inputEnabled = true;
     this.player.input.enableDrag();
