@@ -72,6 +72,8 @@ gameplayState.prototype.create = function() {
     // Change the origin of texture to be on the center bottom
     this.player.anchor.set(0.5, 1);
     
+    // 
+    
     // Enable dragging effect for sprite
     this.player.inputEnabled = true;
     this.player.input.enableDrag();
@@ -267,5 +269,10 @@ gameplayState.prototype.msToTime = function(s) {
     s = (s - secs) / 60;
     var mins = s % 60;
     var hrs = (s - mins) / 60;
-    return mins + ':' + secs;
+    if (secs < 10) {
+        return mins + ':0' + secs;
+    }
+    else {
+        return mins + ':' + secs;
+    }
 };
