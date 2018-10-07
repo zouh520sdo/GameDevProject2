@@ -64,7 +64,7 @@ gameplayState.prototype.create = function() {
     ledge.body.immovable = true;
     ledge = this.platforms.create(-150, 250, "platform");
     ledge.body.immovable = true;
-    
+    */
     // Player
     this.player = game.add.sprite(32, game.world.height - 150, "murph");
     game.physics.arcade.enable(this.player);
@@ -81,7 +81,7 @@ gameplayState.prototype.create = function() {
     this.player.events.onDragStart.add(this.dragCardStart);
     this.player.events.onDragUpdate.add(this.dragCardUpdate);
     this.player.events.onDragStop.add(this.dragCardStop);
-    
+    /*
     // Create animations
     this.player.animations.add("left", [0,1,2,3], 10, true);
     this.player.animations.add("right", [5,6,7,8], 10, true);
@@ -93,19 +93,25 @@ gameplayState.prototype.create = function() {
         star.body.gravity.y = 300;
         star.body.bounce.y = .2 + Math.random() * .2;
     }
-    
+    */
     // Timer UI
-    this.scoreText = game.add.text(16,16,"Time Left: 3:00", {fontSize:"32px", fill:"#000000"});
-    
+    this.scoreText = game.add.text(16,16,"Time Left: 3:00", {fontSize:"32px", fill:"#ffffff"});
+	console.log(this);
+    /*
     this.cursors = game.input.keyboard.createCursorKeys();
 };
-    */
+    
     // Score UI
-    this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#000000"});
-    //add units to lanes by pressing Q,W,E (testing purpose)
+    this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#ffffff"});
+    */
+	//add units to lanes by pressing Q,W,E (testing purpose)
+	
+	//looks like we don't need them now
+	/*
     this.Qkey = game.input.keyboard.addKey(Phaser.Keyboard.Q);
 	this.Wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 	this.Ekey = game.input.keyboard.addKey(Phaser.Keyboard.E);
+	*/
 }
 
 gameplayState.prototype.update = function(){
@@ -121,6 +127,7 @@ gameplayState.prototype.update = function(){
 	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit2, this.fight ,null, this);
 	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit3, this.fight ,null, this);
 	
+	/*
 	if(this.Qkey.isDown){
 		console.log("q pressed");
 		this.addUnit(this.friendlyUnit1, 0);
@@ -133,7 +140,7 @@ gameplayState.prototype.update = function(){
 		console.log("w pressed");
 		this.addUnit(this.friendlyUnit3, 2);
 	}
-	
+	*/
 	this.laneUpdate(this.friendlyUnit1);
 	this.laneUpdate(this.friendlyUnit2);
 	this.laneUpdate(this.friendlyUnit3);
@@ -161,7 +168,11 @@ gameplayState.prototype.update = function(){
 	
     
 };
-	
+
+gameplayState.prototype.addUnit = function(group, mult) {
+	new basicUnit(group , 0, 40 + this.laneHeight*mult);
+}
+
 gameplayState.prototype.render = function(){
     game.debug.geom(this.line1);
     game.debug.geom(this.line2);
@@ -197,12 +208,15 @@ gameplayState.prototype.dragCardStop = function(sprite, pointer) {
 
     if (0<=mouseY && mouseY <laneHeight) {
         console.log("Lane1");
+		
     }
     else if (laneHeight<=mouseY && mouseY <laneHeight*2) {
         console.log("Lane2");
+		
     }
     else if (laneHeight*2<=mouseY && mouseY <laneHeight*3) {
         console.log("Lane3");
+		
     }
     else if (laneHeight*3<=mouseY && mouseY<=game.world.height) {
         console.log("Cards");
@@ -213,9 +227,7 @@ gameplayState.prototype.dragCardStop = function(sprite, pointer) {
     }
 };
 
-gameplayState.prototype.addUnit = function(group, mult){
-	new basicUnit(group , 0, 40 + this.laneHeight*mult);
-};
+
 gameplayState.prototype.fight = function(unit, enemy){
 	//stop both sides
 	unit.body.velocity.x = 0;
