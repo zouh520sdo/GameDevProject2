@@ -1,6 +1,7 @@
 let gameplayState = function(){
     this.score = 0;
     this.laneHeight = 0;
+    this.selectedCard = null;
 };
 
 
@@ -72,14 +73,16 @@ gameplayState.prototype.create = function() {
     // Change the origin of texture to be on the center bottom
     this.player.anchor.set(0.5, 1);
     
-    // 
-    
     // Enable dragging effect for sprite
     this.player.inputEnabled = true;
     this.player.input.enableDrag();
     this.player.events.onDragStart.add(this.dragCardStart,this);
     this.player.events.onDragUpdate.add(this.dragCardUpdate,this);
     this.player.events.onDragStop.add(this.dragCardStop,this);
+    
+    // Add input over and input out callback function
+    this.player.events.onInputDown.add(this.showHideCardInfo, this);
+    
     /*
     // Create animations
     this.player.animations.add("left", [0,1,2,3], 10, true);
@@ -96,6 +99,11 @@ gameplayState.prototype.create = function() {
     // Timer UI
     this.scoreText = game.add.text(16,16,"Time Left: 3:00", {fontSize:"32px", fill:"#ffffff"});
 	console.log(this);
+    
+    // Card information UI
+    this.cardInfoText = game.add.text(game.world.width*0.75, this.laneHeight*3, "Card Info", {fontSize:"32px", fill:"#ffffff"});
+    this.cardInfoText.alpha = 0;  // Hide when game starts
+    
     /*
     this.cursors = game.input.keyboard.createCursorKeys();
 };
@@ -186,6 +194,32 @@ gameplayState.prototype.collectStar = function(player, star) {
 
 gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
+};
+
+// On input hover on card
+gameplayState.prototype.showHideCardInfo = function(sprite, pointer) {
+    
+    this.cardInfoText.alpha = 1;
+    
+    if (this.selectedCard === sprite) {
+        // hide card's info
+        this.cardInfoText.alpha = 0;
+        console.log("Hide card info");
+        this.selectedCard = null;
+    }
+    else {
+        
+        if (this.selectedCard !== null) {
+            // place it back(maybe) or other necessary changes for the original selected card
+        }
+        // Show currect selected card's info
+        this.cardInfoText.alpha = 1;
+        
+        // Change text based the sprite player is selecting
+        console.log("Show card info");
+        
+        this.selectedCard = sprite;
+    }
 };
 
 // Card draging effect
