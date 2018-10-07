@@ -239,15 +239,15 @@ gameplayState.prototype.dragCardStop = function(sprite, pointer) {
 
     if (0<=mouseY && mouseY <this.laneHeight) {
         console.log("Lane1");
-		
+		this.addUnit(this.friendlyUnit1, 0);
     }
     else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
         console.log("Lane2");
-		
+		this.addUnit(this.friendlyUnit2, 1);
     }
     else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
         console.log("Lane3");
-		
+		this.addUnit(this.friendlyUnit3, 2);
     }
     else if (this.laneHeight*3<=mouseY && mouseY<=game.world.height) {
         console.log("Cards");
