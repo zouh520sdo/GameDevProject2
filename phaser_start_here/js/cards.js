@@ -2,10 +2,10 @@
 class Cards extends Phaser.Sprite{
     
     //constructor
-    constructor(game, num)
+    constructor(game, num, id)
     {
         console.log(game.cardAreaHeight);
-        super(game,num * 240, gameplayState.cardAreaHeight, "murph");
+        super(game,num * 240, gameplayState.cardAreaHeight, "card" + id );
         this.exist = false;
         this.activated = false;
        

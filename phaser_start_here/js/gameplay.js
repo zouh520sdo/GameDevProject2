@@ -110,8 +110,8 @@ gameplayState.prototype.create = function() {
     let tempCard = game.add.group();
     for(let i = 1; i < 10; i++)
     {
-        let rantemp = this.game.rnd.integerInRange(0,10);
-        let cardtemp = new Cards(this.game, i);
+        let rantemp = this.game.rnd.integerInRange(2,4);
+        let cardtemp = new Cards(this.game, i, rantemp);
         cardtemp.inputEnabled = true;
         cardtemp.input.enableDrag();
         cardtemp.events.onDragStart.add(this.dragCardStart,this);
