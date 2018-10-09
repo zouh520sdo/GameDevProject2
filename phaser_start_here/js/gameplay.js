@@ -297,19 +297,19 @@ gameplayState.prototype.laneUpdate = function(group){
 		}
 		//now it's the last one
 		//console.log(group.cursor.body.x);
-		if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
-			console.log(group.length);
-			console.log("kill");
-			group.cursor.kill();
-			group.remove(group.cursor);
-			console.log(group.length);
-			if(group.length === 0){
-				group.destroy(true,true);
-			}
-			else{
-				group.next();
-			}
-		}
+//		if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
+//			console.log(group.length);
+//			console.log("kill");
+//			group.cursor.kill();
+//			group.remove(group.cursor);
+//			console.log(group.length);
+//			if(group.length === 0){
+//				group.destroy(true,true);
+//			}
+//			else{
+//				group.next();
+//			}
+//		}
 	}
 };
 

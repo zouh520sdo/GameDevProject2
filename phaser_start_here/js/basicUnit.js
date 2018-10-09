@@ -34,6 +34,12 @@ basicUnit.prototype.create = function(){
             this.body.velocity.x = this.speed;
             this.animations.play("run");
         }
+        
+        if(this.body.x > game.world.width || this.health <= 0){
+            this.kill();
+            this.parent.remove(this);
+            console.log(this.name + " is killed");
+        }
     };
     
     // Play run animation
