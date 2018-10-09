@@ -128,6 +128,11 @@ gameplayState.prototype.update = function(){
     game.physics.arcade.overlap(this.player, this.stars, this.collectStar, null, this);
 	*/
 	
+    // Update group
+//    this.updateGroup(this.friendlyUnit1);
+//	this.updateGroup(this.friendlyUnit2);
+//	this.updateGroup(this.friendlyUnit3);
+    
 	//faito
 	//simply do health - enemy_damage
     game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit1, this.fight ,null, this);
@@ -275,7 +280,7 @@ gameplayState.prototype.fight = function(unit, enemy){
 };
 gameplayState.prototype.laneUpdate = function(group){
 	if (group.length > 0){
-		console.log("------------------------");
+		//console.log("------------------------");
 		//iterate through all elements except last one
 		while(group.cursorIndex < group.length - 1){
 			//show unit health (testing purpose)
