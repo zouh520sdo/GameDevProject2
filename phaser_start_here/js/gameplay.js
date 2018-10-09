@@ -284,7 +284,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     //ONLY for card id of 1, the permanent card
     if(Cards.id === 1)
     {
-    if (0<=mouseY && mouseY <this.laneHeight) {
+    if ( mouseY <this.laneHeight) {
         console.log("Lane1");
         this.addUnit(this.friendlyUnit1, 0);
         Cards.x = Cards.savedx;
@@ -302,7 +302,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
     }
-    else if (this.laneHeight*3<=mouseY && mouseY<=game.world.height) {
+    else if (this.laneHeight*3<=mouseY ) {
         console.log("Cards");
         // Back to original position
         Cards.x = Cards.savedx;
