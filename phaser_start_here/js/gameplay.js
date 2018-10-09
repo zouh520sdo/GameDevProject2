@@ -311,15 +311,18 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     }
     else if(Cards.id !== 1 && (this.laneHeight*3 >mouseY))
         {
-            console.log("SDF" + Cards.num);
+        
             for(i= Cards.num -1; i < tempCard.length; i++)
                 {
-                    //this.game.physics.arcade.moveToXY(this.tempCard[i], this.tempCard[i].x -240, this.tempCard[i].y, 5, .5);
+                   // game.physics.arcade.moveToXY(tempCard.children[i], tempCard.children[i].x -240, tempCard.children[i].y, 5, 100);
+                    tempCard.children[i].x -= 240;
+                    tempCard.children[i].num -= 1;
                     //this.tempCard[i].num -= 1;
                     console.log(tempCard.children[i].num);
-                    tempCard.children[i].shift();
+                    //tempCard.children[i].shift();
                 }
             tempCard.remove(Cards);
+            
             Cards.kill();
           
         }
@@ -380,10 +383,11 @@ gameplayState.prototype.updateCards = function(tempCard){
    
     for(i = 0; i < tempCard.length; i++)
     {
-        
         if(tempCard.children[i].body.velocity.x < 0)
         {
             tempCard.children[i].stop();
+            //tempCard.children[i].x = tempCard.children[i].lastx;
+            
         }
 
     }

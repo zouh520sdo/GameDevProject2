@@ -18,7 +18,7 @@ class Cards extends Phaser.Sprite{
        
        Cards.prototype.shift = function()
        {
-           this.body.velocity.x = -600;
+           this.body.velocity.x = -1500;
            this.num -= 1;
 
 
@@ -29,8 +29,13 @@ class Cards extends Phaser.Sprite{
            if(this.x <= this.lastx)
            {
                this.body.velocity.x = 0;
-               this.savedy -= 240;
+            
+               this.savedx -= 240;
                this.lastx -= 240;
+               this.x = this.savedx;
+               this.y = this.savedy;  
+              
+               
            }
            
        }
