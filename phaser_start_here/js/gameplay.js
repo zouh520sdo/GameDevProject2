@@ -354,19 +354,19 @@ gameplayState.prototype.laneUpdate = function(group){
 	if (group.length > 0){
 		//console.log("------------------------");
 		//iterate through all elements except last one
-		while(group.cursorIndex < group.length - 1){
-			//show unit health (testing purpose)
-			//console.log(group.cursor.body.x);
-			if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
-				console.log(group.length);
-				console.log("kill");
-				group.cursor.kill();
-				group.remove(group.cursor);
-				console.log(group.length);
-			}
-			group.next();
-			
-		}
+//		while(group.cursorIndex < group.length - 1){
+//			//show unit health (testing purpose)
+//			//console.log(group.cursor.body.x);
+//			if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
+//				console.log(group.length);
+//				console.log("kill");
+//				group.cursor.kill();
+//				group.remove(group.cursor);
+//				console.log(group.length);
+//			}
+//			group.next();
+//			
+//		}
 		//now it's the last one
 		//console.log(group.cursor.body.x);
 //		if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
