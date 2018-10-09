@@ -70,15 +70,19 @@ gameplayState.prototype.create = function() {
     this.player.body.bounce.y = 0.3;
     this.player.body.collideWorldBounds = true;
     
+    
+    //Card group have to be declared first;
+    tempCard = game.add.group();
+    tempCard.enableBody = true;
+    
+    
     // Change the origin of texture to be on the center bottom
     this.player.anchor.set(0.5, 1);
     
     // Enable dragging effect for sprite
     this.player.inputEnabled = true;
     this.player.input.enableDrag();
-    this.player.events.onDragStart.add(this.dragCardStart,this);
-    this.player.events.onDragUpdate.add(this.dragCardUpdate,this);
-    this.player.events.onDragStop.add(this.dragCardStop,this);
+   
     
     // Add input over and input out callback function
     this.player.events.onInputDown.add(this.showHideCardInfo, this);
@@ -103,6 +107,34 @@ gameplayState.prototype.create = function() {
     // Card information UI
     this.cardInfoText = game.add.text(game.world.width*0.75, this.laneHeight*3, "Card Info", {fontSize:"32px", fill:"#ffffff"});
     this.cardInfoText.alpha = 0;  // Hide when game starts
+    
+    //group of cards for the game
+    let permcard = game.add.group();
+    
+    let permycard = new Cards(this.game, 1, 1);
+    permycard.inputEnabled = true;
+    permycard.input.enableDrag();
+    permycard.events.onDragStart.add(this.dragCardStart,this);
+    permycard.events.onDragUpdate.add(this.dragCardUpdate,this);
+    permycard.events.onDragStop.add(this.dragCardStop,this);
+    permcard.add(permycard);
+    for(let i = 2; i < 10; i++)
+    {
+        let rantemp = this.game.rnd.integerInRange(2,4);
+        let cardtemp = new Cards(this.game, i, rantemp);
+        cardtemp.inputEnabled = true;
+        cardtemp.enableBody = true;
+        cardtemp.input.enableDrag();
+        cardtemp.events.onDragStart.add(this.dragCardStart,this);
+        cardtemp.events.onDragUpdate.add(this.dragCardUpdate,this);
+        cardtemp.events.onDragStop.add(this.dragCardStop,this);
+      
+        
+        tempCard.add(cardtemp);
+        
+    }
+    
+    //Card Drag
     
     /*
     this.cursors = game.input.keyboard.createCursorKeys();
@@ -156,7 +188,7 @@ gameplayState.prototype.update = function(){
 	this.laneUpdate(this.friendlyUnit1);
 	this.laneUpdate(this.friendlyUnit2);
 	this.laneUpdate(this.friendlyUnit3);
-	
+	this.updateCards(tempCard);
     /*
     this.player.body.velocity.x = 0;
     if (this.cursors.left.isDown) {
@@ -235,41 +267,81 @@ gameplayState.prototype.showHideCardInfo = function(sprite, pointer) {
 };
 
 // Card draging effect
-gameplayState.prototype.dragCardStart = function(sprite, pointer, dragX, dragY) {
-    sprite.alpha = 0.5;
+gameplayState.prototype.dragCardStart = function(Cards, pointer, dragX, dragY) {
+    Cards.alpha = 0.5;
 };
 
-gameplayState.prototype.dragCardUpdate = function(sprite, pointer, dragX, dragY, snapPoint) {
+gameplayState.prototype.dragCardUpdate = function(Cards, pointer, dragX, dragY, snapPoint) {
     
 };
 
-gameplayState.prototype.dragCardStop = function(sprite, pointer) {
+gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     let mouseY = pointer.y;
     
     // May need to invoke some functions to take effect of card or take it back to card area
-    sprite.alpha = 1;
-
-    if (0<=mouseY && mouseY <this.laneHeight) {
+    Cards.alpha = 1;
+    
+    //ONLY for card id of 1, the permanent card
+    if(Cards.id === 1)
+    {
+    if ( mouseY <this.laneHeight) {
         console.log("Lane1");
-		this.addUnit(this.friendlyUnit1, 0);
+        this.addUnit(this.friendlyUnit1, 0);
+        Cards.x = Cards.savedx;
+        Cards.y = Cards.savedy;
     }
     else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
         console.log("Lane2");
-		this.addUnit(this.friendlyUnit2, 1);
+        this.addUnit(this.friendlyUnit2, 1);
+        Cards.x = Cards.savedx;
+        Cards.y = Cards.savedy;
     }
     else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
         console.log("Lane3");
-		this.addUnit(this.friendlyUnit3, 2);
+        this.addUnit(this.friendlyUnit3, 2);
+        Cards.x = Cards.savedx;
+        Cards.y = Cards.savedy;
     }
-    else if (this.laneHeight*3<=mouseY && mouseY<=game.world.height) {
+    else if (this.laneHeight*3<=mouseY ) {
         console.log("Cards");
         // Back to original position
+        Cards.x = Cards.savedx;
+        Cards.y = Cards.savedy;
+           
     }
     else {
         console.log("None");
     }
+    
+    }
+    else if(Cards.id !== 1 && (this.laneHeight*3 >mouseY))
+        {
+        
+            for(i= Cards.num -1; i < tempCard.length; i++)
+                {
+                   // game.physics.arcade.moveToXY(tempCard.children[i], tempCard.children[i].x -240, tempCard.children[i].y, 5, 100);
+                    tempCard.children[i].x -= 240;
+                    tempCard.children[i].num -= 1;
+                    //this.tempCard[i].num -= 1;
+                    console.log(tempCard.children[i].num);
+                    //tempCard.children[i].shift();
+                }
+            tempCard.remove(Cards);
+            
+            Cards.kill();
+          
+        }
+    else if(Cards.id !== 1 )
+        {
+           
+            //game.physics.arcade.movetoXY(Cards, Cards.x, Cards.y, 5, .25);
+            Cards.x = Cards.savedx;
+            Cards.y = Cards.savedy;  
+           
+        }
+    
+    
 };
-
 
 gameplayState.prototype.fight = function(unit, enemy){
 	//stop both sides
@@ -282,19 +354,19 @@ gameplayState.prototype.laneUpdate = function(group){
 	if (group.length > 0){
 		//console.log("------------------------");
 		//iterate through all elements except last one
-		while(group.cursorIndex < group.length - 1){
-			//show unit health (testing purpose)
-			//console.log(group.cursor.body.x);
-			if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
-				console.log(group.length);
-				console.log("kill");
-				group.cursor.kill();
-				group.remove(group.cursor);
-				console.log(group.length);
-			}
-			group.next();
-			
-		}
+//		while(group.cursorIndex < group.length - 1){
+//			//show unit health (testing purpose)
+//			//console.log(group.cursor.body.x);
+//			if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
+//				console.log(group.length);
+//				console.log("kill");
+//				group.cursor.kill();
+//				group.remove(group.cursor);
+//				console.log(group.length);
+//			}
+//			group.next();
+//			
+//		}
 		//now it's the last one
 		//console.log(group.cursor.body.x);
 //		if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
@@ -312,7 +384,21 @@ gameplayState.prototype.laneUpdate = function(group){
 //		}
 	}
 };
+gameplayState.prototype.updateCards = function(tempCard){
+   
+    for(i = 0; i < tempCard.length; i++)
+    {
+        if(tempCard.children[i].body.velocity.x < 0)
+        {
+            tempCard.children[i].stop();
+            //tempCard.children[i].x = tempCard.children[i].lastx;
+            
+        }
 
+    }
+
+
+};
 gameplayState.prototype.msToTime = function(s) {
     var ms = s % 1000;
     s = (s - ms) / 1000;
