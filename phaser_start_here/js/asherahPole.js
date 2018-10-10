@@ -1,6 +1,6 @@
 class AsherahPole extends Phaser.Sprite {
     // Constructor
-    constructor(game, xx, yy, tempCard, gamestate) {
+    constructor(game, xx, yy, gamestate) {
         // Set up asherah pole
         super(game, xx, yy, "pole");
         game.add.existing(this);
@@ -21,6 +21,9 @@ class AsherahPole extends Phaser.Sprite {
         this.energy = 100;
         this.chargeRateByTime = 10;
         this.chargeRateByKill = 10;
+        
+        // Health
+        this.health = 5000;
         
         // Debug
         this.debugText = game.add.text(0,this.y,"debug", {fontSize:"32px", fill:"#ffffff"});
@@ -79,5 +82,9 @@ class AsherahPole extends Phaser.Sprite {
         this.addEnergy(this.chargeRateByTime * this.game.time.elapsed / 1000);
         
         this.debugText.text = this.isFull();
+        
+        if (this.health <= 0) {
+            // Display defeated UI
+        }
     };
 };
