@@ -45,6 +45,10 @@ gameplayState.prototype.create = function() {
     this.gameplayTimer.add(180000, this.gotoGameWinState, this);
     this.gameplayTimer.start();
     
+    // Initializing other timer
+    this.gameplayerTimer.add(8000, this.gotoGameWiinState, this);
+    //this.gameplayTimer
+    
     //game.add.sprite(0,0, "sky");
     
     // Platforms
