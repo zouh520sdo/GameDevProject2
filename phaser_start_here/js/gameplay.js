@@ -47,7 +47,7 @@ gameplayState.prototype.create = function() {
     this.gameplayTimer.start();
     
     // Initializing other timer
-    this.gameplayerTimer.add(8000, this.gotoGameWiinState, this);
+    //this.cooldownTimer.add(8000, this.StartCooldown, this);
     //this.gameplayTimer
     
     //game.add.sprite(0,0, "sky");
@@ -75,13 +75,12 @@ gameplayState.prototype.create = function() {
     this.player.body.bounce.y = 0.3;
     this.player.body.collideWorldBounds = true;
     
-    // Set up asherah pole
-    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2);
-    
     //Card group have to be declared first;
     tempCard = game.add.group();
     tempCard.enableBody = true;
     
+    // Set up asherah pole
+    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2, tempCard, this);
     
     // Change the origin of texture to be on the center bottom
     this.player.anchor.set(0.5, 1);
@@ -195,7 +194,7 @@ gameplayState.prototype.update = function(){
 	this.laneUpdate(this.friendlyUnit1);
 	this.laneUpdate(this.friendlyUnit2);
 	this.laneUpdate(this.friendlyUnit3);
-	this.updateCards(tempCard);
+	//this.updateCards(tempCard);
     /*
     this.player.body.velocity.x = 0;
     if (this.cursors.left.isDown) {
@@ -247,6 +246,10 @@ gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
 };
 
+gameplayState.prototype.StartCooldown = function(Cards)
+{
+    Cards.activated = false;
+}
 // On input down on card
 gameplayState.prototype.showHideCardInfo = function(sprite, pointer) {
     
@@ -289,25 +292,28 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     Cards.alpha = 1;
     
     //ONLY for card id of 1, the permanent card
-    if(Cards.id === 1)
+    if(Cards.id === 1 && Cards.activated === false)
     {
     if ( mouseY <this.laneHeight) {
         console.log("Lane1");
         this.addUnit(this.friendlyUnit1, 0);
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
+        Cards.activated = true;
     }
     else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
         console.log("Lane2");
         this.addUnit(this.friendlyUnit2, 1);
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
+        Cards.activated = true;
     }
     else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
         console.log("Lane3");
         this.addUnit(this.friendlyUnit3, 2);
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
+        Cards.activated = true;
     }
     else if (this.laneHeight*3<=mouseY ) {
         console.log("Cards");

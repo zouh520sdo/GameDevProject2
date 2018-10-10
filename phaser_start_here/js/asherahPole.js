@@ -1,12 +1,12 @@
 class AsherahPole extends Phaser.Sprite {
     // Constructor
-    constructor(game, xx, yy) {
+    constructor(game, xx, yy, tempCard, gamestate) {
         // Set up asherah pole
         super(game, xx, yy, "pole");
         game.add.existing(this);
         this.anchor.set(0, 1);
         this.scale.set(0.7, 0.7);
-        
+        this.gamestate = gamestate;
         // Set up animations
         this.animations.add("neutral", [0], 10, true);
         this.animations.add("full_charged", [1,2,3,4,3,2], 10, true);
@@ -29,10 +29,28 @@ class AsherahPole extends Phaser.Sprite {
     // Callback function for tapping pole
     onTapping() {
         if (this.energy >= this.fullEnergy) {
-            this.energy = 0;
-            // Draw card
-            console.log("Draw a card");
-            this.animations.play("neutral");
+            console.log(tempCard.children[1]);
+        
+            if(tempCard.length < 8 )
+                {
+                    this.energy = 0;
+                    let rantemp = this.game.rnd.integerInRange(2,4);
+                    let cardtemp = new Cards(this.game, tempCard.length + 2, rantemp);
+                    cardtemp.inputEnabled = true;
+                    cardtemp.enableBody = true;
+                    cardtemp.input.enableDrag();
+                  cardtemp.events.onDragStart.add(this.gamestate.dragCardStart,this.gamestate);
+                    cardtemp.events.onDragUpdate.add(this.gamestate.dragCardUpdate,this.gamestate);
+                    cardtemp.events.onDragStop.add(this.gamestate.dragCardStop,this.gamestate);
+      
+        
+                 
+                    tempCard.add(cardtemp);
+                // Draw card
+                console.log("Draw a card");
+                this.animations.play("neutral");
+                }
+            
         }
         else {
             // No effect now
