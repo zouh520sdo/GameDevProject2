@@ -11,6 +11,10 @@ gameplayState.prototype.create = function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
     // Set up heights for different area
+	//1125-315 = 810
+	//810/3 = 270 (lane height)
+	//270/2 = 135...
+	
     this.cardAreaHeight = 315;
     this.laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
     
@@ -224,7 +228,8 @@ gameplayState.prototype.update = function(){
 	basicUnit is called
 */
 gameplayState.prototype.addUnit = function(group, mult) {
-	new basicUnit(group , 0, 40 + this.laneHeight*mult);
+	//units would spawn from (350, 315)
+	new basicUnit(group , 350, 315, mult);
 };
 
 gameplayState.prototype.render = function(){
@@ -287,6 +292,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     //ONLY for card id of 1, the permanent card
     if(Cards.id === 1)
     {
+		
     if ( mouseY <this.laneHeight) {
         console.log("Lane1");
         this.addUnit(this.friendlyUnit1, 0);

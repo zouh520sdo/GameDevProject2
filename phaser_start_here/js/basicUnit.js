@@ -2,11 +2,12 @@
 //and each lane has its own group of friendly units and enemy units
 //lane is an int -- 1, 2 or 3
 
-let basicUnit = function(group, lane_x, lane_y){
+let basicUnit = function(group, lane_x, lane_y, lane_id){
 	this.lane_x = lane_x;
 	this.lane_y = lane_y;
 	this.speed = 100;
 	this.create();
+	this.unit.lane_id = lane_id;
 	group.add(this.unit);
 };
 
@@ -31,10 +32,47 @@ basicUnit.prototype.create = function(){
     // Override update function
     this.unit.update = function(){
         if(this.animations.currentAnim.name === "spawn" && this.animations.currentAnim.isFinished) {
-            this.body.velocity.x = this.speed;
+			//going from (350, 315) to (1936, 45) @ 100
+			//dx = 1486
+			//dy = 270
+			this.velo_x_mult = 1486.0/270.0;
+			if(this.lane_id === 0){
+				
+				//just make velo_y 18
+				
+			
+				this.body.velocity.y = -18;
+				
+				this.body.velocity.x = 18 * (this.velo_x_mult);
+			}
+			else if(this.lane_id === 1){
+				this.body.velocity.x = 18 * (this.velo_x_mult);
+			}
+			//going from (350, 315) to (1936, 585)
+			//dx = 1486
+			//dy = 270
+			else if(this.lane_id === 2){
+				this.velo_x_mult = 1486.0/270.0;
+				//just make velo_y 18
+				
+				
+				this.body.velocity.y = 18;
+				
+				this.body.velocity.x = 18 * (this.velo_x_mult);
+			}
+            
             this.animations.play("run");
         }
-        
+        if(this.lane_id === 0){
+			if(this.body.y <= 45){
+				this.body.velocity.y = 0;
+			}
+        }
+		else if(this.lane_id === 2){
+			if(this.body.y >= 585){
+				this.body.velocity.y = 0;
+			}
+		}
         if(this.body.x > game.world.width || this.health <= 0){
             this.kill();
             this.parent.remove(this);
