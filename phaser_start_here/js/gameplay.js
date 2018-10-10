@@ -46,6 +46,10 @@ gameplayState.prototype.create = function() {
     this.gameplayTimer.add(180000, this.gotoGameWinState, this);
     this.gameplayTimer.start();
     
+    // Initializing other timer
+    //this.cooldownTimer.add(8000, this.StartCooldown, this);
+    //this.gameplayTimer
+    
     //game.add.sprite(0,0, "sky");
     
     // Platforms
@@ -71,13 +75,12 @@ gameplayState.prototype.create = function() {
     this.player.body.bounce.y = 0.3;
     this.player.body.collideWorldBounds = true;
     
-    // Set up asherah pole
-    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2);
-    
     //Card group have to be declared first;
     this.tempCard = game.add.group();
     this.tempCard.enableBody = true;
     
+    // Set up asherah pole
+    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2, tempCard, this);
     
     // Change the origin of texture to be on the center bottom
     this.player.anchor.set(0.5, 1);
@@ -243,6 +246,10 @@ gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
 };
 
+gameplayState.prototype.StartCooldown = function(Cards)
+{
+    Cards.activated = false;
+}
 // On input down on card
 gameplayState.prototype.showHideCardInfo = function(sprite, pointer) {
     
@@ -285,7 +292,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     Cards.alpha = 1;
     
     //ONLY for card id of 1, the permanent card
-    if(Cards.id === 1)
+    if(Cards.id === 1 && Cards.activated === false)
     {
     if ( mouseY <this.laneHeight) {
         console.log("Lane1");
@@ -293,6 +300,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.deSelect();
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
+        Cards.activated = true;
     }
     else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
         console.log("Lane2");
@@ -300,6 +308,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.deSelect();
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
+        Cards.activated = true;
     }
     else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
         console.log("Lane3");
@@ -307,6 +316,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.deSelect();
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
+        Cards.activated = true;
     }
     else if (this.laneHeight*3<=mouseY ) {
         console.log("Cards");
