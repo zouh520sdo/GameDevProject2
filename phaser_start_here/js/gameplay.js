@@ -68,12 +68,6 @@ gameplayState.prototype.create = function() {
     ledge = this.platforms.create(-150, 250, "platform");
     ledge.body.immovable = true;
     */
-    // Player
-    this.player = game.add.sprite(32, game.world.height - 150, "murph");
-    game.physics.arcade.enable(this.player);
-    //this.player.body.gravity.y = 300;
-    this.player.body.bounce.y = 0.3;
-    this.player.body.collideWorldBounds = true;
     
     //Card group have to be declared first;
     this.tempCard = game.add.group();
@@ -81,31 +75,9 @@ gameplayState.prototype.create = function() {
     
     // Set up asherah pole
     this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2, this.tempCard, this);
-    
-    // Change the origin of texture to be on the center bottom
-    this.player.anchor.set(0.5, 1);
-    
-    // Enable dragging effect for sprite
-    this.player.inputEnabled = true;
-    this.player.input.enableDrag();
    
-    
     // Add input over and input out callback function
-    this.player.events.onInputDown.add(this.showHideCardInfo, this);
     
-    /*
-    // Create animations
-    this.player.animations.add("left", [0,1,2,3], 10, true);
-    this.player.animations.add("right", [5,6,7,8], 10, true);
-    
-    this.stars = game.add.group();
-    this.stars.enableBody = true;
-    for (let i=0; i<12; i++) {
-        let star = this.stars.create(i*70, 0, "star");
-        star.body.gravity.y = 300;
-        star.body.bounce.y = .2 + Math.random() * .2;
-    }
-    */
     // Timer UI
     this.scoreText = game.add.text(16,16,"Time Left: 3:00", {fontSize:"32px", fill:"#ffffff"});
 	console.log(this);
@@ -160,11 +132,6 @@ gameplayState.prototype.create = function() {
 };
 
 gameplayState.prototype.update = function(){
-	/*
-    game.physics.arcade.collide(this.player, this.platforms);
-    game.physics.arcade.collide(this.stars, this.platforms);
-    game.physics.arcade.overlap(this.player, this.stars, this.collectStar, null, this);
-	*/
 	
     // Update group
 //    this.updateGroup(this.friendlyUnit1);
@@ -195,24 +162,7 @@ gameplayState.prototype.update = function(){
 	this.laneUpdate(this.friendlyUnit2);
 	this.laneUpdate(this.friendlyUnit3);
 	//this.updateCards(this.tempCard);
-    /*
-    this.player.body.velocity.x = 0;
-    if (this.cursors.left.isDown) {
-        this.player.body.velocity.x = -150;
-        this.player.animations.play("left");
-    }
-    else if (this.cursors.right.isDown) {
-        this.player.body.velocity.x = 150;       this.player.animations.play("right");
-    }
-    else { // stand still
-        this.player.animations.stop();
-        this.player.frame = 4;
-    }
-    
-    if (this.cursors.up.isDown && this.player.body.touching.down) {
-        this.player.body.velocity.y = -350;
-    }
-    */
+
     // Update timer
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
 	
@@ -235,12 +185,6 @@ gameplayState.prototype.render = function(){
     game.debug.geom(this.line2);
     game.debug.geom(this.line3);
 };
-/*
-gameplayState.prototype.collectStar = function(player, star) {
-    star.kill();
-    this.score += 10;
-};
-*/
 
 gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
