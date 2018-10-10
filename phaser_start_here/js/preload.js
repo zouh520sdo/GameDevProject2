@@ -15,6 +15,9 @@ preloadState.prototype.preload = function () {
     game.load.spritesheet("murph", "assets/character.png", 32, 48);
     game.load.spritesheet("defender", "assets/Defender_SpriteSheet2.png", 256, 180);
     game.load.spritesheet("invader", "assets/Invader_SpriteSheet2.png", 256, 180);
+    game.load.spritesheet("pole", "assets/AsherahPole_SpriteSheet.png", 320, 640);
+    game.load.spritesheet("invader_archer", "assets/Invader_Archer_SpriteSheet.png", 256, 180);
+    game.load.image("arrow", "assets/Arrow_Sprite.png");
 };
 
 preloadState.prototype.create = function () {

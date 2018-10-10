@@ -2,6 +2,7 @@ let gameplayState = function(){
     this.score = 0;
     this.laneHeight = 0;
     this.selectedCard = null;
+    this.asherahPole = null;
 };
 
 
@@ -10,7 +11,7 @@ gameplayState.prototype.create = function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
     // Set up heights for different area
-    this.cardAreaHeight = 315;
+    this.cardAreaHeight = 150;
     this.laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
     
     // debug line
@@ -74,6 +75,8 @@ gameplayState.prototype.create = function() {
     this.player.body.bounce.y = 0.3;
     this.player.body.collideWorldBounds = true;
     
+    // Set up asherah pole
+    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2);
     
     //Card group have to be declared first;
     tempCard = game.add.group();

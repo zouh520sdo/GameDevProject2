@@ -2,20 +2,48 @@ Defender_SpriteSheet2 - Contains Neutral Stance, Spawn Animation, Run Animation,
 			and Death Animation for Israelite Soldier
 =======================
 File Dimensions = 4864x180
-Sprite Dimension = 256x180
+Sprite Dimensions = 256x180
 Spawn Order = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 Neutral Stance = [8]
 Run Cycle Order = [9, 10, 11, 12]
 Combat Cycle Order = [13, 8, 14, 15]
 Death Cycle Order = [16, 17, 18]
+__________________________________________________________________________________________________
 
 Invader_SpriteSheet2 - Contains Neutral Stance, Run Animation, Combat Animation, and
 		       Death Animation for Assyrian Soldier
 =======================
 File Dimensions = 2816x180
-Sprite Dimension = 256x180
+Sprite Dimensions = 256x180
 Neutral Stance = [0]
 Run Cycle Order = [1, 2, 3, 4]
 Combat Cycle Order = [5, 0, 6, 7]
 Death Cycle Order = [8, 9, 10]
+__________________________________________________________________________________________________
 
+Invader_Archer_SpriteSheet - Contains Neutral Stance, Run Animation, Combat Animation
+			     and Death Animation for Assyrian Archer
+=======================
+File Dimensions = 3072x180
+Sprite Dimensions = 256x180
+Neutral Stance = [0]
+Run Cycle Order = [1, 2, 3, 4]
+Combat Cylce = [5, 6, 7, 8]
+Death Animation = [9, 10, 11]
+___________________________________________________________________________________________________
+
+AsherahPole_SpriteSheet - Contains Neutral Lighting and Fully Charged Animation
+
+=======================
+File Dimensions = 1600x640
+Sprite Dimensions = 320x640
+Neutral Lighting = [0]
+Fully Charged Cycle = [1, 2, 3, 4, 3, 2]
+___________________________________________________________________________________________________
+
+Arrow_Sprite - Contains Arrow Sprite
+
+=======================
+File Dimensions = 55x6
+Sprite Dimensions = 55x6
+Arrow Sprite = [0]
