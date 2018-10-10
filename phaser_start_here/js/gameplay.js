@@ -194,7 +194,7 @@ gameplayState.prototype.update = function(){
 	this.laneUpdate(this.friendlyUnit1);
 	this.laneUpdate(this.friendlyUnit2);
 	this.laneUpdate(this.friendlyUnit3);
-	this.updateCards(this.tempCard);
+	//this.updateCards(this.tempCard);
     /*
     this.player.body.velocity.x = 0;
     if (this.cursors.left.isDown) {
@@ -301,6 +301,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
         Cards.activated = true;
+        
     }
     else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
         console.log("Lane2");
@@ -325,6 +326,12 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.y = Cards.savedy;
            
     }
+    else if (Cards.id === 1)
+        {
+            Cards.x = Cards.savedx;
+            Cards.y = Cards.savedy;
+
+        }
     else {
         console.log("None");
     }
@@ -338,6 +345,8 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
                    // game.physics.arcade.moveToXY(this.tempCard.children[i], this.tempCard.children[i].x -240, this.tempCard.children[i].y, 5, 100);
                     this.tempCard.children[i].x -= 240;
                     this.tempCard.children[i].num -= 1;
+                    this.tempCard.children[i].savedx -= 240;
+                    this.tempCard.children[i].lastx -= 240;
                     //this.tempCard[i].num -= 1;
                     console.log(this.tempCard.children[i].num);
                     //this.tempCard.children[i].shift();

@@ -52,6 +52,7 @@ class Cards extends Phaser.Sprite{
        {
            this.body.velocity.x = -1500;
            this.num -= 1;
+           this.savedx -= 240;
 
 
        };
