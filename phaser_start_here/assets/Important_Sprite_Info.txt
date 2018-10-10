@@ -1,8 +1,8 @@
 Defender_SpriteSheet2 - Contains Neutral Stance, Spawn Animation, Run Animation, Combat Animation,
 			and Death Animation for Israelite Soldier
 =======================
-File Dimensions = 4864x180
-Sprite Dimensions = 256x180
+File Dimensions = 4864x196
+Sprite Dimensions = 256x196
 Spawn Order = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 Neutral Stance = [8]
 Run Cycle Order = [9, 10, 11, 12]
