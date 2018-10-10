@@ -11,7 +11,7 @@ gameplayState.prototype.create = function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
     // Set up heights for different area
-    this.cardAreaHeight = 315;
+    this.cardAreaHeight = 150;
     this.laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
     
     // debug line
