@@ -72,7 +72,7 @@ gameplayState.prototype.create = function() {
     this.player.body.collideWorldBounds = true;
     
     // Set up asherah pole
-    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*1.5);
+    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2);
     
     //Card group have to be declared first;
     tempCard = game.add.group();
