@@ -96,7 +96,7 @@ gameplayState.prototype.create = function() {
     permycard.events.onDragUpdate.add(this.dragCardUpdate,this);
     permycard.events.onDragStop.add(this.dragCardStop,this);
     this.permcard.add(permycard);
-    for(let i = 2; i < 10; i++)
+    for(let i = 2; i < 7; i++)
     {
         let rantemp = this.game.rnd.integerInRange(2,4);
         let cardtemp = new Cards(this.game, i, rantemp, this);
