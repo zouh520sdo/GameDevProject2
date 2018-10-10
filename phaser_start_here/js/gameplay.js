@@ -80,7 +80,7 @@ gameplayState.prototype.create = function() {
     this.tempCard.enableBody = true;
     
     // Set up asherah pole
-    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2, tempCard, this);
+    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2, this.tempCard, this);
     
     // Change the origin of texture to be on the center bottom
     this.player.anchor.set(0.5, 1);

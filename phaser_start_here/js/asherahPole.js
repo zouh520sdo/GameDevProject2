@@ -29,13 +29,13 @@ class AsherahPole extends Phaser.Sprite {
     // Callback function for tapping pole
     onTapping() {
         if (this.energy >= this.fullEnergy) {
-            console.log(tempCard.children[1]);
+            console.log(this.gamestate.tempCard.children[1]);
         
-            if(tempCard.length < 8 )
+            if(this.gamestate.tempCard.length < 8 )
                 {
                     this.energy = 0;
                     let rantemp = this.game.rnd.integerInRange(2,4);
-                    let cardtemp = new Cards(this.game, tempCard.length + 2, rantemp);
+                    let cardtemp = new Cards(this.game, this.gamestate.tempCard.length + 2, rantemp, this.gamestate);
                     cardtemp.inputEnabled = true;
                     cardtemp.enableBody = true;
                     cardtemp.input.enableDrag();
@@ -45,7 +45,7 @@ class AsherahPole extends Phaser.Sprite {
       
         
                  
-                    tempCard.add(cardtemp);
+                    this.gamestate.tempCard.add(cardtemp);
                 // Draw card
                 console.log("Draw a card");
                 this.animations.play("neutral");
