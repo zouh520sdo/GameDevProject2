@@ -23,7 +23,7 @@ basicUnit.prototype.create = function(){
     this.unit.animations.add("death", [16,17,18], 10, false);
     
     this.unit.maxHealth = 500;
-	this.unit.health = 500;
+	this.unit.health = 300;
 	this.unit.damage = 50;
 	game.physics.arcade.enable(this.unit);
 	this.unit.body.velocity.x = 0;
@@ -31,6 +31,7 @@ basicUnit.prototype.create = function(){
     
     // Override update function
     this.unit.update = function(){
+        console.log(this.health);
         if(this.animations.currentAnim.name === "spawn" && this.animations.currentAnim.isFinished) {
             this.body.velocity.x = this.speed;
             this.animations.play("run");

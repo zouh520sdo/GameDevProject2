@@ -81,7 +81,7 @@ class Cards extends Phaser.Sprite{
                     break;
                 case 3:
                     // Heal units on selected group
-                    
+                    unitsGroup.callAll("heal", null, 250);
                     break;
                 case 4:
                     

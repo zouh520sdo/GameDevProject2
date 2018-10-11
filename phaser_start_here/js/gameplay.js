@@ -238,76 +238,100 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     //ONLY for card id of 1, the permanent card
     if(Cards.id === 1 && Cards.activated === false)
     {
-    if ( mouseY <this.laneHeight) {
-        console.log("Lane1");
-        this.addUnit(this.friendlyUnit1, 0);
-        Cards.deSelect();
-        Cards.x = Cards.savedx;
-        Cards.y = Cards.savedy;
-        Cards.activated = true;
-        
-    }
-    else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
-        console.log("Lane2");
-        this.addUnit(this.friendlyUnit2, 1);
-        Cards.deSelect();
-        Cards.x = Cards.savedx;
-        Cards.y = Cards.savedy;
-        Cards.activated = true;
-    }
-    else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
-        console.log("Lane3");
-        this.addUnit(this.friendlyUnit3, 2);
-        Cards.deSelect();
-        Cards.x = Cards.savedx;
-        Cards.y = Cards.savedy;
-        Cards.activated = true;
-    }
-    else if (this.laneHeight*3<=mouseY ) {
-        console.log("Cards");
-        // Back to original position
-        Cards.x = Cards.savedx;
-        Cards.y = Cards.savedy;
-           
-    }
-    else if (Cards.id === 1)
-        {
+        if ( mouseY <this.laneHeight) {
+            console.log("Lane1");
+            this.addUnit(this.friendlyUnit1, 0);
+            Cards.deSelect();
+            Cards.x = Cards.savedx;
+            Cards.y = Cards.savedy;
+            Cards.activated = true;
+
+        }
+        else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
+            console.log("Lane2");
+            this.addUnit(this.friendlyUnit2, 1);
+            Cards.deSelect();
+            Cards.x = Cards.savedx;
+            Cards.y = Cards.savedy;
+            Cards.activated = true;
+        }
+        else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
+            console.log("Lane3");
+            this.addUnit(this.friendlyUnit3, 2);
+            Cards.deSelect();
+            Cards.x = Cards.savedx;
+            Cards.y = Cards.savedy;
+            Cards.activated = true;
+        }
+        else if (this.laneHeight*3<=mouseY ) {
+            console.log("Cards");
+            // Back to original position
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
 
         }
-    else {
-        console.log("None");
-    }
+        else if (Cards.id === 1)
+            {
+                Cards.x = Cards.savedx;
+                Cards.y = Cards.savedy;
+
+            }
+        else {
+            console.log("None");
+        }
     
     }
-    else if(Cards.id !== 1 && (this.laneHeight*3 >mouseY))
-        {
+    else if(Cards.id !== 1)
+    {
         
-            for(i= Cards.num -1; i < this.tempCard.length; i++)
-                {
-                   // game.physics.arcade.moveToXY(this.tempCard.children[i], this.tempCard.children[i].x -240, this.tempCard.children[i].y, 5, 100);
-                    this.tempCard.children[i].x -= 240;
-                    this.tempCard.children[i].num -= 1;
-                    this.tempCard.children[i].savedx -= 240;
-                    this.tempCard.children[i].lastx -= 240;
-                    //this.tempCard[i].num -= 1;
-                    console.log(this.tempCard.children[i].num);
-                    //this.tempCard.children[i].shift();
-                }
-            this.tempCard.remove(Cards);
-            
-            Cards.kill();
-          
+        if ( mouseY <this.laneHeight) {
+            console.log("Lane1");
+            Cards.useAbility(this.friendlyUnit1);
         }
-    else if(Cards.id !== 1 )
-        {
-           
-            //game.physics.arcade.movetoXY(Cards, Cards.x, Cards.y, 5, .25);
+        else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
+            console.log("Lane2");
+            Cards.useAbility(this.friendlyUnit2);
+        }
+        else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
+            console.log("Lane3");
+            Cards.useAbility(this.friendlyUnit3);
+        }
+        else if (this.laneHeight*3<=mouseY ) {
+            console.log("Cards");
+            // Back to original position
             Cards.x = Cards.savedx;
-            Cards.y = Cards.savedy;  
-           
+            Cards.y = Cards.savedy;
         }
+        else {
+            console.log("None");
+        }
+        
+        if (mouseY < this.laneHeight*3) {
+            for(i= Cards.num -1; i < this.tempCard.length; i++)
+            {
+               // game.physics.arcade.moveToXY(this.tempCard.children[i], this.tempCard.children[i].x -240, this.tempCard.children[i].y, 5, 100);
+                this.tempCard.children[i].x -= 240;
+                this.tempCard.children[i].num -= 1;
+                this.tempCard.children[i].savedx -= 240;
+                this.tempCard.children[i].lastx -= 240;
+                //this.tempCard[i].num -= 1;
+                console.log(this.tempCard.children[i].num);
+                //this.tempCard.children[i].shift();
+            }
+            this.tempCard.remove(Cards);
+
+            Cards.kill();
+        }
+
+    }
+    else if(Cards.id !== 1 )
+    {
+
+        //game.physics.arcade.movetoXY(Cards, Cards.x, Cards.y, 5, .25);
+        Cards.x = Cards.savedx;
+        Cards.y = Cards.savedy;  
+
+    }
     
     
 };
