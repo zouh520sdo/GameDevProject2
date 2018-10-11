@@ -73,7 +73,23 @@ class Cards extends Phaser.Sprite{
            
        };
         
-        
+        // Use ability based on ID
+        Cards.prototype.useAbility = function(unitsGroup) {
+            switch (this.id) {
+                case 2:
+                    
+                    break;
+                case 3:
+                    // Heal units on selected group
+                    
+                    break;
+                case 4:
+                    
+                    break;
+                default:
+                    
+            }
+        };
     
     }
 
