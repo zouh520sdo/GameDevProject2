@@ -7,6 +7,8 @@ let gameplayState = function(){
 
 
 gameplayState.prototype.create = function() {
+    console.log("Cards " + Cards.category);
+    
     // Turn on physics before anything else
     game.physics.startSystem(Phaser.Physics.ARCADE);
     

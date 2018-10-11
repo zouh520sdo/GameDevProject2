@@ -97,6 +97,12 @@ class Cards extends Phaser.Sprite{
  
 }
 
+Cards.category = {
+    bronze:[1],
+    silver:[1,2,3],
+    gold:[4,5,6,7,5]
+};
+
 
 /*
     //permanent card, spawn soldiers

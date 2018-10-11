@@ -31,7 +31,6 @@ basicUnit.prototype.create = function(){
     
     // Override update function
     this.unit.update = function(){
-        console.log(this.health);
         if(this.animations.currentAnim.name === "spawn" && this.animations.currentAnim.isFinished) {
             this.body.velocity.x = this.speed;
             this.animations.play("run");

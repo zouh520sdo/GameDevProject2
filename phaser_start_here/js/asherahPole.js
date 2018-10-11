@@ -35,24 +35,38 @@ class AsherahPole extends Phaser.Sprite {
             console.log(this.gamestate.tempCard.children[1]);
         
             if(this.gamestate.tempCard.length < 8 )
-                {
-                    this.energy = 0;
-                    let rantemp = this.game.rnd.integerInRange(2,4);
-                    let cardtemp = new Cards(this.game, this.gamestate.tempCard.length + 2, rantemp, this.gamestate);
-                    cardtemp.inputEnabled = true;
-                    cardtemp.enableBody = true;
-                    cardtemp.input.enableDrag();
-                  cardtemp.events.onDragStart.add(this.gamestate.dragCardStart,this.gamestate);
-                    cardtemp.events.onDragUpdate.add(this.gamestate.dragCardUpdate,this.gamestate);
-                    cardtemp.events.onDragStop.add(this.gamestate.dragCardStop,this.gamestate);
-      
-        
-                 
-                    this.gamestate.tempCard.add(cardtemp);
+            {
+                this.energy = 0;
+                
+                // random card category
+                if (Math.random() < 0.8) {
+                    // Silver card
+                    console.log("Get silver card");
+                    console.log(game.rnd.integerInRange(0, Cards.category.silver.length-1));
+                }
+                else {
+                    console.log("Get gold card");
+                    console.log(game.rnd.integerInRange(0, Cards.category.gold.length-1));
+                    // Gold card
+                }
+                
+                
+                let rantemp = this.game.rnd.integerInRange(2,4);
+                let cardtemp = new Cards(this.game, this.gamestate.tempCard.length + 2, rantemp, this.gamestate);
+                cardtemp.inputEnabled = true;
+                cardtemp.enableBody = true;
+                cardtemp.input.enableDrag();
+                cardtemp.events.onDragStart.add(this.gamestate.dragCardStart,this.gamestate);
+                cardtemp.events.onDragUpdate.add(this.gamestate.dragCardUpdate,this.gamestate);
+                cardtemp.events.onDragStop.add(this.gamestate.dragCardStop,this.gamestate);
+
+
+
+                this.gamestate.tempCard.add(cardtemp);
                 // Draw card
                 console.log("Draw a card");
                 this.animations.play("neutral");
-                }
+            }
             
         }
         else {
