@@ -22,7 +22,8 @@ basicUnit.prototype.create = function(){
     this.unit.animations.add("combat", [13,8,14,15], 10, true);
     this.unit.animations.add("death", [16,17,18], 10, false);
     
-	this.unit.health = 500;
+    this.unit.maxHealth = 500;
+	this.unit.health = 300;
 	this.unit.damage = 50;
 	game.physics.arcade.enable(this.unit);
 	this.unit.body.velocity.x = 0;

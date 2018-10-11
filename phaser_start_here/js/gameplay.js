@@ -7,6 +7,8 @@ let gameplayState = function(){
 
 
 gameplayState.prototype.create = function() {
+    console.log("Cards " + Cards.category);
+    
     // Turn on physics before anything else
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
@@ -68,44 +70,16 @@ gameplayState.prototype.create = function() {
     ledge = this.platforms.create(-150, 250, "platform");
     ledge.body.immovable = true;
     */
-    // Player
-    this.player = game.add.sprite(32, game.world.height - 150, "murph");
-    game.physics.arcade.enable(this.player);
-    //this.player.body.gravity.y = 300;
-    this.player.body.bounce.y = 0.3;
-    this.player.body.collideWorldBounds = true;
     
     //Card group have to be declared first;
     this.tempCard = game.add.group();
     this.tempCard.enableBody = true;
     
     // Set up asherah pole
-    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2, this.tempCard, this);
-    
-    // Change the origin of texture to be on the center bottom
-    this.player.anchor.set(0.5, 1);
-    
-    // Enable dragging effect for sprite
-    this.player.inputEnabled = true;
-    this.player.input.enableDrag();
+    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2, this);
    
-    
     // Add input over and input out callback function
-    this.player.events.onInputDown.add(this.showHideCardInfo, this);
     
-    /*
-    // Create animations
-    this.player.animations.add("left", [0,1,2,3], 10, true);
-    this.player.animations.add("right", [5,6,7,8], 10, true);
-    
-    this.stars = game.add.group();
-    this.stars.enableBody = true;
-    for (let i=0; i<12; i++) {
-        let star = this.stars.create(i*70, 0, "star");
-        star.body.gravity.y = 300;
-        star.body.bounce.y = .2 + Math.random() * .2;
-    }
-    */
     // Timer UI
     this.scoreText = game.add.text(16,16,"Time Left: 3:00", {fontSize:"32px", fill:"#ffffff"});
 	console.log(this);
@@ -124,7 +98,7 @@ gameplayState.prototype.create = function() {
     permycard.events.onDragUpdate.add(this.dragCardUpdate,this);
     permycard.events.onDragStop.add(this.dragCardStop,this);
     this.permcard.add(permycard);
-    for(let i = 2; i < 10; i++)
+    for(let i = 2; i < 7; i++)
     {
         let rantemp = this.game.rnd.integerInRange(2,4);
         let cardtemp = new Cards(this.game, i, rantemp, this);
@@ -160,11 +134,6 @@ gameplayState.prototype.create = function() {
 };
 
 gameplayState.prototype.update = function(){
-	/*
-    game.physics.arcade.collide(this.player, this.platforms);
-    game.physics.arcade.collide(this.stars, this.platforms);
-    game.physics.arcade.overlap(this.player, this.stars, this.collectStar, null, this);
-	*/
 	
     // Update group
 //    this.updateGroup(this.friendlyUnit1);
@@ -195,24 +164,7 @@ gameplayState.prototype.update = function(){
 	this.laneUpdate(this.friendlyUnit2);
 	this.laneUpdate(this.friendlyUnit3);
 	//this.updateCards(this.tempCard);
-    /*
-    this.player.body.velocity.x = 0;
-    if (this.cursors.left.isDown) {
-        this.player.body.velocity.x = -150;
-        this.player.animations.play("left");
-    }
-    else if (this.cursors.right.isDown) {
-        this.player.body.velocity.x = 150;       this.player.animations.play("right");
-    }
-    else { // stand still
-        this.player.animations.stop();
-        this.player.frame = 4;
-    }
-    
-    if (this.cursors.up.isDown && this.player.body.touching.down) {
-        this.player.body.velocity.y = -350;
-    }
-    */
+
     // Update timer
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
 	
@@ -235,12 +187,6 @@ gameplayState.prototype.render = function(){
     game.debug.geom(this.line2);
     game.debug.geom(this.line3);
 };
-/*
-gameplayState.prototype.collectStar = function(player, star) {
-    star.kill();
-    this.score += 10;
-};
-*/
 
 gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
@@ -344,30 +290,54 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     else if(Cards.id !== 1 && (this.laneHeight*3 >mouseY))
         {
         
-            for(i= Cards.num -1; i < this.tempCard.length; i++)
-                {
-                   // game.physics.arcade.moveToXY(this.tempCard.children[i], this.tempCard.children[i].x -240, this.tempCard.children[i].y, 5, 100);
-                    this.tempCard.children[i].x -= 240;
-                    this.tempCard.children[i].num -= 1;
-                    this.tempCard.children[i].savedx -= 240;
-                    this.tempCard.children[i].lastx -= 240;
-                    //this.tempCard[i].num -= 1;
-                    console.log(this.tempCard.children[i].num);
-                    //this.tempCard.children[i].shift();
-                }
-            this.tempCard.remove(Cards);
-            
-            Cards.kill();
-          
+        if ( mouseY <this.laneHeight) {
+            console.log("Lane1");
+            Cards.useAbility(this.friendlyUnit1);
         }
-    else if(Cards.id !== 1 )
-        {
-           
-            //game.physics.arcade.movetoXY(Cards, Cards.x, Cards.y, 5, .25);
+        else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
+            console.log("Lane2");
+            Cards.useAbility(this.friendlyUnit2);
+        }
+        else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
+            console.log("Lane3");
+            Cards.useAbility(this.friendlyUnit3);
+        }
+        else if (this.laneHeight*3<=mouseY ) {
+            console.log("Cards");
+            // Back to original position
             Cards.x = Cards.savedx;
-            Cards.y = Cards.savedy;  
-           
+            Cards.y = Cards.savedy;
         }
+        else {
+            console.log("None");
+        }
+        
+        if (mouseY < this.laneHeight*3) {
+            for(i= Cards.num -1; i < this.tempCard.length; i++)
+            {
+               // game.physics.arcade.moveToXY(this.tempCard.children[i], this.tempCard.children[i].x -240, this.tempCard.children[i].y, 5, 100);
+                this.tempCard.children[i].x -= 240;
+                this.tempCard.children[i].num -= 1;
+                this.tempCard.children[i].savedx -= 240;
+                this.tempCard.children[i].lastx -= 240;
+                //this.tempCard[i].num -= 1;
+                console.log(this.tempCard.children[i].num);
+                //this.tempCard.children[i].shift();
+            }
+            this.tempCard.remove(Cards);
+
+            Cards.kill();
+        }
+
+    }
+    else if(Cards.id !== 1 )
+    {
+
+        //game.physics.arcade.movetoXY(Cards, Cards.x, Cards.y, 5, .25);
+        Cards.x = Cards.savedx;
+        Cards.y = Cards.savedy;  
+
+    }
     
     
 };
