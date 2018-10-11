@@ -18,7 +18,7 @@ class Cards extends Phaser.Sprite{
         this.num = num;
         this.game.physics.enable(this);
        
-        this.cooldown = game.time.create(this, false);
+       
         
       
        
@@ -71,6 +71,7 @@ class Cards extends Phaser.Sprite{
 
         Cards.prototype.startcd = function()
         {
+             this.cooldown = game.time.create(this, false);
             this.cooldown.add(8000, this.switch, this);
             this.cooldown.start();
         
