@@ -17,6 +17,15 @@ class Cards extends Phaser.Sprite{
         this.id = id;
         this.num = num;
         this.game.physics.enable(this);
+       
+        this.cooldown = game.time.create(this, false);
+        
+      
+       
+            
+            
+        
+        
         
         // For selection
         this.isSelected = false;
@@ -53,10 +62,26 @@ class Cards extends Phaser.Sprite{
            this.body.velocity.x = -1500;
            this.num -= 1;
            this.savedx -= 240;
+            this.lastx -= 240;
+               this.x = this.savedx;
+               this.y = this.savedy;  
 
 
        };
 
+        Cards.prototype.startcd = function()
+        {
+            this.cooldown.add(8000, this.switch, this);
+            this.cooldown.start();
+        
+        };
+        
+        Cards.prototype.switch = function()
+        {
+            
+            this.activated = false;
+        };
+        
        Cards.prototype.stop = function()
        {
            if(this.x <= this.lastx)
@@ -79,7 +104,7 @@ class Cards extends Phaser.Sprite{
 
     //effect based on id of the card
  
-}
+};
 
 
 /*

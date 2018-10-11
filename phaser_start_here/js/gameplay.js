@@ -46,8 +46,8 @@ gameplayState.prototype.create = function() {
     this.gameplayTimer.add(180000, this.gotoGameWinState, this);
     this.gameplayTimer.start();
     
-    // Initializing other timer
-    //this.cooldownTimer.add(8000, this.StartCooldown, this);
+   
+    
     //this.gameplayTimer
     
     //game.add.sprite(0,0, "sky");
@@ -301,6 +301,8 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
         Cards.activated = true;
+        Cards.startcd();
+       
         
     }
     else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
@@ -310,6 +312,8 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
         Cards.activated = true;
+        Cards.startcd();
+       
     }
     else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
         console.log("Lane3");
@@ -318,6 +322,8 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
         Cards.activated = true;
+        Cards.startcd();
+       
     }
     else if (this.laneHeight*3<=mouseY ) {
         console.log("Cards");
@@ -326,17 +332,15 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         Cards.y = Cards.savedy;
            
     }
-    else if (Cards.id === 1)
-        {
-            Cards.x = Cards.savedx;
-            Cards.y = Cards.savedy;
-
-        }
     else {
         console.log("None");
     }
-    
     }
+    else if (Cards.id ===1)
+        {
+            Cards.x = Cards.savedx;
+            Cards.y = Cards.savedy;
+        }
     else if(Cards.id !== 1 && (this.laneHeight*3 >mouseY))
         {
         
