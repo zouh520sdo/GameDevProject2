@@ -80,10 +80,25 @@ class Cards extends Phaser.Sprite{
                     
                     break;
                 case 3:
+                    
+                    break;
+                case 4:
+                    
+                    break;
+                case 5:
                     // Heal units on selected group
                     unitsGroup.callAll("heal", null, 250);
                     break;
-                case 4:
+                case 6:
+
+                    break;
+                case 7:
+                    
+                    break;
+                case 8:
+
+                    break;
+                case 9:
                     
                     break;
                 default:
@@ -99,8 +114,8 @@ class Cards extends Phaser.Sprite{
 
 Cards.category = {
     bronze:[1],
-    silver:[1,2,3],
-    gold:[4,5,6,7,5]
+    silver:[2,3,4],
+    gold:[5,6,7,8,9]
 };
 
 
