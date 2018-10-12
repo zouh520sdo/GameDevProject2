@@ -22,27 +22,23 @@ basicUnit.prototype.create = function(){
     this.unit.animations.add("run", [9,10,11,12], 10, true);
     this.unit.animations.add("combat", [13,8,14,15], 10, true);
     this.unit.animations.add("death", [16,17,18], 10, false);
-    
+    this.unit.atkspd = 500; //attack every 0.5 sec
 	this.unit.health = 500;
 	this.unit.damage = 50;
 	game.physics.arcade.enable(this.unit);
 	this.unit.body.velocity.x = 0;
     this.unit.speed = this.speed;
-    
+    this.fighting = false;
     // Override update function
     this.unit.update = function(){
+		//start moving when finished spawning
         if(this.animations.currentAnim.name === "spawn" && this.animations.currentAnim.isFinished) {
 			//going from (350, 315) to (1936, 45) @ 100
 			//dx = 1486
 			//dy = 270
 			this.velo_x_mult = 1486.0/270.0;
 			if(this.lane_id === 0){
-				
-				//just make velo_y 18
-				
-			
-				this.body.velocity.y = -18;
-				
+				this.body.velocity.y = -135;
 				this.body.velocity.x = 18 * (this.velo_x_mult);
 			}
 			else if(this.lane_id === 1){
@@ -53,27 +49,48 @@ basicUnit.prototype.create = function(){
 			//dy = 270
 			else if(this.lane_id === 2){
 				this.velo_x_mult = 1486.0/270.0;
-				//just make velo_y 18
-				
-				
-				this.body.velocity.y = 18;
-				
+				this.body.velocity.y = 135;
 				this.body.velocity.x = 18 * (this.velo_x_mult);
 			}
-            
             this.animations.play("run");
         }
+		//shift into their own lanes
         if(this.lane_id === 0){
 			if(this.body.y <= 45){
-				this.body.velocity.y = 0;
+				if(this.body.velocity.y !== 0){
+					console.log(this.body.x);
+					this.body.velocity.y = 0;
+				}
+				if(this.body.x < 1936){
+					this.body.velocity.x = 18 * (this.velo_x_mult) + 40;
+				}
+				//stop when the unit reaches a certain points
+				else if (this.body.x >= 1936){
+					this.body.velocity.x = 0;
+					this.animations.stop(true);
+					this.animations.play("idle");
+				}
 			}
         }
 		else if(this.lane_id === 2){
 			if(this.body.y >= 585){
-				this.body.velocity.y = 0;
+				if(this.body.velocity.y !== 0){
+					console.log(this.body.x);
+					this.body.velocity.y = 0;
+				}
+				if(this.body.x < 1936){
+					this.body.velocity.x = 18 * (this.velo_x_mult) + 40;
+				}
+				//stop when the unit reaches a certain points
+				else if (this.body.x >= 1936){
+					this.body.velocity.x = 0;
+					this.animations.play("idle");
+				}
 			}
 		}
-        if(this.body.x > game.world.width || this.health <= 0){
+		//killed
+        if(this.health <= 0){
+			console.log(game.world.width);
             this.kill();
             this.parent.remove(this);
             console.log(this.name + " is killed");

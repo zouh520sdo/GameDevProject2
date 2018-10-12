@@ -43,13 +43,68 @@ gameplayState.prototype.create = function() {
 	this.enemyUnit2.enableBody = true;
 	this.enemyUnit3.enableBody = true;
 
-	
-	
+	//enemy spawn timer
+	//this.enemyTimer = new Phaser.Timer(game, false);
+	//console.log(this.enemyTimer);
     // Set up timer
+	
     this.gameplayTimer = game.time.create(true);
-    this.gameplayTimer.add(180000, this.gotoGameWinState, this);
+    this.spawnTimer = game.time.create(true);
+	for(this.counter = 0; this.counter < 6; this.counter += 1){
+		//phase 1 - 1 unit per 5 sec
+		if(this.counter === 0){
+			for(this.c1 = 0; this.c1 < 6; this.c1 += 1){
+				this.spawn_delay = 5000 * this.c1;
+				//console.log("delay: " + this.spawn_delay);
+				this.spawnTimer.add(this.spawn_delay, this.spawnEnemyEvent1, this);
+			}
+		}
+		
+		//phase 2 - 1 unit per 3 sec
+		else if(this.counter === 1){
+			for(this.c2 = 0; this.c2 < 10; this.c2 += 1){
+				this.spawn_delay2 = 30000 + 3000 * this.c2;
+				this.spawnTimer.add(this.spawn_delay2, this.spawnEnemyEvent1, this);
+			}
+		}
+		//phase 3 - 2 units per 5 sec
+		else if(this.counter === 2){
+			for(this.c3 = 0; this.c3 < 6; this.c3 += 1){
+				this.spawn_delay3 = 60000 + 5000 * this.c3;
+				this.spawnTimer.add(this.spawn_delay3, this.spawnEnemyEvent2, this);
+			}
+		}
+		//phase 4 - 1 unit per 2 sec
+		
+		else if(this.counter === 3){
+			for(this.c4 = 0; this.c4 < 15; this.c4 += 1){
+				this.spawn_delay4 = 90000 + 2000 * this.c4;
+				this.spawnTimer.add(this.spawn_delay4, this.spawnEnemyEvent1, this);
+			}
+		}
+		//phase 5 - 2 units per 3 sec
+		else if(this.counter === 4){
+			for(this.c5 = 0; this.c5 < 10; this.c5 += 1){
+				this.spawn_delay5 = 120000 + 3000 * this.c5;
+				this.spawnTimer.add(this.spawn_delay5, this.spawnEnemyEvent2, this);
+			}
+		}
+		//phase 6 - 3 units per 3 sec
+		else if(this.counter === 5){
+			for(this.c6 = 0; this.c6 < 10; this.c6 += 1){
+				this.spawn_delay6 = 150000 + 3000 * this.c6;
+				this.spawnTimer.add(this.spawn_delay6, this.spawnEnemyEvent3, this);
+			}
+		}
+		
+	}
+	
+	this.gameplayTimer.add(180000, this.gotoGameWinState, this);
+	this.spawnTimer.start();
     this.gameplayTimer.start();
-    
+	
+	
+	
     //game.add.sprite(0,0, "sky");
     
     // Platforms
@@ -125,8 +180,7 @@ gameplayState.prototype.create = function() {
     permycard.events.onDragUpdate.add(this.dragCardUpdate,this);
     permycard.events.onDragStop.add(this.dragCardStop,this);
     permcard.add(permycard);
-    for(let i = 2; i < 10; i++)
-    {
+    for(let i = 2; i < 10; i++){
         let rantemp = this.game.rnd.integerInRange(2,4);
         let cardtemp = new Cards(this.game, i, rantemp);
         cardtemp.inputEnabled = true;
@@ -174,6 +228,8 @@ gameplayState.prototype.update = function(){
     
 	//faito
 	//simply do health - enemy_damage
+	//console.log(this.friendlyUnit1.length);
+	//console.log(this.enemyUnit1.length);
     game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit1, this.fight ,null, this);
 	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit2, this.fight ,null, this);
 	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit3, this.fight ,null, this);
@@ -191,10 +247,11 @@ gameplayState.prototype.update = function(){
 		console.log("w pressed");
 		this.addUnit(this.friendlyUnit3, 2);
 	}
-	*/
+	*//*
 	this.laneUpdate(this.friendlyUnit1);
 	this.laneUpdate(this.friendlyUnit2);
 	this.laneUpdate(this.friendlyUnit3);
+	*/
 	this.updateCards(tempCard);
     /*
     this.player.body.velocity.x = 0;
@@ -215,22 +272,49 @@ gameplayState.prototype.update = function(){
     }
     */
     // Update timer
-    this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
-	
+	//if(this.)
+    this.scoreText.text = "Time Left: " + this.msToTime(this.spawnTimer.duration);
     
 };
 /*
 	parameters:
 		group - the friendlyUnit group this unit would join
-		mult - a variable used to control spawning position
+		mult - lane id
 
 	units are actually added into the group when the constructor of 
 	basicUnit is called
 */
-gameplayState.prototype.addUnit = function(group, mult) {
+gameplayState.prototype.addUnit = function(mult) {
 	//units would spawn from (350, 315)
-	new basicUnit(group , 350, 315, mult);
+	if(mult === 0){
+		new basicUnit(this.friendlyUnit1 , 350, 315, mult);
+	}
+	else if(mult === 1){
+		new basicUnit(this.friendlyUnit2 , 350, 315, mult);
+	}
+	else if(mult === 2){
+		new basicUnit(this.friendlyUnit3 , 350, 315, mult);
+	}
+	
 };
+/*
+	similar to addUnit
+*/
+
+gameplayState.prototype.addEnemy = function(mult) {
+	//console.log("time elapsed in phase: " + this.enemyTimer.elapsed);
+	console.log("enemy generated on lane" + (mult+1));
+	if(mult === 0){
+		new basicEnemyUnit(this.enemyUnit1, 2500, 45, mult);
+	}
+	else if(mult === 1){
+		new basicEnemyUnit(this.enemyUnit2, 2500, 315, mult);
+	}
+	else if(mult === 2){
+		new basicEnemyUnit(this.enemyUnit3, 2500, 585, mult);
+	}
+};
+
 
 gameplayState.prototype.render = function(){
     game.debug.geom(this.line1);
@@ -248,6 +332,59 @@ gameplayState.prototype.gotoGameWinState = function(){
     game.state.start("GameWin");
 };
 
+
+/*
+	
+*/
+
+gameplayState.prototype.spawnEnemyEvent1 = function(){
+	console.log("spawn triggered");
+	this.something2 = 0;
+	for(this.something2 = 0; this.something2 < 1; this.something2 += 1){
+		this.lane_num = this.randomInt();
+		console.log("the random number is: " + this.lane_num);
+		if(this.lane_num === 0){
+			this.addEnemy(0);
+		}
+		else if(this.lane_num === 1){
+			this.addEnemy(1);
+		}
+		else if(this.lane_num === 2){
+			this.addEnemy(2);
+		}
+	}
+}
+gameplayState.prototype.spawnEnemyEvent2 = function(){
+	console.log("spawn triggered");
+	this.something2 = 0;
+	this.prev_num = 3;
+	for(this.something2 = 0; this.something2 < 2; this.something2 += 1){
+		this.lane_num = this.randomInt();
+		while(this.lane_num === this.prev_num){
+			this.lane_num = this.randomInt();
+		}
+		this.prev_num = this.lane_num;
+		console.log("the random number is: " + this.lane_num);
+		if(this.lane_num === 0){
+			this.addEnemy(0);
+		}
+		else if(this.lane_num === 1){
+			this.addEnemy(1);
+		}
+		else if(this.lane_num === 2){
+			this.addEnemy(2);
+		}
+	}
+}
+gameplayState.prototype.spawnEnemyEvent3 = function(){
+	console.log("spawn triggered");
+	this.something2 = 0;
+	for(this.something2 = 0; this.something2 < 3; this.something2 += 1){
+		this.addEnemy(0);
+		this.addEnemy(1);
+		this.addEnemy(2);
+	}
+}
 // On input down on card
 gameplayState.prototype.showHideCardInfo = function(sprite, pointer) {
     
@@ -273,7 +410,6 @@ gameplayState.prototype.showHideCardInfo = function(sprite, pointer) {
         this.selectedCard = sprite;
     }
 };
-
 // Card draging effect
 gameplayState.prototype.dragCardStart = function(Cards, pointer, dragX, dragY) {
     Cards.alpha = 0.5;
@@ -290,24 +426,23 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     Cards.alpha = 1;
     
     //ONLY for card id of 1, the permanent card
-    if(Cards.id === 1)
-    {
+    if(Cards.id === 1){
 		
     if ( mouseY <this.laneHeight) {
         console.log("Lane1");
-        this.addUnit(this.friendlyUnit1, 0);
+        this.addUnit(0);
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
     }
     else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
         console.log("Lane2");
-        this.addUnit(this.friendlyUnit2, 1);
+        this.addUnit(1);
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
     }
     else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
         console.log("Lane3");
-        this.addUnit(this.friendlyUnit3, 2);
+        this.addUnit(2);
         Cards.x = Cards.savedx;
         Cards.y = Cards.savedy;
     }
@@ -355,50 +490,17 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
 gameplayState.prototype.fight = function(unit, enemy){
 	//stop both sides
 	unit.body.velocity.x = 0;
+	unit.body.velocity.y = 0;
 	enemy.body.velocity.x = 0;
-	unit.health -= enemy.damage;
-	enemy.health -= unit.damage;
-};
-gameplayState.prototype.laneUpdate = function(group){
-	if (group.length > 0){
-		//console.log("------------------------");
-		//iterate through all elements except last one
-//		while(group.cursorIndex < group.length - 1){
-//			//show unit health (testing purpose)
-//			//console.log(group.cursor.body.x);
-//			if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
-//				console.log(group.length);
-//				console.log("kill");
-//				group.cursor.kill();
-//				group.remove(group.cursor);
-//				console.log(group.length);
-//			}
-//			group.next();
-//			
-//		}
-		//now it's the last one
-		//console.log(group.cursor.body.x);
-//		if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
-//			console.log(group.length);
-//			console.log("kill");
-//			group.cursor.kill();
-//			group.remove(group.cursor);
-//			console.log(group.length);
-//			if(group.length === 0){
-//				group.destroy(true,true);
-//			}
-//			else{
-//				group.next();
-//			}
-//		}
-	}
+	enemy.body.velocity.y = 0;
+	console.log("collide");
+	//unit.health -= enemy.damage;
+	//enemy.health -= unit.damage;
 };
 gameplayState.prototype.updateCards = function(tempCard){
    
-    for(i = 0; i < tempCard.length; i++)
-    {
-        if(tempCard.children[i].body.velocity.x < 0)
-        {
+    for(i = 0; i < tempCard.length; i++){
+        if(tempCard.children[i].body.velocity.x < 0){
             tempCard.children[i].stop();
             //tempCard.children[i].x = tempCard.children[i].lastx;
             
@@ -421,4 +523,10 @@ gameplayState.prototype.msToTime = function(s) {
     else {
         return mins + ':' + secs;
     }
+};
+/*
+	Generate random int
+*/
+gameplayState.prototype.randomInt = function(){
+  return Math.floor(Math.random() * Math.floor(3));
 };
