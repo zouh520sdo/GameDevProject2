@@ -94,16 +94,17 @@ class Cards extends Phaser.Sprite{
         Cards.prototype.useAbility = function(unitsGroup) {
             switch (this.id) {
                 case 2:
-                    
+                    unitsGroup.callAll("attkbuff", null, 20);
                     break;
                 case 3:
-                    
+                      unitsGroup.callAll("hpbuff", null, 20);
                     break;
                 case 4:
-                    
+                      unitsGroup.callAll("speedbuff", null, 20);
                     break;
                 case 5:
                     // Heal units on selected group
+                    console.log("HEAL");
                     unitsGroup.callAll("heal", null, 250);
                     break;
                 case 6:
