@@ -48,8 +48,8 @@ gameplayState.prototype.create = function() {
     this.gameplayTimer.add(180000, this.gotoGameWinState, this);
     this.gameplayTimer.start();
     
-    // Initializing other timer
-    //this.cooldownTimer.add(8000, this.StartCooldown, this);
+   
+    
     //this.gameplayTimer
     
     //game.add.sprite(0,0, "sky");
@@ -237,33 +237,39 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     // May need to invoke some functions to take effect of card or take it back to card area
     Cards.alpha = 1;
     
+    // Deselect cards when they are placed in lanes
+    if (mouseY < this.laneHeight*3) {
+        Cards.deSelect();
+    }
+    
     //ONLY for card id of 1, the permanent card
     if(Cards.id === 1 && Cards.activated === false)
     {
         if ( mouseY <this.laneHeight) {
             console.log("Lane1");
             this.addUnit(this.friendlyUnit1, 0);
-            Cards.deSelect();
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
             Cards.activated = true;
-
+            Cards.startcd();
         }
         else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
             console.log("Lane2");
             this.addUnit(this.friendlyUnit2, 1);
-            Cards.deSelect();
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
             Cards.activated = true;
+            Cards.startcd();
+
         }
         else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
             console.log("Lane3");
             this.addUnit(this.friendlyUnit3, 2);
-            Cards.deSelect();
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
             Cards.activated = true;
+            Cards.startcd();
+
         }
         else if (this.laneHeight*3<=mouseY ) {
             console.log("Cards");
@@ -272,16 +278,14 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
             Cards.y = Cards.savedy;
 
         }
-        else if (Cards.id === 1)
-            {
-                Cards.x = Cards.savedx;
-                Cards.y = Cards.savedy;
-
-            }
         else {
             console.log("None");
         }
-    
+    }
+    else if (Cards.id ===1)
+    {
+        Cards.x = Cards.savedx;
+        Cards.y = Cards.savedy;
     }
     else if(Cards.id !== 1)
     {
@@ -324,14 +328,6 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
 
             Cards.kill();
         }
-
-    }
-    else if(Cards.id !== 1 )
-    {
-
-        //game.physics.arcade.movetoXY(Cards, Cards.x, Cards.y, 5, .25);
-        Cards.x = Cards.savedx;
-        Cards.y = Cards.savedy;  
 
     }
     
