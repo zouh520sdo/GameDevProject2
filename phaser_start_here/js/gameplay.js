@@ -289,7 +289,6 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     }
     else if(Cards.id !== 1)
     {
-        
         if ( mouseY <this.laneHeight) {
             console.log("Lane1");
             Cards.useAbility(this.friendlyUnit1);
@@ -315,7 +314,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         if (mouseY < this.laneHeight*3) {
             for(i= Cards.num -1; i < this.tempCard.length; i++)
             {
-               // game.physics.arcade.moveToXY(this.tempCard.children[i], this.tempCard.children[i].x -240, this.tempCard.children[i].y, 5, 100);
+               //game.physics.arcade.moveToXY(this.tempCard.children[i], this.tempCard.children[i].x -240, this.tempCard.children[i].y, 5, 100);
                 this.tempCard.children[i].x -= 240;
                 this.tempCard.children[i].num -= 1;
                 this.tempCard.children[i].savedx -= 240;
