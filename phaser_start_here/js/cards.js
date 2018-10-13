@@ -161,13 +161,12 @@ class Cards extends Phaser.Sprite{
                     enemiesGroup.removeAll(true);
                     break;
                 case 8:
-                    console.log("DAMAGE ALL");
-                    this.gameState.enemyUnit1.callAll("damage", null, 250);
+                    console.log("DAMAGE ALL"); this.gameState.enemyUnit1.callAll("damage", null, 250);
                     this.gameState.enemyUnit2.callAll("damage", null, 250);
                     this.gameState.enemyUnit3.callAll("damage", null, 250);
                     break;
                 case 9:
-                    
+                    consolo.log("FORTIFICATION");
                     break;
                 default:
                     
