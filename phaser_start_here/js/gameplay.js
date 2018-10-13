@@ -28,6 +28,9 @@ gameplayState.prototype.create = function() {
     
     console.log("Lane height " + this.laneHeight);
     
+    // Create map
+    this.map = game.add.sprite(0,0,"map");
+    
 	//groups of friendly units on lanes
 	this.friendlyUnit1 = game.add.group();
 	this.friendlyUnit2 = game.add.group();
@@ -105,7 +108,7 @@ gameplayState.prototype.create = function() {
     this.tempCard.enableBody = true;
     
     // Set up asherah pole
-    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2, this);
+    this.asherahPole = new AsherahPole(game, 150, this.laneHeight*2 - 15, this);
    
     // Add input over and input out callback function
     
