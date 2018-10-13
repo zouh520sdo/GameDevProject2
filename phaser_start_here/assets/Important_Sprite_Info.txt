@@ -47,3 +47,24 @@ Arrow_Sprite - Contains Arrow Sprite
 File Dimensions = 55x6
 Sprite Dimensions = 55x6
 Arrow Sprite = [0]
+___________________________________________________________________________________________________
+
+HP_Bar - Green Health Bar
+
+=======================
+File Dimensions = 304x50
+Sprite Dimensions = 304x50
+___________________________________________________________________________________________________
+
+HP_Container - Background Bar Sprite
+
+=======================
+File Dimensions = 320x64
+Sprite Dimensions = 320x64
+___________________________________________________________________________________________________
+
+Map - Background play map
+
+=======================
+File Dimensions = 2436x975
+Sprite Dimensions = 2436x975
