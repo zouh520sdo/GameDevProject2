@@ -42,13 +42,13 @@ basicUnit.prototype.create = function(){
 	this.unit.stopped_at_border = false;
     // Override update function
     this.unit.update = function(){
-		this.velo_x_mult = 1486.0/270.0;
+		this.velo_x_mult = 1486.0/325.0;
 		//start moving when finished spawning
         if(this.animations.currentAnim.name === "spawn" && this.animations.currentAnim.isFinished) {
 			//this.spawn_interrupted = false;
-			//going from (350, 315) to (1936, 45) @ 100
+			//going from (350, 397.5) to (1936, 72.5) @ 100
 			//dx = 1486
-			//dy = 270
+			//dy = 325
 			
 			if(this.lane_id === 0){
 				this.body.velocity.y = -135;
@@ -57,9 +57,9 @@ basicUnit.prototype.create = function(){
 			else if(this.lane_id === 1){
 				this.body.velocity.x = 18 * (this.velo_x_mult) + 40;
 			}
-			//going from (350, 315) to (1936, 585)
+			//going from (350, 397.5) to (1936, 722.5)
 			//dx = 1486
-			//dy = 270
+			//dy = 325
 			else if(this.lane_id === 2){
 				this.body.velocity.y = 135;
 				this.body.velocity.x = 18 * (this.velo_x_mult);
@@ -68,7 +68,7 @@ basicUnit.prototype.create = function(){
         }
 		//done shifting into their own lanes
         if(this.lane_id === 0){
-			if(this.body.y <= 45){
+			if(this.body.y <= 72.5){
 				if(this.body.velocity.y !== 0){
 					console.log(this.body.x);
 					this.body.velocity.y = 0;
@@ -90,7 +90,7 @@ basicUnit.prototype.create = function(){
 			}
         }
 		else if(this.lane_id === 2){
-			if(this.body.y >= 585){
+			if(this.body.y >= 722.5){
 				if(this.body.velocity.y !== 0){
 					console.log(this.body.x);
 					this.body.velocity.y = 0;
@@ -154,7 +154,7 @@ basicUnit.prototype.create = function(){
 				else{
 					this.animations.play("run");
 				}
-				if(this.body.x < 1936 && this.body.x === 350 && this.body.y === 315){
+				if(this.body.x < 1936 && this.body.x === 350 && this.body.y === 397.5){
 					if(this.lane_id === 0){
 						console.log("gg1");
 						this.body.velocity.y = -135;

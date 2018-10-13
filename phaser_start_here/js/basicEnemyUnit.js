@@ -46,11 +46,11 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.update = function(){
 		//console.log("unit health: " + this.health);
             
-			//going from (350, 315) to (1936, 45) @ 100
+			//going from (350, 397.5) to (1936, 45) @ 100
 			//dx = 1486
 			//dy = 270
 		
-		this.velo_x_mult = 1486.0/270.0;
+		this.velo_x_mult = 1486.0/325.0;
 		//start moving	
 		if(this.animations.currentAnim.name === "idle"){
 			this.body.velocity.x = -18 * (this.velo_x_mult) - 40;
@@ -74,7 +74,7 @@ basicEnemyUnit.prototype.create = function(){
 		}
 		//now at center lane
 		//this section should also be triggered once
-		if(this.body.y <= 320 && this.body.y >= 310 && this.lane_id !== 1 && !(this.in_lane)){
+		if(this.body.y <= 402.5 && this.body.y >= 392.5 && this.lane_id !== 1 && !(this.in_lane)){
 			this.body.velocity.y = 0;
 			this.body.velocity.x = -18 * (this.velo_x_mult) - 40;
 			this.in_lane = true;
@@ -95,7 +95,7 @@ basicEnemyUnit.prototype.create = function(){
 			if(this.attacking_enemy.alive === false){
 				
 				this.animations.play("run");
-				if(this.body.y <= 320 && this.body.y >= 310){
+				if(this.body.y <= 402.5 && this.body.y >= 392.5){
 					this.body.velocity.y = 0;
 				}
 				else{

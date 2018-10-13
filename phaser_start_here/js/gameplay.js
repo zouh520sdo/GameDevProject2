@@ -11,11 +11,12 @@ gameplayState.prototype.create = function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
     // Set up heights for different area
-	//1125-315 = 810
-	//810/3 = 270 (lane height)
-	//270/2 = 135...
+	//1125-150 = 975
+	//gap = 72.5
+	//975/3 = 325 (lane height)
+	//325/2 = 162.5...
 	
-    this.cardAreaHeight = 315;
+    this.cardAreaHeight = 150;
     this.laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
     
     // debug line
@@ -180,13 +181,13 @@ gameplayState.prototype.update = function(){
 gameplayState.prototype.addUnit = function(mult) {
 	//units would spawn from (350, 315)
 	if(mult === 0){
-		new basicUnit(this.friendlyUnit1 , 350, 315, mult);
+		new basicUnit(this.friendlyUnit1 , 350, 397.5, mult);
 	}
 	else if(mult === 1){
-		new basicUnit(this.friendlyUnit2 , 350, 315, mult);
+		new basicUnit(this.friendlyUnit2 , 350, 397.5, mult);
 	}
 	else if(mult === 2){
-		new basicUnit(this.friendlyUnit3 , 350, 315, mult);
+		new basicUnit(this.friendlyUnit3 , 350, 397.5, mult);
 	}
 	
 };
@@ -198,13 +199,13 @@ gameplayState.prototype.addEnemy = function(mult) {
 	//console.log("time elapsed in phase: " + this.enemyTimer.elapsed);
 	console.log("enemy generated on lane" + (mult+1));
 	if(mult === 0){
-		new basicEnemyUnit(this.enemyUnit, 2500, 45, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5, mult);
 	}
 	else if(mult === 1){
-		new basicEnemyUnit(this.enemyUnit, 2500, 315, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 + this.laneHeight, mult);
 	}
 	else if(mult === 2){
-		new basicEnemyUnit(this.enemyUnit, 2500, 585, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 + 2 * this.laneHeight, mult);
 	}
 };
 
