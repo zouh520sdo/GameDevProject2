@@ -127,7 +127,7 @@ class Cards extends Phaser.Sprite{
 
      
         // Use ability based on ID
-        Cards.prototype.useAbility = function(unitsGroup) {
+        Cards.prototype.useAbility = function(unitsGroup, enemiesGroup) {
             switch (this.id) {
                 case 2:
                     console.log("ATTK");

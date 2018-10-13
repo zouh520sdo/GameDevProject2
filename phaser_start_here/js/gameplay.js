@@ -291,15 +291,15 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     {
         if ( mouseY <this.laneHeight) {
             console.log("Lane1");
-            Cards.useAbility(this.friendlyUnit1);
+            Cards.useAbility(this.friendlyUnit1, this.enemyUnit1);
         }
         else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
             console.log("Lane2");
-            Cards.useAbility(this.friendlyUnit2);
+            Cards.useAbility(this.friendlyUnit2, this.enemyUnit2);
         }
         else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
             console.log("Lane3");
-            Cards.useAbility(this.friendlyUnit3);
+            Cards.useAbility(this.friendlyUnit3, this.enemyUnit3);
         }
         else if (this.laneHeight*3<=mouseY ) {
             console.log("Cards");
