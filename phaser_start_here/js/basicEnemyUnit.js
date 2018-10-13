@@ -123,38 +123,13 @@ basicEnemyUnit.prototype.create = function(){
             console.log(this.name + " is killed");
         }
 		
-		//attack dayo
-		if(this.animations.currentAnim.name === "combat"){
-			if(this.animations.currentFrame.index === 15 && !(this.attacked)){
-				this.attacked = true;
-				console.log("attack");
-				this.attacking_enemy.damage(this.atkdmg);
-			}
-			else if(this.animations.currentFrame.index !== 15){
-				this.attacked = false;
-			}
-		}
-		//keep on moving if the current enemy is dead
-		//or keep idling is at border
-		if(this.in_fight){
-			if(this.attacking_enemy.alive === false){
-				if(this.body.x >= 1936){
-					this.animations.play("idle");
-				}
-				else{
-					this.animations.play("run");
-				}
-				
-				this.body.velocity.x = this.prev_velo_x;
-				this.body.velocity.y = this.prev_velo_y;
-				this.in_fight = false;
-			}
-		}
+		
     };
 	//override damage
 	this.unit.damage = function(amount){
 		if(this.alive){
 			this.health -= amount;
+			console.log("enemy health: " + this.health);
 			if(this.health <= 0){
 				this.animations.play("death", 10, false, true);
 			}

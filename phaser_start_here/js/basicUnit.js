@@ -182,6 +182,7 @@ basicUnit.prototype.create = function(){
 	this.unit.damage = function(amount){
 		if(this.alive){
 			this.health -= amount;
+			console.log("ally health: " + this.health);
 			if(this.health <= 0){
 				this.animations.play("death", 10, false, true);
 			}
