@@ -7,8 +7,10 @@
     <script type="text/javascript" src="js/preload.js"></script>
     <script type="text/javascript" src="js/gameplay.js"></script>
     <script type="text/javascript" src="js/gameWin.js"></script>
+    <script type="text/javascript" src="js/gameTitle.js"></script>
 	<script type="text/javascript" src="js/basicUnit.js"></script>
     <script type="text/javascript" src="js/cards.js"></script>
+    <script type="text/javascript" src="js/gametutorial.js"></script>
     <script type="text/javascript" src="js/asherahPole.js"></script>
 
     <style type="text/css">
@@ -24,8 +26,10 @@
 	let game = new Phaser.Game(2436, 1125, Phaser.AUTO); //, 'phaser-example', { create: create, update: update });
 
     game.state.add("Preload", preloadState);
+    game.state.add("Title", gameTitle)
     game.state.add("Game", gameplayState);
     game.state.add("GameWin", gameWinState);
+    game.state.add("Gametut", gametutorial);
     game.state.start("Preload");
     
 //	function create() {

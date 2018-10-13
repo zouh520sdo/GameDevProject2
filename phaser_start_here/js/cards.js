@@ -106,7 +106,7 @@ class Cards extends Phaser.Sprite{
             for(let i = 0; i < unitsGroup.length; i++)
             {
                 unitsGroup.children[i].body.velocity.x += 50;
-                console.log(unitsGroup.children[i].speed);
+                console.log(unitsGroup.children[i].body.velocity.x);
                 
                 unitsGroup.children[i].helperspeed();
             }   

@@ -11,6 +11,7 @@ preloadState.prototype.preload = function () {
     game.load.image("card2", "assets/card2.png");
     game.load.image("card3", "assets/card3.png");
     game.load.image("card4", "assets/card4.png");
+    game.load.image("titlescreen", "assets/titlescreen.png");
     // spritesheet
     game.load.spritesheet("murph", "assets/character.png", 32, 48);
     game.load.spritesheet("defender", "assets/Defender_SpriteSheet2.png", 256, 180);
@@ -21,7 +22,7 @@ preloadState.prototype.preload = function () {
 };
 
 preloadState.prototype.create = function () {
-    game.state.start("Game");
+    game.state.start("Title");
 };
 
 preloadState.prototype.update = function () {
