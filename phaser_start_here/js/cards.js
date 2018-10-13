@@ -90,23 +90,66 @@ class Cards extends Phaser.Sprite{
            
        };
         
+        //Raises the attack of unitsGroup, calls timer for buff duration
+        Cards.prototype.raiseattk = function(unitsGroup)
+        {
+            for(let i = 0; i < unitsGroup.length; i++)
+            {
+                unitsGroup.children[i].damage += 25;
+                console.log(unitsGroup.children[i].damage);
+                
+                unitsGroup.children[i].helperattk();
+            }   
+        };
+      
+        Cards.prototype.raisespeed = function(unitsGroup)
+        {
+            for(let i = 0; i < unitsGroup.length; i++)
+            {
+                unitsGroup.children[i].body.velocity.x += 50;
+                console.log(unitsGroup.children[i].speed);
+                
+                unitsGroup.children[i].helperspeed();
+            }   
+        };
+      
+      Cards.prototype.raisehp = function(unitsGroup)
+        {
+            for(let i = 0; i < unitsGroup.length; i++)
+            {
+                unitsGroup.children[i].maxHealth += 200;
+                console.log(unitsGroup.children[i].maxHealth);
+                
+                unitsGroup.children[i].helperhp();
+            }   
+        };
+      
+
+
+     
         // Use ability based on ID
         Cards.prototype.useAbility = function(unitsGroup) {
             switch (this.id) {
                 case 2:
-                    
+                    console.log("ATTK");
+                    // Raises attk of the units
+                    this.raiseattk(unitsGroup);
                     break;
                 case 3:
-                    
+                     console.log("HP");
+                    this.raisehp(unitsGroup);
                     break;
                 case 4:
-                    
+                    console.log("SPEED");
+                    this.raisespeed(unitsGroup);
                     break;
                 case 5:
+                     console.log("HEAL");
                     // Heal units on selected group
                     unitsGroup.callAll("heal", null, 250);
                     break;
                 case 6:
+                    
 
                     break;
                 case 7:
@@ -134,6 +177,7 @@ Cards.category = {
     silver:[2,3,4],
     gold:[5,6,7,8,9]
 };
+
 
 
 /*

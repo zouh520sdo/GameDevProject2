@@ -45,4 +45,53 @@ basicUnit.prototype.create = function(){
     
     // Play run animation
     this.unit.animations.play("spawn");
+    
+    //reset attk dmg
+    this.unit.resetattk = function()
+    {
+        console.log("atk reset");
+        this.damage -= 25;
+    }
+    
+      this.unit.helperattk = function()
+        {
+            console.log("attk timer");
+            this.cooldown = game.time.create(this, true);
+            this.cooldown.add(10000, this.resetattk, this);
+             this.cooldown.start();
+           
+        }
+  this.unit.resetspeed = function()
+    {
+        console.log("speed reset");
+        this.body.velocity.x -= 50;
+    }
+    
+      this.unit.helperspeed = function()
+        {
+            console.log("attk timer");
+            this.cooldown = game.time.create(this, true);
+            this.cooldown.add(10000, this.resetspeed, this);
+             this.cooldown.start();
+           
+        }
+      
+      this.unit.resethp = function()
+    {
+        console.log("hp reset");
+        this.maxHealth -= 200;
+    }
+    
+      this.unit.helperhp = function()
+        {
+            console.log("hp timer");
+            this.cooldown = game.time.create(this, true);
+            this.cooldown.add(10000, this.resethp, this);
+             this.cooldown.start();
+           
+        }
 };
+
+
+
+

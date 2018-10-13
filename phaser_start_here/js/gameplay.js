@@ -320,7 +320,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
                 this.tempCard.children[i].savedx -= 240;
                 this.tempCard.children[i].lastx -= 240;
                 //this.tempCard[i].num -= 1;
-                console.log(this.tempCard.children[i].num);
+             
                 //this.tempCard.children[i].shift();
             }
             this.tempCard.remove(Cards);
