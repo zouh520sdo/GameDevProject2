@@ -223,7 +223,7 @@ basicUnit.prototype.create = function(){
   this.unit.resetspeed = function()
     {
         console.log("speed reset");
-        this.body.velocity.x -= 50;
+        this.body.velocity.x = Math.max(0, this.body.velocity.x-50);
     }
     
       this.unit.helperspeed = function()
