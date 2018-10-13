@@ -147,7 +147,7 @@ class Cards extends Phaser.Sprite{
                     break;
                 case 5:
                     console.log("HEAL LANE");
-                    unitsGroup.callAll("heal", null, 1000);
+                    unitsGroup.callAll("heal", null, 10000);
                     break;
                 case 6:
                     console.log("HEAL ALL");
@@ -156,10 +156,12 @@ class Cards extends Phaser.Sprite{
                     this.gameState.friendlyUnit3.callAll("heal", null, 250);
                     break;
                 case 7:
-                    
+                    console.log("KILL LANE");
+                    enemiesGroup.callAll("kill", null);
+                    enemiesGroup.removeAll(true);
                     break;
                 case 8:
-                    console.log("Damege all");
+                    console.log("DAMAGE ALL");
                     this.gameState.enemyUnit1.callAll("damage", null, 250);
                     this.gameState.enemyUnit2.callAll("damage", null, 250);
                     this.gameState.enemyUnit3.callAll("damage", null, 250);
