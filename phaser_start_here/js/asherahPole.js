@@ -23,8 +23,8 @@ class AsherahPole extends Phaser.Sprite {
         this.chargeRateByKill = 10;
         
         // Health
-        this.health = 5000;
-        this.maxHealth = 5000;
+        this.health = 1000;
+        this.maxHealth = 1000;
     };
     
     // Callback function for tapping pole

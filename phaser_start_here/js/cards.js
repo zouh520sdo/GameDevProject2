@@ -113,8 +113,8 @@ class Cards extends Phaser.Sprite{
         {
             for(let i = 0; i < unitsGroup.length; i++)
             {
-                unitsGroup.children[i].damage += 25;
-                console.log(unitsGroup.children[i].damage);
+                unitsGroup.children[i].atkdmg += 25;
+                console.log(unitsGroup.children[i].atkdmg);
                 
                 unitsGroup.children[i].helperattk();
             }   

@@ -209,7 +209,7 @@ basicUnit.prototype.create = function(){
     this.unit.resetattk = function()
     {
         console.log("atk reset");
-        this.damage -= 25;
+        this.atkdmg -= 25;
     }
     
       this.unit.helperattk = function()
