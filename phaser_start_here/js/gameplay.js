@@ -34,18 +34,11 @@ gameplayState.prototype.create = function() {
 	this.friendlyUnit2.enableBody = true;
 	this.friendlyUnit3.enableBody = true;
 	
-	//groups of enemy units on lanes
-	this.enemyUnit1 = game.add.group();
-	this.enemyUnit2 = game.add.group();
-	this.enemyUnit3 = game.add.group();
+	//group of enemy units on lanes
+	this.enemyUnit = game.add.group();
 	
-	this.enemyUnit1.enableBody = true;
-	this.enemyUnit2.enableBody = true;
-	this.enemyUnit3.enableBody = true;
-
-	//enemy spawn timer
-	//this.enemyTimer = new Phaser.Timer(game, false);
-	//console.log(this.enemyTimer);
+	this.enemyUnit.enableBody = true;
+	
     // Set up timer
 	
     this.gameplayTimer = game.time.create(true);
@@ -103,26 +96,6 @@ gameplayState.prototype.create = function() {
 	this.spawnTimer.start();
     this.gameplayTimer.start();
 	
-	
-	
-    //game.add.sprite(0,0, "sky");
-    
-    // Platforms
-	/*
-    this.platforms = game.add.group();
-    this.platforms.enableBody = true;
-    
-    // Ground
-    let ground = this.platforms.create(0, game.world.height - 64, "platform");
-    ground.scale.setTo(2,2);
-    ground.body.immovable = true;
-    
-    // Platforms
-    let ledge = this.platforms.create(400, 400, "platform");
-    ledge.body.immovable = true;
-    ledge = this.platforms.create(-150, 250, "platform");
-    ledge.body.immovable = true;
-    */
     // Player
     this.player = game.add.sprite(32, game.world.height - 150, "murph");
     game.physics.arcade.enable(this.player);
@@ -149,19 +122,6 @@ gameplayState.prototype.create = function() {
     // Add input over and input out callback function
     this.player.events.onInputDown.add(this.showHideCardInfo, this);
     
-    /*
-    // Create animations
-    this.player.animations.add("left", [0,1,2,3], 10, true);
-    this.player.animations.add("right", [5,6,7,8], 10, true);
-    
-    this.stars = game.add.group();
-    this.stars.enableBody = true;
-    for (let i=0; i<12; i++) {
-        let star = this.stars.create(i*70, 0, "star");
-        star.body.gravity.y = 300;
-        star.body.bounce.y = .2 + Math.random() * .2;
-    }
-    */
     // Timer UI
     this.scoreText = game.add.text(16,16,"Time Left: 3:00", {fontSize:"32px", fill:"#ffffff"});
 	console.log(this);
@@ -195,85 +155,18 @@ gameplayState.prototype.create = function() {
         
     }
     
-    //Card Drag
     
-    /*
-    this.cursors = game.input.keyboard.createCursorKeys();
-};
-    
-    // Score UI
-    this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#ffffff"});
-    */
-	//add units to lanes by pressing Q,W,E (testing purpose)
-	
-	//looks like we don't need them now
-	/*
-    this.Qkey = game.input.keyboard.addKey(Phaser.Keyboard.Q);
-	this.Wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
-	this.Ekey = game.input.keyboard.addKey(Phaser.Keyboard.E);
-	*/
 };
 
 gameplayState.prototype.update = function(){
-	/*
-    game.physics.arcade.collide(this.player, this.platforms);
-    game.physics.arcade.collide(this.stars, this.platforms);
-    game.physics.arcade.overlap(this.player, this.stars, this.collectStar, null, this);
-	*/
 	
-    // Update group
-//    this.updateGroup(this.friendlyUnit1);
-//	this.updateGroup(this.friendlyUnit2);
-//	this.updateGroup(this.friendlyUnit3);
-    
-	//faito
-	//simply do health - enemy_damage
-	//console.log(this.friendlyUnit1.length);
-	//console.log(this.enemyUnit1.length);
-    game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit1, this.fight ,null, this);
-	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit2, this.fight ,null, this);
-	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit3, this.fight ,null, this);
+    game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit, this.fight ,null, this);
+	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit, this.fight ,null, this);
+	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit, this.fight ,null, this);
 	
-	/*
-	if(this.Qkey.isDown){
-		console.log("q pressed");
-		this.addUnit(this.friendlyUnit1, 0);
-	}
-	if(this.Wkey.isDown){
-		console.log("w pressed");
-		this.addUnit(this.friendlyUnit2, 1);
-	}
-	if(this.Ekey.isDown){
-		console.log("w pressed");
-		this.addUnit(this.friendlyUnit3, 2);
-	}
-	*//*
-	this.laneUpdate(this.friendlyUnit1);
-	this.laneUpdate(this.friendlyUnit2);
-	this.laneUpdate(this.friendlyUnit3);
-	*/
 	this.updateCards(tempCard);
-    /*
-    this.player.body.velocity.x = 0;
-    if (this.cursors.left.isDown) {
-        this.player.body.velocity.x = -150;
-        this.player.animations.play("left");
-    }
-    else if (this.cursors.right.isDown) {
-        this.player.body.velocity.x = 150;       this.player.animations.play("right");
-    }
-    else { // stand still
-        this.player.animations.stop();
-        this.player.frame = 4;
-    }
     
-    if (this.cursors.up.isDown && this.player.body.touching.down) {
-        this.player.body.velocity.y = -350;
-    }
-    */
-    // Update timer
-	//if(this.)
-    this.scoreText.text = "Time Left: " + this.msToTime(this.spawnTimer.duration);
+    this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
     
 };
 /*
@@ -305,13 +198,13 @@ gameplayState.prototype.addEnemy = function(mult) {
 	//console.log("time elapsed in phase: " + this.enemyTimer.elapsed);
 	console.log("enemy generated on lane" + (mult+1));
 	if(mult === 0){
-		new basicEnemyUnit(this.enemyUnit1, 2500, 45, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 45, mult);
 	}
 	else if(mult === 1){
-		new basicEnemyUnit(this.enemyUnit2, 2500, 315, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 315, mult);
 	}
 	else if(mult === 2){
-		new basicEnemyUnit(this.enemyUnit3, 2500, 585, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 585, mult);
 	}
 };
 
@@ -334,7 +227,7 @@ gameplayState.prototype.gotoGameWinState = function(){
 
 
 /*
-	
+	spawn 1 enemy at random lane
 */
 
 gameplayState.prototype.spawnEnemyEvent1 = function(){
@@ -354,6 +247,9 @@ gameplayState.prototype.spawnEnemyEvent1 = function(){
 		}
 	}
 }
+
+//spawn 2 enemies on two different random lanes
+
 gameplayState.prototype.spawnEnemyEvent2 = function(){
 	console.log("spawn triggered");
 	this.something2 = 0;
@@ -376,6 +272,9 @@ gameplayState.prototype.spawnEnemyEvent2 = function(){
 		}
 	}
 }
+
+//spawn 3 enemies (on all lanes)
+
 gameplayState.prototype.spawnEnemyEvent3 = function(){
 	console.log("spawn triggered");
 	this.something2 = 0;
@@ -475,7 +374,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
             Cards.kill();
           
         }
-    else if(Cards.id !== 1 )
+    else if(Cards.id !== 1)
         {
            
             //game.physics.arcade.movetoXY(Cards, Cards.x, Cards.y, 5, .25);
@@ -489,14 +388,33 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
 
 gameplayState.prototype.fight = function(unit, enemy){
 	//stop both sides
-	unit.body.velocity.x = 0;
-	unit.body.velocity.y = 0;
-	enemy.body.velocity.x = 0;
-	enemy.body.velocity.y = 0;
-	console.log("collide");
+	
+	if(Math.abs(enemy.x - unit.x) <= 120 && Math.abs(enemy.y - unit.y) <=10){
+		var new_fight = false;
+		if(!(unit.in_fight)){
+			unit.go_fight = true;
+			new_fight = true;
+		}
+		if(!(enemy.in_fight)){
+			enemy.go_fight = true;
+			new_fight = true;
+		}
+		//fight while both are alive
+		//the new_fight is to make sure we only enter the while loop
+		//once because this function is constantly called when soldiers collide
+		if(unit.alive && enemy.alive && new_fight){
+			console.log("enter fight");
+			unit.attacking_enemy = enemy;
+			enemy.attacking_enemy = unit;
+		}
+	}
+	//enemy.damage(unit.atkdmg);
+	//console.log("enemy hp is now " + enemy.health);
+	//console.log("collide");
 	//unit.health -= enemy.damage;
 	//enemy.health -= unit.damage;
 };
+
 gameplayState.prototype.updateCards = function(tempCard){
    
     for(i = 0; i < tempCard.length; i++){
