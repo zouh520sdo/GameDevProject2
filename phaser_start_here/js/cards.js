@@ -18,6 +18,16 @@ class Cards extends Phaser.Sprite{
         this.num = num;
         this.game.physics.enable(this);
         
+        // For cards have cooldown
+        if (this.id == 1) {
+            this.cdMask = game.add.sprite(0,0,"card1");
+            this.cdMask.tint = 0x000000;
+            this.cdMask.alpha = 0.65;
+            this.addChild(this.cdMask);
+            this.cdMask.setScaleMinMax(0.000001, 1);
+            this.cdMask.scale.set(1, 0);
+        }
+        
         // For selection
         this.isSelected = false;
         this.selectedY = game.world.height - this.height;
@@ -67,10 +77,19 @@ class Cards extends Phaser.Sprite{
             this.cooldown.start();
         };
         
+        Cards.prototype.update = function() {
+            if (this.cooldown !== undefined && this.cooldown.running && this.cdMask !== undefined) {
+                this.cdMask.scale.set(1, this.cooldown.duration / 8000);
+            }
+        };
+        
         Cards.prototype.switch = function()
         {
-            
             this.activated = false;
+            this.cooldown.destroy();
+            if (this.cdMask !== undefined) {
+                this.cdMask.scale.set(1,0);
+            }
         };
         
        Cards.prototype.stop = function()
@@ -106,7 +125,7 @@ class Cards extends Phaser.Sprite{
             for(let i = 0; i < unitsGroup.length; i++)
             {
                 unitsGroup.children[i].body.velocity.x += 50;
-                console.log(unitsGroup.children[i].speed);
+                console.log(unitsGroup.children[i].body.velocity.x);
                 
                 unitsGroup.children[i].helperspeed();
             }   
@@ -184,63 +203,4 @@ Cards.category = {
     silver:[2,3,4],
     gold:[5,6,7,8,9]
 };
-
-
-
-/*
-    //permanent card, spawn soldiers
-    class spawntroop extends Cards
-    {
-        
-
-    }
-
-    //atk buff
-    class powatk extends Cards
-    {
-
-    }
-
-    //speed buff
-    class powspeed extends Cards
-    {
-
-    }
-
-    //heal ally
-    class healtroop extends Cards
-    {
-
-
-    }
-
-    //spawn troops on all lane
-    class incproduction extends Cards
-    {
-
-
-    }
-    
-    //damage enemy on certain lane
-    class dmgenemy extends Cards
-    {
-       
-    }
-
-    //AoE attk
-    class destruction extends Cards
-    {
-
-    }
-
-    //delay enemy on certain lane
-    class delayenemy extends Cards
-    {
-
-    }
-
-*/
-
-//export default Cards;
-
 
