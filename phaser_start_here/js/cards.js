@@ -18,7 +18,6 @@ class Cards extends Phaser.Sprite{
         this.num = num;
         this.game.physics.enable(this);
         
-        
         // For selection
         this.isSelected = false;
         this.selectedY = game.world.height - this.height;
@@ -144,20 +143,23 @@ class Cards extends Phaser.Sprite{
                     this.raisespeed(unitsGroup);
                     break;
                 case 5:
-                     console.log("HEAL");
-                    // Heal units on selected group
-                    console.log("HEAL");
-                    unitsGroup.callAll("heal", null, 250);
+                    console.log("HEAL LANE");
+                    unitsGroup.callAll("heal", null, 1000);
                     break;
                 case 6:
-                    
-
+                    console.log("HEAL ALL");
+                    this.gameState.friendlyUnit1.callAll("heal", null, 250);
+                    this.gameState.friendlyUnit2.callAll("heal", null, 250);
+                    this.gameState.friendlyUnit3.callAll("heal", null, 250);
                     break;
                 case 7:
                     
                     break;
                 case 8:
-
+                    console.log("Damege all");
+                    this.gameState.enemyUnit1.callAll("damage", null, 250);
+                    this.gameState.enemyUnit2.callAll("damage", null, 250);
+                    this.gameState.enemyUnit3.callAll("damage", null, 250);
                     break;
                 case 9:
                     

@@ -59,7 +59,7 @@ basicUnit.prototype.create = function(){
             this.cooldown = game.time.create(this, true);
             this.cooldown.add(10000, this.resetattk, this);
              this.cooldown.start();
-           
+
         }
   this.unit.resetspeed = function()
     {
