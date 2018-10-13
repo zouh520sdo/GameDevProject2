@@ -1,12 +1,12 @@
 class AsherahPole extends Phaser.Sprite {
     // Constructor
-    constructor(game, xx, yy) {
+    constructor(game, xx, yy, gamestate) {
         // Set up asherah pole
         super(game, xx, yy, "pole");
         game.add.existing(this);
         this.anchor.set(0, 1);
         this.scale.set(0.7, 0.7);
-        
+        this.gamestate = gamestate;
         // Set up animations
         this.animations.add("neutral", [0], 10, true);
         this.animations.add("full_charged", [1,2,3,4,3,2], 10, true);
@@ -22,6 +22,9 @@ class AsherahPole extends Phaser.Sprite {
         this.chargeRateByTime = 10;
         this.chargeRateByKill = 10;
         
+        // Health
+        this.health = 5000;
+        
         // Debug
         this.debugText = game.add.text(0,this.y,"debug", {fontSize:"32px", fill:"#ffffff"});
     };
@@ -29,10 +32,42 @@ class AsherahPole extends Phaser.Sprite {
     // Callback function for tapping pole
     onTapping() {
         if (this.energy >= this.fullEnergy) {
-            this.energy = 0;
-            // Draw card
-            console.log("Draw a card");
-            this.animations.play("neutral");
+            console.log(this.gamestate.tempCard.children[1]);
+        
+            if(this.gamestate.tempCard.length < 8 )
+            {
+                this.energy = 0;
+                
+                // random card category
+                if (Math.random() < 0.8) {
+                    // Silver card
+                    console.log("Get silver card");
+                    console.log(game.rnd.integerInRange(0, Cards.category.silver.length-1));
+                }
+                else {
+                    console.log("Get gold card");
+                    console.log(game.rnd.integerInRange(0, Cards.category.gold.length-1));
+                    // Gold card
+                }
+                
+                
+                let rantemp = this.game.rnd.integerInRange(2,4);
+                let cardtemp = new Cards(this.game, this.gamestate.tempCard.length + 2, rantemp, this.gamestate);
+                cardtemp.inputEnabled = true;
+                cardtemp.enableBody = true;
+                cardtemp.input.enableDrag();
+                cardtemp.events.onDragStart.add(this.gamestate.dragCardStart,this.gamestate);
+                cardtemp.events.onDragUpdate.add(this.gamestate.dragCardUpdate,this.gamestate);
+                cardtemp.events.onDragStop.add(this.gamestate.dragCardStop,this.gamestate);
+
+
+
+                this.gamestate.tempCard.add(cardtemp);
+                // Draw card
+                console.log("Draw a card");
+                this.animations.play("neutral");
+            }
+            
         }
         else {
             // No effect now
@@ -61,5 +96,9 @@ class AsherahPole extends Phaser.Sprite {
         this.addEnergy(this.chargeRateByTime * this.game.time.elapsed / 1000);
         
         this.debugText.text = this.isFull();
+        
+        if (this.health <= 0) {
+            // Display defeated UI
+        }
     };
 };
