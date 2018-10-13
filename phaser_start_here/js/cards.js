@@ -146,6 +146,7 @@ class Cards extends Phaser.Sprite{
                 case 5:
                      console.log("HEAL");
                     // Heal units on selected group
+                    console.log("HEAL");
                     unitsGroup.callAll("heal", null, 250);
                     break;
                 case 6:
