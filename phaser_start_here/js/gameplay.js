@@ -318,7 +318,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     {
         if ( mouseY <this.laneHeight) {
             console.log("Lane1");
-            this.addUnit(this.friendlyUnit1, 0);
+            this.addUnit(0);
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
             Cards.activated = true;
@@ -326,7 +326,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         }
         else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
             console.log("Lane2");
-            this.addUnit(this.friendlyUnit2, 1);
+            this.addUnit(1);
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
             Cards.activated = true;
@@ -335,7 +335,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         }
         else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
             console.log("Lane3");
-            this.addUnit(this.friendlyUnit3, 2);
+            this.addUnit(2);
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
             Cards.activated = true;
