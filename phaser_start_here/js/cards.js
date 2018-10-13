@@ -116,8 +116,11 @@ class Cards extends Phaser.Sprite{
         {
             for(let i = 0; i < unitsGroup.length; i++)
             {
+                let ratio = unitsGroup.children[i].health / unitsGroup.children[i].maxHealth;
                 unitsGroup.children[i].maxHealth += 200;
-                console.log(unitsGroup.children[i].maxHealth);
+                unitsGroup.children[i].health = unitsGroup.children[i].maxHealth * ratio;
+                console.log("Max health " + unitsGroup.children[i].maxHealth);
+                console.log("Current health " + unitsGroup.children[i].health);
                 
                 unitsGroup.children[i].helperhp();
             }   
