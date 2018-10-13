@@ -23,10 +23,8 @@ class AsherahPole extends Phaser.Sprite {
         this.chargeRateByKill = 10;
         
         // Health
-        this.health = 5000;
-        
-        // Debug
-        this.debugText = game.add.text(0,this.y,"debug", {fontSize:"32px", fill:"#ffffff"});
+        this.health = 1000;
+        this.maxHealth = 1000;
     };
     
     // Callback function for tapping pole
@@ -94,8 +92,6 @@ class AsherahPole extends Phaser.Sprite {
         
         // Adding energy by time
         this.addEnergy(this.chargeRateByTime * this.game.time.elapsed / 1000);
-        
-        this.debugText.text = this.isFull();
         
         if (this.health <= 0) {
             // Display defeated UI
