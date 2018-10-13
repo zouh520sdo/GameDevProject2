@@ -108,7 +108,7 @@ gameplayState.prototype.create = function() {
     this.tempCard.enableBody = true;
     
     // Set up asherah pole
-    this.asherahPole = new AsherahPole(game, 150, this.laneHeight*2 - 15, this);
+    this.asherahPole = new AsherahPole(game, 120, this.laneHeight*2 - 45, this);
    
     // Add input over and input out callback function
     
