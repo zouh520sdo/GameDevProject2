@@ -25,6 +25,17 @@ class AsherahPole extends Phaser.Sprite {
         // Health
         this.health = 1000;
         this.maxHealth = 1000;
+        
+        // Health bar
+        this.HPContainer = game.add.sprite(0, 0, "HPContainer");
+        this.HPBar = game.add.sprite(0, 0, "HPBar");
+        this.HPBar.alignIn(this.HPContainer, Phaser.CENTER);
+        this.HPContainer.addChild(this.HPBar);
+        this.HPBar.setScaleMinMax(0.000001, 1);
+        this.HPContainer.scale.set(1, 0.75);
+        this.addChild(this.HPContainer);
+        this.HPContainer.x = 6;
+        this.HPContainer.y = -this.height*1.55;
     };
     
     // Callback function for tapping pole
@@ -92,6 +103,9 @@ class AsherahPole extends Phaser.Sprite {
         
         // Adding energy by time
         this.addEnergy(this.chargeRateByTime * this.game.time.elapsed / 1000);
+        
+        // Update health bar
+        this.HPBar.scale.set(this.health/this.maxHealth, 1);
         
         if (this.health <= 0) {
             // Display defeated UI
