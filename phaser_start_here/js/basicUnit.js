@@ -84,9 +84,31 @@ basicUnit.prototype.create = function(){
             return -(this.maxBuffScale - 1)/amount + this.maxBuffScale;
         }
     };
+    // Buff animation
+    this.unit.buffChangeRate = 0.002;
+    this.unit.damageUpTargetScale = 0;
+    this.unit.healthUpTargetScale = 0;
+    this.unit.speedUpTargetScale = 0;
+    this.unit.smoothBuffScaleTo = function(buff, target, rate) {
+        let diffSign = Math.sign(target - buff.scale.x);
+        if (diffSign === 0) return;
+        let tempScale = buff.scale.x + rate * diffSign;
+        if (tempScale * diffSign > target * diffSign) {
+            buff.scale.set(target);
+        }
+        else {
+            buff.scale.set(tempScale);
+        }
+    };
 
     // Override update function
     this.unit.update = function(){
+        
+        // Animating changing of buffs
+        this.smoothBuffScaleTo(this.buff_DamageUp, this.damageUpTargetScale, this.buffChangeRate * game.time.elapsed);
+        this.smoothBuffScaleTo(this.buff_HealthUp, this.healthUpTargetScale, this.buffChangeRate * game.time.elapsed);
+        this.smoothBuffScaleTo(this.buff_SpeedUp, this.speedUpTargetScale, this.buffChangeRate * game.time.elapsed);
+        
 		this.velo_x_mult = 1486.0/325.0;
 		//start moving when finished spawning
         if(this.animations.currentAnim.name === "spawn" && this.animations.currentAnim.isFinished) {
@@ -266,7 +288,8 @@ basicUnit.prototype.create = function(){
     {
         console.log("atk reset");
         // Set damage up scale
-        this.damageUpStack--; this.buff_DamageUp.scale.set(this.buffScaleOnStack(this.damageUpStack));
+        this.damageUpStack--; 
+        this.damageUpTargetScale = this.buffScaleOnStack(this.damageUpStack);
         
         this.atkdmg -= 25;
     };
@@ -276,7 +299,8 @@ basicUnit.prototype.create = function(){
         console.log("attk timer");
         
         // Set damage up scale
-        this.damageUpStack++; this.buff_DamageUp.scale.set(this.buffScaleOnStack(this.damageUpStack));
+        this.damageUpStack++; 
+        this.damageUpTargetScale = this.buffScaleOnStack(this.damageUpStack);
         
         this.cooldown = game.time.create(this, true);
         this.cooldown.add(10000, this.resetattk, this);
@@ -287,7 +311,8 @@ basicUnit.prototype.create = function(){
     {
         console.log("speed reset");
         // Set damage up scale
-        this.speedUpStack--; this.buff_SpeedUp.scale.set(this.buffScaleOnStack(this.speedUpStack));
+        this.speedUpStack--; 
+        this.speedUpTargetScale = this.buffScaleOnStack(this.speedUpStack);
       
         if (this.in_fight) {
             this.prev_velo_x = Math.max(0, this.prev_velo_x-50);
@@ -301,7 +326,8 @@ basicUnit.prototype.create = function(){
         {
             console.log("attk timer");
             // Set damage up scale
-            this.speedUpStack++; this.buff_SpeedUp.scale.set(this.buffScaleOnStack(this.speedUpStack));
+            this.speedUpStack++; 
+            this.speedUpTargetScale = this.buffScaleOnStack(this.speedUpStack);
           
             this.cooldown = game.time.create(this, true);
             this.cooldown.add(10000, this.resetspeed, this);
@@ -313,7 +339,8 @@ basicUnit.prototype.create = function(){
     {
         console.log("hp reset");
         // Set damage up scale
-        this.healthUpStack--; this.buff_HealthUp.scale.set(this.buffScaleOnStack(this.healthUpStack));
+        this.healthUpStack--; 
+        this.healthUpTargetScale = this.buffScaleOnStack(this.healthUpStack);
           
         let ratio = this.health / this.maxHealth;
         this.maxHealth -= 200;
@@ -324,7 +351,8 @@ basicUnit.prototype.create = function(){
         {
             console.log("hp timer");
             // Set damage up scale
-            this.healthUpStack++; this.buff_HealthUp.scale.set(this.buffScaleOnStack(this.healthUpStack));
+            this.healthUpStack++; 
+            this.healthUpTargetScale = this.buffScaleOnStack(this.healthUpStack);
           
             this.cooldown = game.time.create(this, true);
             this.cooldown.add(10000, this.resethp, this);
