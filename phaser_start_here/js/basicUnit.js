@@ -235,7 +235,7 @@ basicUnit.prototype.create = function(){
     {
         console.log("atk reset");
         this.atkdmg -= 25;
-    }
+    };
     
       this.unit.helperattk = function()
         {
@@ -244,12 +244,17 @@ basicUnit.prototype.create = function(){
             this.cooldown.add(10000, this.resetattk, this);
              this.cooldown.start();
 
-        }
+        };
   this.unit.resetspeed = function()
     {
         console.log("speed reset");
-        this.body.velocity.x = Math.max(0, this.body.velocity.x-50);
-    }
+        if (this.in_fight) {
+            this.prev_velo_x = Math.max(0, this.prev_velo_x-50);
+        }
+        else {
+            this.body.velocity.x = Math.max(0, this.body.velocity.x-50);
+        }
+    };
     
       this.unit.helperspeed = function()
         {
@@ -258,7 +263,7 @@ basicUnit.prototype.create = function(){
             this.cooldown.add(10000, this.resetspeed, this);
              this.cooldown.start();
            
-        }
+        };
       
       this.unit.resethp = function()
     {
@@ -266,7 +271,7 @@ basicUnit.prototype.create = function(){
         let ratio = this.health / this.maxHealth;
         this.maxHealth -= 200;
         this.health = this.maxHealth * ratio;
-    }
+    };
     
       this.unit.helperhp = function()
         {
@@ -275,7 +280,7 @@ basicUnit.prototype.create = function(){
             this.cooldown.add(10000, this.resethp, this);
              this.cooldown.start();
            
-        }
+        };
 };
 
 

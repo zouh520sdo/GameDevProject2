@@ -125,7 +125,12 @@ class Cards extends Phaser.Sprite{
             for(let i = 0; i < unitsGroup.length; i++)
             {
                 if (!unitsGroup.children[i].stopped_on_border) {
-                    unitsGroup.children[i].body.velocity.x += 50;
+                    if (unitsGroup.children[i].in_fight) {
+                        unitsGroup.children[i].prev_velo_x += 50;
+                    }
+                    else {
+                        unitsGroup.children[i].body.velocity.x += 50;
+                    }
                     console.log(unitsGroup.children[i].body.velocity.x);
 
                     unitsGroup.children[i].helperspeed();
