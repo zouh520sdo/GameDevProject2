@@ -40,6 +40,20 @@ basicUnit.prototype.create = function(){
 	this.unit.attacked = false;
 	this.unit.spawn_interrupted = true;
 	this.unit.stopped_at_border = false;
+    
+    // For selecting effect
+    this.unit.isSelected = false;
+    this.unit.selectingTime = 0;
+    this.unit.alphaToTime = function(time) {
+        return Math.cos(4 * Math.PI * time) * 0.2 + 0.8; 
+    };
+    this.unit.startSelecting = function() {
+        this.isSelected = true;
+    };
+    this.unit.stopSelecting = function() {
+        this.isSelected = false;
+    };
+    
     // Override update function
     this.unit.update = function(){
 		this.velo_x_mult = 1486.0/325.0;
@@ -66,6 +80,17 @@ basicUnit.prototype.create = function(){
 			}
             this.animations.play("run");
         }
+        
+        // Changing alpha if this is selected
+        if (this.isSelected) {
+            this.selectingTime += game.time.elapsed/1000;
+            this.alpha = this.alphaToTime(this.selectingTime);
+        }
+        else {
+            this.selectingTime = 0;
+            this.alpha = 1;
+        }
+        
 		//done shifting into their own lanes
         if(this.lane_id === 0){
 			if(this.body.y <= 72.5){

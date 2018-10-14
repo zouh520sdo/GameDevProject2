@@ -124,10 +124,12 @@ class Cards extends Phaser.Sprite{
         {
             for(let i = 0; i < unitsGroup.length; i++)
             {
-                unitsGroup.children[i].body.velocity.x += 50;
-                console.log(unitsGroup.children[i].body.velocity.x);
-                
-                unitsGroup.children[i].helperspeed();
+                if (!unitsGroup.children[i].stopped_on_border) {
+                    unitsGroup.children[i].body.velocity.x += 50;
+                    console.log(unitsGroup.children[i].body.velocity.x);
+
+                    unitsGroup.children[i].helperspeed();
+                }
             }   
         };
       
@@ -145,11 +147,76 @@ class Cards extends Phaser.Sprite{
             }   
         };
       
-
-
+        Cards.prototype.deSelectingGroup = function(unitsGroup, enemiesLaneID) {
+            switch (this.id) {
+                case 2:
+                    // Raises attk of the units
+                    unitsGroup.callAll("stopSelecting", null);
+                    break;
+                case 3:
+                    unitsGroup.callAll("stopSelecting", null);
+                    break;
+                case 4:
+                    unitsGroup.callAll("stopSelecting", null);
+                    break;
+                case 5:
+                    unitsGroup.callAll("stopSelecting", null);
+                    break;
+                case 6:
+                    this.gameState.friendlyUnit1.callAll("stopSelecting", null);
+                    this.gameState.friendlyUnit2.callAll("stopSelecting", null);
+                    this.gameState.friendlyUnit3.callAll("stopSelecting", null);
+                    break;
+                case 7:
+                    this.gameState.enemyUnit.callAll("stopSelectingOnLane", null, enemiesLaneID);
+                    break;
+                case 8:
+                    this.gameState.enemyUnit.callAll("stopSelecting", null);
+                    break;
+                case 9:
+                    consolo.log("FORTIFICATION");
+                    break;
+                default:
+                    
+            }
+        };
+        
+        Cards.prototype.selectingGroup = function(unitsGroup, enemiesLaneID) {
+            switch (this.id) {
+                case 2:
+                    // Raises attk of the units
+                    unitsGroup.callAll("startSelecting", null);
+                    break;
+                case 3:
+                    unitsGroup.callAll("startSelecting", null);
+                    break;
+                case 4:
+                    unitsGroup.callAll("startSelecting", null);
+                    break;
+                case 5:
+                    unitsGroup.callAll("startSelecting", null);
+                    break;
+                case 6:
+                    this.gameState.friendlyUnit1.callAll("startSelecting", null);
+                    this.gameState.friendlyUnit2.callAll("startSelecting", null);
+                    this.gameState.friendlyUnit3.callAll("startSelecting", null);
+                    break;
+                case 7:
+                    this.gameState.enemyUnit.callAll("startSelectingOnLane", null, enemiesLaneID);
+                    break;
+                case 8:
+                    this.gameState.enemyUnit.callAll("startSelecting", null);
+                    break;
+                case 9:
+                    consolo.log("FORTIFICATION");
+                    break;
+                default:
+                    
+            }
+        };
      
         // Use ability based on ID
-        Cards.prototype.useAbility = function(unitsGroup, enemiesGroup) {
+        Cards.prototype.useAbility = function(unitsGroup, enemiesLaneID) {
             switch (this.id) {
                 case 2:
                     console.log("ATTK");
@@ -175,14 +242,10 @@ class Cards extends Phaser.Sprite{
                     this.gameState.friendlyUnit3.callAll("heal", null, 250);
                     break;
                 case 7:
-                    console.log("KILL LANE");
-                    enemiesGroup.callAll("kill", null);
-                    enemiesGroup.removeAll(true);
+                    this.gameState.enemyUnit.callAll("killOnLane", null, enemiesLaneID);
                     break;
                 case 8:
-                    console.log("DAMAGE ALL"); this.gameState.enemyUnit1.callAll("damage", null, 250);
-                    this.gameState.enemyUnit2.callAll("damage", null, 250);
-                    this.gameState.enemyUnit3.callAll("damage", null, 250);
+                    this.gameState.enemyUnit.callAll("damage", null, 250);
                     break;
                 case 9:
                     consolo.log("FORTIFICATION");

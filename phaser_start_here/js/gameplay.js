@@ -1,7 +1,7 @@
 let gameplayState = function(){
     this.score = 0;
     this.laneHeight = 0;
-    this.selectedCard = null;
+    this.selectedLaneID = 3; //[0,3] Card area for default
     this.asherahPole = null;
 };
 
@@ -271,38 +271,53 @@ gameplayState.prototype.spawnEnemyEvent3 = function(){
 		this.addEnemy(2);
 	}
 }
-// On input down on card
-gameplayState.prototype.showHideCardInfo = function(sprite, pointer) {
-    
-    this.cardInfoText.alpha = 1;
-    
-    if (this.selectedCard === sprite) {
-        // hide card's info
-        this.cardInfoText.alpha = 0;
-        console.log("Hide card info");
-        this.selectedCard = null;
-    }
-    else {
-        
-        if (this.selectedCard !== null) {
-            // place it back(maybe) or other necessary changes for the original selected card
-        }
-        // Show currect selected card's info
-        this.cardInfoText.alpha = 1;
-        
-        // Change text based the sprite player is selecting
-        console.log("Show card info");
-        
-        this.selectedCard = sprite;
-    }
-};
+
 // Card draging effect
 gameplayState.prototype.dragCardStart = function(Cards, pointer, dragX, dragY) {
     Cards.alpha = 0.5;
 };
 
 gameplayState.prototype.dragCardUpdate = function(Cards, pointer, dragX, dragY, snapPoint) {
+    let mouseY = pointer.y;
+    let prevLaneID = this.selectedLaneID;
+    if (mouseY < this.laneHeight) {
+        this.selectedLaneID = 0;
+    }
+    else if (mouseY < this.laneHeight*2) {
+        this.selectedLaneID = 1;
+    }
+    else if (mouseY < this.laneHeight*3) {
+        this.selectedLaneID = 2;
+    }
+    else {
+        this.selectedLaneID = 3;
+    }
+    console.log(this.selectedLaneID);
     
+    // If selected lane changed
+    if (prevLaneID !== this.selectedLaneID) {
+        // Deselct previous units
+        if (prevLaneID === 0) {
+            Cards.deSelectingGroup(this.friendlyUnit1, 0);
+        }
+        else if (prevLaneID === 1) {
+            Cards.deSelectingGroup(this.friendlyUnit2, 1);
+        }
+        else if (prevLaneID === 2) {
+            Cards.deSelectingGroup(this.friendlyUnit3, 2);
+        }
+        
+        // Select current units
+        if (this.selectedLaneID === 0) {
+            Cards.selectingGroup(this.friendlyUnit1, 0);
+        }
+        else if (this.selectedLaneID === 1) {
+            Cards.selectingGroup(this.friendlyUnit2, 1);
+        }
+        else if (this.selectedLaneID === 2) {
+            Cards.selectingGroup(this.friendlyUnit3, 2);
+        }
+    }
 };
 
 gameplayState.prototype.dragCardStop = function(Cards, pointer) {
@@ -310,6 +325,19 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     
     // May need to invoke some functions to take effect of card or take it back to card area
     Cards.alpha = 1;
+    
+    // Deselect group
+    if (this.selectedLaneID === 0) {
+        Cards.deSelectingGroup(this.friendlyUnit1, 0);
+    }
+    else if (this.selectedLaneID === 1) {
+        Cards.deSelectingGroup(this.friendlyUnit2, 1);
+    }
+    else if (this.selectedLaneID === 2) {
+        Cards.deSelectingGroup(this.friendlyUnit3, 2);
+    }
+    // Reset selected lane
+    this.selectedLaneID = 3;
     
     // Deselect cards when they are placed in lanes
     if (mouseY < this.laneHeight*3) {
@@ -365,15 +393,15 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     {
         if ( mouseY <this.laneHeight) {
             console.log("Lane1");
-            Cards.useAbility(this.friendlyUnit1, this.enemyUnit1);
+            Cards.useAbility(this.friendlyUnit1, 0);
         }
         else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
             console.log("Lane2");
-            Cards.useAbility(this.friendlyUnit2, this.enemyUnit2);
+            Cards.useAbility(this.friendlyUnit2, 1);
         }
         else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
             console.log("Lane3");
-            Cards.useAbility(this.friendlyUnit3, this.enemyUnit3);
+            Cards.useAbility(this.friendlyUnit3, 2);
         }
         else if (this.laneHeight*3<=mouseY ) {
             console.log("Cards");
