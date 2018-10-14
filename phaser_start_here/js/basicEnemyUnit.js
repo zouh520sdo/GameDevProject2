@@ -42,6 +42,38 @@ basicEnemyUnit.prototype.create = function(){
 	//some random number
 	this.unit.prev_velo_x = -100;
 	this.unit.prev_velo_y = -100;
+    
+    // For selecting effect
+    this.unit.isSelected = false;
+    this.unit.selectingTime = 0;
+    this.unit.alphaToTime = function(time) {
+        return Math.cos(4 * Math.PI * time) * 0.4 + 0.6; 
+    };
+    this.unit.startSelecting = function() {
+        this.isSelected = true;
+    };
+    this.unit.stopSelecting = function() {
+        this.isSelected = false;
+    };
+    this.unit.startSelectingOnLane = function(id) {
+        if (this.lane_id === id) {
+            this.isSelected = true;
+        }
+    };
+    this.unit.stopSelectingOnLane = function(id) {
+        if (this.lane_id === id) {
+            this.isSelected = false;
+        }
+    };
+    
+    // Kill lane_id matches
+    this.unit.killOnLane = function(id) {
+        if (id === this.lane_id) {
+            this.kill();
+            this.parent.remove(this);
+        }
+    };
+    
     // Override update function
     this.unit.update = function(){
 		//console.log("unit health: " + this.health);
@@ -49,6 +81,16 @@ basicEnemyUnit.prototype.create = function(){
 			//going from (350, 397.5) to (1936, 45) @ 100
 			//dx = 1486
 			//dy = 270
+        
+        // Changing alpha if this is selected
+        if (this.isSelected) {
+            this.selectingTime += game.time.elapsed/1000;
+            this.alpha = this.alphaToTime(this.selectingTime);
+        }
+        else {
+            this.selectingTime = 0;
+            this.alpha = 1;
+        }
 		
 		this.velo_x_mult = 1486.0/325.0;
 		//start moving	
@@ -122,7 +164,6 @@ basicEnemyUnit.prototype.create = function(){
             this.parent.remove(this);
             console.log(this.name + " is killed");
         }
-		
 		
     };
 	//override damage
