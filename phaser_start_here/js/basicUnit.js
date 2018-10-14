@@ -54,6 +54,37 @@ basicUnit.prototype.create = function(){
         this.isSelected = false;
     };
     
+    // Add buff
+    this.unit.buff_DamageUp = game.add.sprite(90,28,"Buff_DamageUp");
+    this.unit.buff_HealthUp = game.add.sprite(35,28,"Buff_HealthUp");
+    this.unit.buff_SpeedUp = game.add.sprite(140,28,"Buff_SpeedUp");
+    
+    this.unit.buff_DamageUp.anchor.set(0.5,1);
+    this.unit.buff_HealthUp.anchor.set(0.5,1);
+    this.unit.buff_SpeedUp.anchor.set(0.5,1);
+    
+    this.unit.addChild(this.unit.buff_DamageUp);
+    this.unit.addChild(this.unit.buff_HealthUp);
+    this.unit.addChild(this.unit.buff_SpeedUp);
+    
+    this.unit.buff_DamageUp.scale.set(0);
+    this.unit.buff_HealthUp.scale.set(0);
+    this.unit.buff_SpeedUp.scale.set(0);
+    
+    // Buff related
+    this.unit.maxBuffScale = 1.4;
+    this.unit.damageUpStack = 0;
+    this.unit.healthUpStack = 0;
+    this.unit.speedUpStack = 0;
+    this.unit.buffScaleOnStack = function(amount) {
+        if (amount === 0) {
+            return 0;
+        }
+        else {
+            return -(this.maxBuffScale - 1)/amount + this.maxBuffScale;
+        }
+    };
+
     // Override update function
     this.unit.update = function(){
 		this.velo_x_mult = 1486.0/325.0;
@@ -234,20 +265,30 @@ basicUnit.prototype.create = function(){
     this.unit.resetattk = function()
     {
         console.log("atk reset");
+        // Set damage up scale
+        this.damageUpStack--; this.buff_DamageUp.scale.set(this.buffScaleOnStack(this.damageUpStack));
+        
         this.atkdmg -= 25;
     };
     
-      this.unit.helperattk = function()
-        {
-            console.log("attk timer");
-            this.cooldown = game.time.create(this, true);
-            this.cooldown.add(10000, this.resetattk, this);
-             this.cooldown.start();
+    this.unit.helperattk = function()
+    {
+        console.log("attk timer");
+        
+        // Set damage up scale
+        this.damageUpStack++; this.buff_DamageUp.scale.set(this.buffScaleOnStack(this.damageUpStack));
+        
+        this.cooldown = game.time.create(this, true);
+        this.cooldown.add(10000, this.resetattk, this);
+         this.cooldown.start();
 
-        };
+    };
   this.unit.resetspeed = function()
     {
         console.log("speed reset");
+        // Set damage up scale
+        this.speedUpStack--; this.buff_SpeedUp.scale.set(this.buffScaleOnStack(this.speedUpStack));
+      
         if (this.in_fight) {
             this.prev_velo_x = Math.max(0, this.prev_velo_x-50);
         }
@@ -259,6 +300,9 @@ basicUnit.prototype.create = function(){
       this.unit.helperspeed = function()
         {
             console.log("attk timer");
+            // Set damage up scale
+            this.speedUpStack++; this.buff_SpeedUp.scale.set(this.buffScaleOnStack(this.speedUpStack));
+          
             this.cooldown = game.time.create(this, true);
             this.cooldown.add(10000, this.resetspeed, this);
              this.cooldown.start();
@@ -268,6 +312,9 @@ basicUnit.prototype.create = function(){
       this.unit.resethp = function()
     {
         console.log("hp reset");
+        // Set damage up scale
+        this.healthUpStack--; this.buff_HealthUp.scale.set(this.buffScaleOnStack(this.healthUpStack));
+          
         let ratio = this.health / this.maxHealth;
         this.maxHealth -= 200;
         this.health = this.maxHealth * ratio;
@@ -276,6 +323,9 @@ basicUnit.prototype.create = function(){
       this.unit.helperhp = function()
         {
             console.log("hp timer");
+            // Set damage up scale
+            this.healthUpStack++; this.buff_HealthUp.scale.set(this.buffScaleOnStack(this.healthUpStack));
+          
             this.cooldown = game.time.create(this, true);
             this.cooldown.add(10000, this.resethp, this);
              this.cooldown.start();

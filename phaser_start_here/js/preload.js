@@ -15,6 +15,9 @@ preloadState.prototype.preload = function () {
     game.load.image("map", "assets/Map.png");
     game.load.image("HPBar", "assets/HP_Bar.png");
     game.load.image("HPContainer", "assets/HP_Container.png");
+    game.load.image("Buff_DamageUp", "assets/Damage_Up.png");
+    game.load.image("Buff_HealthUp", "assets/HealthUp.png");
+    game.load.image("Buff_SpeedUp", "assets/Speed_Up.png");
     
     // spritesheet
     game.load.spritesheet("murph", "assets/character.png", 32, 48);
