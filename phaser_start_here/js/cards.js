@@ -4,7 +4,7 @@ class Cards extends Phaser.Sprite{
     //constructor
     constructor(game, num, id, state)
     {
-        super(game,num * 240, state.laneHeight * 3, "card" + id );
+        super(game,num * 240, state.laneHeight * 3, "card" + (id%3+2));
         this.gameState = state;
         this.laneHeight = this.gameState.laneHeight;
         this.tempCards = this.gameState.tempCard;
@@ -179,7 +179,7 @@ class Cards extends Phaser.Sprite{
                     this.gameState.enemyUnit.callAll("stopSelecting", null);
                     break;
                 case 9:
-                    consolo.log("FORTIFICATION");
+                    console.log("FORTIFICATION");
                     break;
                 default:
                     
@@ -213,7 +213,7 @@ class Cards extends Phaser.Sprite{
                     this.gameState.enemyUnit.callAll("startSelecting", null);
                     break;
                 case 9:
-                    consolo.log("FORTIFICATION");
+                    console.log("FORTIFICATION");
                     break;
                 default:
                     
@@ -221,7 +221,7 @@ class Cards extends Phaser.Sprite{
         };
      
         // Use ability based on ID
-        Cards.prototype.useAbility = function(unitsGroup, enemiesLaneID) {
+        Cards.prototype.useAbility = function(unitsGroup, enemiesLaneID, pointer) {
             switch (this.id) {
                 case 2:
                     console.log("ATTK");
@@ -250,10 +250,11 @@ class Cards extends Phaser.Sprite{
                     this.gameState.enemyUnit.callAll("killOnLane", null, enemiesLaneID);
                     break;
                 case 8:
-                    this.gameState.enemyUnit.callAll("damage", null, 250);
+                    this.gameState.enemyUnit.callAll("damage", null, 100);
                     break;
                 case 9:
-                    consolo.log("FORTIFICATION");
+                    console.log("FORTIFICATION");
+                    new Wall(game, Math.max(800, pointer.x), this.gameState.laneHeight*(enemiesLaneID+1)-75, this.gameState);
                     break;
                 default:
                     

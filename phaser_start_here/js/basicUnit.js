@@ -26,6 +26,7 @@ basicUnit.prototype.create = function(){
 	this.unit.go_fight = false;
 	this.unit.attacking_enemy = null;
     //this.unit.atkspd = 500; //attack every 0.5 sec
+    this.unit.maxHealth = 500;
 	this.unit.health = 500;
 	this.unit.atkdmg = 50;
 	game.physics.arcade.enable(this.unit);
@@ -81,7 +82,7 @@ basicUnit.prototype.create = function(){
             return 0;
         }
         else {
-            return -(this.maxBuffScale - 1)/amount + this.maxBuffScale;
+            return -(this.maxBuffScale - 0.75)/amount + this.maxBuffScale;
         }
     };
     // Buff animation
@@ -100,9 +101,16 @@ basicUnit.prototype.create = function(){
             buff.scale.set(tempScale);
         }
     };
+    
+    // Debug UI
+    this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
+    this.unit.addChild(this.unit.debugText);
 
     // Override update function
     this.unit.update = function(){
+        
+        // Debug
+        this.debugText.text = this.health + " / " + this.maxHealth;
         
         // Animating changing of buffs
         this.smoothBuffScaleTo(this.buff_DamageUp, this.damageUpTargetScale, this.buffChangeRate * game.time.elapsed);

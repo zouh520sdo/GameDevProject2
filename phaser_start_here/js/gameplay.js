@@ -146,8 +146,12 @@ gameplayState.prototype.create = function() {
         
     }
     
+    // Spawn wall for testing
+//    this.wall =  new Wall(game, 800, this.laneHeight - 75, this);
+//    this.wall =  new Wall(game, 800, this.laneHeight*2 -75, this);
+//    this.wall =  new Wall(game, 800, this.laneHeight*3 -75, this);
     
-};
+}; // End of create
 
 gameplayState.prototype.update = function(){
 	
@@ -393,15 +397,15 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     {
         if ( mouseY <this.laneHeight) {
             console.log("Lane1");
-            Cards.useAbility(this.friendlyUnit1, 0);
+            Cards.useAbility(this.friendlyUnit1, 0, pointer);
         }
         else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
             console.log("Lane2");
-            Cards.useAbility(this.friendlyUnit2, 1);
+            Cards.useAbility(this.friendlyUnit2, 1, pointer);
         }
         else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
             console.log("Lane3");
-            Cards.useAbility(this.friendlyUnit3, 2);
+            Cards.useAbility(this.friendlyUnit3, 2, pointer);
         }
         else if (this.laneHeight*3<=mouseY ) {
             console.log("Cards");

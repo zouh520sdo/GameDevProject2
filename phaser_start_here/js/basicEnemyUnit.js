@@ -31,6 +31,7 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.atkspd = 500; //attack every 0.5 sec
 	//make them weak for now
 	this.unit.health = 200;
+    this.unit.maxHealth = 200;
 	this.unit.atkdmg = 50;
 	game.physics.arcade.enable(this.unit);
 	this.unit.body.velocity.x = 0;
@@ -68,14 +69,21 @@ basicEnemyUnit.prototype.create = function(){
     
     // Kill lane_id matches
     this.unit.killOnLane = function(id) {
-        if (id === this.lane_id) {
-            this.kill();
-            this.parent.remove(this);
+        if (this.lane_id === id) {
+            this.damage(10000);
         }
     };
     
+    // Debug UI
+    this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
+    this.unit.addChild(this.unit.debugText);
+    
     // Override update function
     this.unit.update = function(){
+        
+        // Debug
+        this.debugText.text = this.health + " / " + this.maxHealth;
+        
 		//console.log("unit health: " + this.health);
             
 			//going from (350, 397.5) to (1936, 45) @ 100
