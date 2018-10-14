@@ -68,3 +68,12 @@ Map - Background play map
 =======================
 File Dimensions = 2436x975
 Sprite Dimensions = 2436x975
+____________________________________________________________________________________________________
+
+Wall_SpriteSheet - Contains tree wall sized for walkway and spawn animation
+
+=======================
+File Dimensions = 640x224
+Sprite Dimensions =160x224
+Neutral Wall = [3]
+Spawn Animation = [0, 1, 2, 3]
