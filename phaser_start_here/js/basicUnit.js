@@ -154,7 +154,7 @@ basicUnit.prototype.create = function(){
 			
 			if(this.lane_id === 0){
 				this.body.velocity.y = -135;
-				this.body.velocity.x = 18 * (this.velo_x_mult);
+				this.body.velocity.x = (18 * (this.velo_x_mult)) - 20;
 			}
 			else if(this.lane_id === 1){
 				this.body.velocity.x = 18 * (this.velo_x_mult) + 40;
@@ -164,7 +164,7 @@ basicUnit.prototype.create = function(){
 			//dy = 325
 			else if(this.lane_id === 2){
 				this.body.velocity.y = 135;
-				this.body.velocity.x = 18 * (this.velo_x_mult);
+				this.body.velocity.x = (18 * (this.velo_x_mult)) - 20;
 			}
             this.animations.play("run");
         }
@@ -181,7 +181,7 @@ basicUnit.prototype.create = function(){
         
 		//done shifting into their own lanes
         if(this.lane_id === 0){
-			if(this.body.y <= 72.5){
+			if(this.body.y <= 72.5 - 55){
 				if(this.body.velocity.y !== 0){
 					console.log(this.body.x);
 					this.body.velocity.y = 0;
@@ -203,7 +203,7 @@ basicUnit.prototype.create = function(){
 			}
         }
 		else if(this.lane_id === 2){
-			if(this.body.y >= 722.5){
+			if(this.body.y >= 722.5 - 55){
 				if(this.body.velocity.y !== 0){
 					console.log(this.body.x);
 					this.body.velocity.y = 0;
@@ -267,11 +267,11 @@ basicUnit.prototype.create = function(){
 				else{
 					this.animations.play("run");
 				}
-				if(this.body.x < 1936 && this.body.x === 350 && this.body.y === 397.5){
+				if(this.body.x < 1936 && this.body.x === 350 && this.body.y === (397.5 - 60)){
 					if(this.lane_id === 0){
 						console.log("gg1");
 						this.body.velocity.y = -135;
-						this.body.velocity.x = 18 * (this.velo_x_mult);
+						this.body.velocity.x = 18 * (this.velo_x_mult) - 20;
 					}
 					else if(this.lane_id === 1){
 						console.log("gg2");
@@ -280,7 +280,7 @@ basicUnit.prototype.create = function(){
 					else if(this.lane_id === 2){
 						console.log("gg3");
 						this.body.velocity.y = 135;
-						this.body.velocity.x = 18 * (this.velo_x_mult);
+						this.body.velocity.x = 18 * (this.velo_x_mult) - 20;
 					}
 				}
 				else{

@@ -52,13 +52,13 @@ gameplayState.prototype.create = function() {
 	for(this.counter = 0; this.counter < 6; this.counter += 1){
 		//phase 1 - 1 unit per 5 sec
 		if(this.counter === 0){
-			for(this.c1 = 0; this.c1 < 6; this.c1 += 1){
-				this.spawn_delay = 5000 * this.c1;
+			//for(this.c1 = 0; this.c1 < 6; this.c1 += 1){
+				this.spawn_delay = 0 ;//* this.c1;
 				//console.log("delay: " + this.spawn_delay);
 				this.spawnTimer.add(this.spawn_delay, this.spawnEnemyEvent1, this);
-			}
+				//}
 		}
-		
+		/*
 		//phase 2 - 1 unit per 3 sec
 		else if(this.counter === 1){
 			for(this.c2 = 0; this.c2 < 10; this.c2 += 1){
@@ -95,7 +95,7 @@ gameplayState.prototype.create = function() {
 				this.spawnTimer.add(this.spawn_delay6, this.spawnEnemyEvent3, this);
 			}
 		}
-		
+		*/
 	}
 	
 	this.gameplayTimer.add(180000, this.gotoGameWinState, this);
@@ -109,7 +109,7 @@ gameplayState.prototype.create = function() {
     
     // Set up asherah pole
     this.asherahPole = new AsherahPole(game, 120, this.laneHeight*2 - 45, this);
-   
+    game.physics.arcade.enable(this.asherahPole);
     // Add input over and input out callback function
     
     // Timer UI
@@ -161,10 +161,18 @@ gameplayState.prototype.update = function(){
     game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit, this.fight ,null, this);
 	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit, this.fight ,null, this);
 	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit, this.fight ,null, this);
-	
+	game.physics.arcade.overlap(this.enemyUnit, this.asherahPole, this.attackPole, null, this);
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
     
 };
+
+gameplayState.prototype.attackPole = function(pole, enemy){
+	if(!(enemy.in_fight) && !(enemy.attacking_pole)){
+		console.log("start attacking pole");
+		enemy.attacking_enemy = pole;
+		enemy.go_atk_pole = true;
+	}
+}
 /*
 	parameters:
 		group - the friendlyUnit group this unit would join
@@ -176,13 +184,13 @@ gameplayState.prototype.update = function(){
 gameplayState.prototype.addUnit = function(mult) {
 	//units would spawn from (350, 315)
 	if(mult === 0){
-		new basicUnit(this.friendlyUnit1 , 350, 397.5, mult);
+		new basicUnit(this.friendlyUnit1 , 350, 397.5 - 60, mult);
 	}
 	else if(mult === 1){
-		new basicUnit(this.friendlyUnit2 , 350, 397.5, mult);
+		new basicUnit(this.friendlyUnit2 , 350, 397.5 - 60, mult);
 	}
 	else if(mult === 2){
-		new basicUnit(this.friendlyUnit3 , 350, 397.5, mult);
+		new basicUnit(this.friendlyUnit3 , 350, 397.5 - 60, mult);
 	}
 	
 };
@@ -194,13 +202,13 @@ gameplayState.prototype.addEnemy = function(mult) {
 	//console.log("time elapsed in phase: " + this.enemyTimer.elapsed);
 	console.log("enemy generated on lane" + (mult+1));
 	if(mult === 0){
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 55, mult);
 	}
 	else if(mult === 1){
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 + this.laneHeight, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 397.5 - 60, mult);
 	}
 	else if(mult === 2){
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 + 2 * this.laneHeight, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 722.5 - 55, mult);
 	}
 };
 
