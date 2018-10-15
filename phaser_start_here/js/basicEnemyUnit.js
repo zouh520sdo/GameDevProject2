@@ -95,15 +95,18 @@ basicEnemyUnit.prototype.create = function(){
     };
     
     // Debug UI
-    this.isDebug = false;
-    this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
-    this.unit.addChild(this.unit.debugText);
-    
+    this.unit.isDebug = false;
+    if (this.unit.isDebug) {
+        this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
+        this.unit.addChild(this.unit.debugText);
+    }
     // Override update function
     this.unit.update = function(){
         
         // Debug
-        this.debugText.text = this.health + " / " + this.maxHealth;
+        if (this.isDebug) {
+            this.debugText.text = this.health + " / " + this.maxHealth;
+        }
         
 		//console.log("unit health: " + this.health);
             
