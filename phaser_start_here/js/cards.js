@@ -178,6 +178,9 @@ class Cards extends Phaser.Sprite{
 					
 					*/
 					unitsGroup.children[i].extra_spd += 50;
+                    if (!unitsGroup.children[i].in_fight && !unitsGroup.children[i].is_Stucked) {
+                        unitsGroup.children[i].body.velocity.x += 50;
+                    }
                     console.log(unitsGroup.children[i].body.velocity.x);
 
                     unitsGroup.children[i].helperspeed();
