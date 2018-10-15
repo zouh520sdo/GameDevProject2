@@ -46,7 +46,8 @@ preloadState.prototype.preload = function () {
     game.load.spritesheet("pole", "assets/AsherahPole_SpriteSheet.png", 320, 640);
     game.load.spritesheet("invader_archer", "assets/Invader_Archer_SpriteSheet.png", 256, 180);
     game.load.spritesheet("wall", "assets/Wall_SpriteSheet.png", 160, 224);
-    
+    game.load.spritesheet("healing", "assets/Healing_SpriteSheet.png", 256, 192);
+    game.load.spritesheet("meteor", "assets/Meteor_SpriteSheet.png", 440, 310);  
 };
 
 preloadState.prototype.create = function () {
