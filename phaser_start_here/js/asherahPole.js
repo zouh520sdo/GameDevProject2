@@ -109,7 +109,7 @@ class AsherahPole extends Phaser.Sprite {
     }
     
     addEnergyonKill() {
-        this.addEnergy(30);
+        this.addEnergy(10);
     };
     update() {
         super.update();
