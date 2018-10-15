@@ -64,6 +64,19 @@ basicUnit.prototype.create = function(){
         }
     };
     
+    // For healing effect
+    this.unit.healingMask = game.add.sprite(85,195,"healing");
+    this.unit.healingMask.anchor.set(0.5,1);
+    this.unit.healingMask.animations.add("heal", [0,1,2,3,4,5],10,false);
+    this.unit.healingMask.alpha = 0;
+    
+    this.unit.addChild(this.unit.healingMask);
+    this.unit.healAnim = function(amount) {
+        this.heal(amount);
+        this.healingMask.alpha = 1;
+        this.healingMask.animations.play("heal");
+    }
+    
     // For selecting effect
     this.unit.isSelected = false;
     this.unit.selectingTime = 0;
@@ -137,6 +150,12 @@ basicUnit.prototype.create = function(){
         // Debug
         if (this.isDebug) {
             this.debugText.text = this.health + " / " + this.maxHealth;
+        }
+        
+        // Hide healing effect
+        if (this.healingMask.animations.currentAnim.isFinished) {
+            console.log("Heallllllllllllll Done.");
+            this.healingMask.alpha = 0;
         }
         
         // Animating changing of buffs
