@@ -18,9 +18,9 @@ preloadState.prototype.preload = function () {
     game.load.image("Buff_DamageUp", "assets/Damage_Up.png");
     game.load.image("Buff_HealthUp", "assets/HealthUp.png");
     game.load.image("Buff_SpeedUp", "assets/Speed_Up.png");
-    game.load.image("tutor1", "assets/tutorial1.png");
-    game.load.image("tutor2", "assets/tutorial2.png");
-    game.load.image("tutor3", "assets/tutorial3.png");
+    game.load.image("tutorial1", "assets/tutorial1.png");
+    game.load.image("tutorial2", "assets/tutorial2.png");
+    game.load.image("tutorial3", "assets/tutorial3.png");
     
     
     //Cards 
