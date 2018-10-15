@@ -121,4 +121,7 @@ class AsherahPole extends Phaser.Sprite {
             // Display defeated UI
         }
     };
+	damaged(dmg) {
+		this.health -= dmg;
+	}
 };

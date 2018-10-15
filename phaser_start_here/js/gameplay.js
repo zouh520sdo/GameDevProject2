@@ -109,7 +109,7 @@ gameplayState.prototype.create = function() {
     
     // Set up asherah pole
     this.asherahPole = new AsherahPole(game, 120, this.laneHeight*2 - 45, this);
-   
+    game.physics.arcade.enable(this.asherahPole);
     // Add input over and input out callback function
     
     // Timer UI
@@ -182,10 +182,18 @@ gameplayState.prototype.update = function(){
     game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit, this.fight ,null, this);
 	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit, this.fight ,null, this);
 	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit, this.fight ,null, this);
-	
+	game.physics.arcade.overlap(this.enemyUnit, this.asherahPole, this.attackPole, null, this);
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
     
 };
+
+gameplayState.prototype.attackPole = function(pole, enemy){
+	if(!(enemy.in_fight) && !(enemy.attacking_pole)){
+		console.log("start attacking pole");
+		enemy.attacking_enemy = pole;
+		enemy.go_atk_pole = true;
+	}
+}
 /*
 	parameters:
 		group - the friendlyUnit group this unit would join
@@ -197,13 +205,13 @@ gameplayState.prototype.update = function(){
 gameplayState.prototype.addUnit = function(mult) {
 	//units would spawn from (350, 315)
 	if(mult === 0){
-		new basicUnit(this.friendlyUnit1 , 350, 397.5, mult);
+		new basicUnit(this.friendlyUnit1 , 350, 397.5 - 60, mult);
 	}
 	else if(mult === 1){
-		new basicUnit(this.friendlyUnit2 , 350, 397.5, mult);
+		new basicUnit(this.friendlyUnit2 , 350, 397.5 - 60, mult);
 	}
 	else if(mult === 2){
-		new basicUnit(this.friendlyUnit3 , 350, 397.5, mult);
+		new basicUnit(this.friendlyUnit3 , 350, 397.5 - 60, mult);
 	}
 	
 };
@@ -215,13 +223,13 @@ gameplayState.prototype.addEnemy = function(mult) {
 	//console.log("time elapsed in phase: " + this.enemyTimer.elapsed);
 	console.log("enemy generated on lane" + (mult+1));
 	if(mult === 0){
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 55, mult);
 	}
 	else if(mult === 1){
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 + this.laneHeight, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 397.5 - 60, mult);
 	}
 	else if(mult === 2){
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 + 2 * this.laneHeight, mult);
+		new basicEnemyUnit(this.enemyUnit, 2500, 722.5 - 55, mult);
 	}
 };
 

@@ -29,6 +29,8 @@ basicEnemyUnit.prototype.create = function(){
 	this.unit.go_fight = false;
 	this.unit.attacking_enemy = null;
     this.unit.atkspd = 500; //attack every 0.5 sec
+	this.unit.attacking_pole = false;
+	this.unit.go_atk_pole = false;
 	//make them weak for now
 	this.unit.health = 200;
     this.unit.maxHealth = 200;
@@ -133,22 +135,22 @@ basicEnemyUnit.prototype.create = function(){
            
 		//turn towards the pole
         if(this.lane_id === 0 && !(this.in_lane) && !(this.in_shift)){
-			if(this.body.x <= 548.133333333334){
+			if(this.body.x <= 498.48533333333285){
 				this.in_shift = true;
 				this.body.velocity.y = 135;
-				this.body.velocity.x = -18 * (this.velo_x_mult);
+				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
 			}
         }
 		else if(this.lane_id === 2 && !(this.in_lane) && !(this.in_shift)){
-			if(this.body.x <= 548.133333333334){
+			if(this.body.x <= 502.63876923076873){
 				this.in_shift = true;
 				this.body.velocity.y = -135;
-				this.body.velocity.x = -18 * (this.velo_x_mult);
+				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
 			}
 		}
 		//now at center lane
 		//this section should also be triggered once
-		if(this.body.y <= 402.5 && this.body.y >= 392.5 && this.lane_id !== 1 && !(this.in_lane)){
+		if(this.body.y <= (402.5 - 60) && this.body.y >= (392.5 - 60) && this.lane_id !== 1 && !(this.in_lane)){
 			this.body.velocity.y = 0;
 			this.body.velocity.x = -18 * (this.velo_x_mult) - 40;
 			this.in_lane = true;
@@ -187,7 +189,11 @@ basicEnemyUnit.prototype.create = function(){
 			this.go_fight = false;
 		}
 		
-		
+		//go attack the pole
+		if(this.go_atk_pole){
+			this.go_atk_pole = false;
+			this.start_atk_pole();
+		}
 		
 		//killed
         if(this.health <= 0 && (this.animations.currentAnim.name === "death") && this.animations.currentAnim.isFinished){
@@ -211,12 +217,21 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.enter_fight = function(){
 		this.animations.play("combat");
     	this.in_fight = true;
-        
+        this.attacking_pole = false;
 		this.prev_velo_x = this.body.velocity.x;
 		this.prev_velo_y = this.body.velocity.y;
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
     }
+	this.unit.start_atk_pole = function(){
+		this.in_fight = false;
+		this.attacking_pole = true;
+		this.animations.play("combat");
+		this.prev_velo_x = 0;
+		this.prev_velo_y = 0;
+		this.body.velocity.x = 0;
+		this.body.velocity.y = 0;
+	}
     // Play run animation
     this.unit.animations.play("spawn");
 };
