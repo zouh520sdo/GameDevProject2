@@ -374,10 +374,10 @@ basicUnit.prototype.create = function(){
         }
 		*/
         
-        this.extra_spd -= 50;
+        this.extra_spd -= 80;
       
         if (!this.in_fight && !this.is_Stucked) {
-            this.body.velocity.x = Math.max(0, this.body.velocity.x - 50);
+            this.body.velocity.x = Math.max(0, this.body.velocity.x - 80);
         }
         
     };
