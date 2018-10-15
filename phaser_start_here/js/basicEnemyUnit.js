@@ -95,6 +95,7 @@ basicEnemyUnit.prototype.create = function(){
     };
     
     // Debug UI
+    this.isDebug = false;
     this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
     this.unit.addChild(this.unit.debugText);
     

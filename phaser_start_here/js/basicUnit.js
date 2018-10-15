@@ -125,14 +125,19 @@ basicUnit.prototype.create = function(){
     };
     
     // Debug UI
-    this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
-    this.unit.addChild(this.unit.debugText);
+    this.unit.isDebug = false;
+    if (this.unit.isDebug) {
+        this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
+        this.unit.addChild(this.unit.debugText);
+    }
 
     // Override update function
     this.unit.update = function(){
         
         // Debug
-        this.debugText.text = this.health + " / " + this.maxHealth;
+        if (this.isDebug) {
+            this.debugText.text = this.health + " / " + this.maxHealth;
+        }
         
         // Animating changing of buffs
         this.smoothBuffScaleTo(this.buff_DamageUp, this.damageUpTargetScale, this.buffChangeRate * game.time.elapsed);
