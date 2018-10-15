@@ -43,7 +43,7 @@ class AsherahPole extends Phaser.Sprite {
         if (this.energy >= this.fullEnergy) {
             console.log(this.gamestate.tempCard.children[1]);
         
-            if(this.gamestate.tempCard.length < 8 )
+            if(this.gamestate.tempCard.length < 6 )
             {
                 this.energy = 0;
                 

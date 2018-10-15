@@ -68,6 +68,25 @@ basicEnemyUnit.prototype.create = function(){
         }
     };
     
+    // For damage all effect
+    this.unit.meteorMask = game.add.sprite(140,200,"meteor");
+    this.unit.meteorMask.origin = [-985,-925];
+    this.unit.meteorMask.target = [140, 200];
+    this.unit.meteorMask.speed = 200;
+    this.unit.meteorMask.anchor.set(0.5,1);
+    this.unit.meteorMask.animations.add("flying",[0,1,2],8,true);
+    this.unit.meteorMask.animations.add("impact", [3,4,5,6,7],8,false);
+    this.unit.meteorMask.alpha = 0;
+    
+    this.unit.addChild(this.unit.meteorMask);
+    this.unit.meteorDamageAnim = function(amount) {
+        //this.damage(amount);
+        this.meteorMask.position.x = this.meteorMask.origin[0];
+        this.meteorMask.position.y = this.meteorMask.origin[1];
+        this.meteorMask.alpha = 1;
+        this.meteorMask.animations.play("flying");
+    }
+    
     // For selecting effect
     this.unit.isSelected = false;
     this.unit.selectingTime = 0;
@@ -118,6 +137,11 @@ basicEnemyUnit.prototype.create = function(){
 			//going from (350, 397.5) to (1936, 45) @ 100
 			//dx = 1486
 			//dy = 270
+        
+        // Hide healing effect
+        if (this.meteorMask.animations.currentAnim.isFinished) {
+            this.meteorMask.alpha = 0;
+        }
         
         // Changing alpha if this is selected
         if (this.isSelected) {
