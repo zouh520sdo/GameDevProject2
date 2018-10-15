@@ -132,7 +132,28 @@ gameplayState.prototype.create = function() {
     this.permcard.add(permycard);
     for(let i = 2; i < 7; i++)
     {
-        let rantemp = this.game.rnd.integerInRange(2,4);
+        let rantemp = this.game.rnd.integerInRange(2,9);
+      
+        // random card category
+        let prob = Math.random();
+        if (prob < 0.6) {
+            // Silver card
+            console.log("Get silver card");
+            rantemp = Cards.category.silver[game.rnd.integerInRange(0, Cards.category.silver.length-1)];
+                    console.log(rantemp);
+        }
+        else if (prob < 0.9){
+            console.log("Get gold card");
+            rantemp = Cards.category.gold[game.rnd.integerInRange(0, Cards.category.gold.length-1)];
+                    console.log(rantemp);
+            // Gold card
+        }
+        else{
+            console.log("Get diamond card");
+            rantemp = Cards.category.diamond[game.rnd.integerInRange(0, Cards.category.diamond.length-1)];
+            console.log(rantemp);
+            // Diamond card
+        }
         let cardtemp = new Cards(this.game, i, rantemp, this);
         cardtemp.inputEnabled = true;
         cardtemp.enableBody = true;
@@ -424,10 +445,10 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
             for(i= Cards.num -1; i < this.tempCard.length; i++)
             {
                //game.physics.arcade.moveToXY(this.tempCard.children[i], this.tempCard.children[i].x -240, this.tempCard.children[i].y, 5, 100);
-                this.tempCard.children[i].x -= 240;
+                this.tempCard.children[i].x -= 300;
                 this.tempCard.children[i].num -= 1;
-                this.tempCard.children[i].savedx -= 240;
-                this.tempCard.children[i].lastx -= 240;
+                this.tempCard.children[i].savedx -= 300;
+                this.tempCard.children[i].lastx -= 300;
                 //this.tempCard[i].num -= 1;
              
                 //this.tempCard.children[i].shift();
