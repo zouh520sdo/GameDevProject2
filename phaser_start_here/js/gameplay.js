@@ -11,7 +11,7 @@ gameplayState.prototype.create = function() {
     
     // Turn on physics before anything else
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    
+  
     // Set up heights for different area
 	//1125-150 = 975
 	//gap = 72.5
@@ -19,6 +19,7 @@ gameplayState.prototype.create = function() {
 	//325/2 = 162.5...
 	
     this.cardAreaHeight = 150;
+ 
     this.laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
     
     // debug line
@@ -30,7 +31,7 @@ gameplayState.prototype.create = function() {
     
     // Create map
     this.map = game.add.sprite(0,0,"map");
-    
+    this.deck = game.add.sprite(0, game.world.height - this.cardAreaHeight, "deck");
 	//groups of friendly units on lanes
 	this.friendlyUnit1 = game.add.group();
 	this.friendlyUnit2 = game.add.group();

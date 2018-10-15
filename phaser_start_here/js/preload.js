@@ -34,11 +34,13 @@ preloadState.prototype.preload = function () {
      game.load.image("Diamond_DamageAll", "assets/Diamond_DamageAll.png");
      game.load.image("Diamond_HealAll", "assets/Diamond_HealAll.png");
     
+    game.load.image("deck", "assets/Card_desk.png")
     
     
     
     
-    game.load.image("titlescreen", "assets/titlescreen.png");
+    
+    game.load.image("titlescreen", "assets/titlescreen2.png");
     // spritesheet
     game.load.spritesheet("murph", "assets/character.png", 32, 48);
     game.load.spritesheet("defender", "assets/Defender_SpriteSheet2.png", 256, 180);
