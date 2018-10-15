@@ -52,11 +52,11 @@ gameplayState.prototype.create = function() {
 	for(this.counter = 0; this.counter < 6; this.counter += 1){
 		//phase 1 - 1 unit per 5 sec
 		if(this.counter === 0){
-			//for(this.c1 = 0; this.c1 < 6; this.c1 += 1){
-				this.spawn_delay = 0 ;//* this.c1;
+			for(this.c1 = 0; this.c1 < 6; this.c1 += 1){
+				this.spawn_delay = 5000 * this.c1;
 				//console.log("delay: " + this.spawn_delay);
 				this.spawnTimer.add(this.spawn_delay, this.spawnEnemyEvent1, this);
-				//}
+			}
 		}
 		
 		//phase 2 - 1 unit per 3 sec
