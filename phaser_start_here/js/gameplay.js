@@ -58,7 +58,7 @@ gameplayState.prototype.create = function() {
 				this.spawnTimer.add(this.spawn_delay, this.spawnEnemyEvent1, this);
 				//}
 		}
-		/*
+		
 		//phase 2 - 1 unit per 3 sec
 		else if(this.counter === 1){
 			for(this.c2 = 0; this.c2 < 10; this.c2 += 1){
@@ -95,7 +95,7 @@ gameplayState.prototype.create = function() {
 				this.spawnTimer.add(this.spawn_delay6, this.spawnEnemyEvent3, this);
 			}
 		}
-		*/
+		
 	}
 	
 	this.gameplayTimer.add(180000, this.gotoGameWinState, this);
