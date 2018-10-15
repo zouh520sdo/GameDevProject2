@@ -11,6 +11,14 @@ preloadState.prototype.preload = function () {
     game.load.image("card2", "assets/card2.png");
     game.load.image("card3", "assets/card3.png");
     game.load.image("card4", "assets/card4.png");
+    game.load.image("arrow", "assets/Arrow_Sprite.png");
+    game.load.image("map", "assets/Map.png");
+    game.load.image("HPBar", "assets/HP_Bar.png");
+    game.load.image("HPContainer", "assets/HP_Container.png");
+    game.load.image("Buff_DamageUp", "assets/Damage_Up.png");
+    game.load.image("Buff_HealthUp", "assets/HealthUp.png");
+    game.load.image("Buff_SpeedUp", "assets/Speed_Up.png");
+    
     game.load.image("titlescreen", "assets/titlescreen.png");
     // spritesheet
     game.load.spritesheet("murph", "assets/character.png", 32, 48);
@@ -18,7 +26,8 @@ preloadState.prototype.preload = function () {
     game.load.spritesheet("invader", "assets/Invader_SpriteSheet2.png", 256, 180);
     game.load.spritesheet("pole", "assets/AsherahPole_SpriteSheet.png", 320, 640);
     game.load.spritesheet("invader_archer", "assets/Invader_Archer_SpriteSheet.png", 256, 180);
-    game.load.image("arrow", "assets/Arrow_Sprite.png");
+    game.load.spritesheet("wall", "assets/Wall_SpriteSheet.png", 160, 224);
+    
 };
 
 preloadState.prototype.create = function () {

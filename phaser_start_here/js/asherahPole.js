@@ -23,10 +23,19 @@ class AsherahPole extends Phaser.Sprite {
         this.chargeRateByKill = 10;
         
         // Health
-        this.health = 5000;
+        this.health = 1000;
+        this.maxHealth = 1000;
         
-        // Debug
-        this.debugText = game.add.text(0,this.y,"debug", {fontSize:"32px", fill:"#ffffff"});
+        // Health bar
+        this.HPContainer = game.add.sprite(0, 0, "HPContainer");
+        this.HPBar = game.add.sprite(0, 0, "HPBar");
+        this.HPBar.alignIn(this.HPContainer, Phaser.CENTER);
+        this.HPContainer.addChild(this.HPBar);
+        this.HPBar.setScaleMinMax(0.000001, 1);
+        this.HPContainer.scale.set(1, 0.75);
+        this.addChild(this.HPContainer);
+        this.HPContainer.x = 6;
+        this.HPContainer.y = -this.height*1.55;
     };
     
     // Callback function for tapping pole
@@ -38,20 +47,22 @@ class AsherahPole extends Phaser.Sprite {
             {
                 this.energy = 0;
                 
+                let rantemp = this.game.rnd.integerInRange(2,4);
                 // random card category
-                if (Math.random() < 0.8) {
+                if (Math.random() < 0.1) {
                     // Silver card
                     console.log("Get silver card");
-                    console.log(game.rnd.integerInRange(0, Cards.category.silver.length-1));
+                    rantemp = Cards.category.silver[game.rnd.integerInRange(0, Cards.category.silver.length-1)];
+                    console.log(rantemp);
                 }
                 else {
                     console.log("Get gold card");
-                    console.log(game.rnd.integerInRange(0, Cards.category.gold.length-1));
+                    rantemp = Cards.category.gold[game.rnd.integerInRange(0, Cards.category.gold.length-1)];
+                    console.log(rantemp);
                     // Gold card
                 }
                 
                 
-                let rantemp = this.game.rnd.integerInRange(2,4);
                 let cardtemp = new Cards(this.game, this.gamestate.tempCard.length + 2, rantemp, this.gamestate);
                 cardtemp.inputEnabled = true;
                 cardtemp.enableBody = true;
@@ -95,7 +106,8 @@ class AsherahPole extends Phaser.Sprite {
         // Adding energy by time
         this.addEnergy(this.chargeRateByTime * this.game.time.elapsed / 1000);
         
-        this.debugText.text = this.isFull();
+        // Update health bar
+        this.HPBar.scale.set(this.health/this.maxHealth, 1);
         
         if (this.health <= 0) {
             // Display defeated UI

@@ -1,7 +1,7 @@
 let gameplayState = function(){
     this.score = 0;
     this.laneHeight = 0;
-    this.selectedCard = null;
+    this.selectedLaneID = 3; //[0,3] Card area for default
     this.asherahPole = null;
 };
 
@@ -13,6 +13,11 @@ gameplayState.prototype.create = function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
     // Set up heights for different area
+	//1125-150 = 975
+	//gap = 72.5
+	//975/3 = 325 (lane height)
+	//325/2 = 162.5...
+	
     this.cardAreaHeight = 150;
     this.laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
     
@@ -23,6 +28,9 @@ gameplayState.prototype.create = function() {
     
     console.log("Lane height " + this.laneHeight);
     
+    // Create map
+    this.map = game.add.sprite(0,0,"map");
+    
 	//groups of friendly units on lanes
 	this.friendlyUnit1 = game.add.group();
 	this.friendlyUnit2 = game.add.group();
@@ -32,51 +40,75 @@ gameplayState.prototype.create = function() {
 	this.friendlyUnit2.enableBody = true;
 	this.friendlyUnit3.enableBody = true;
 	
-	//groups of enemy units on lanes
-	this.enemyUnit1 = game.add.group();
-	this.enemyUnit2 = game.add.group();
-	this.enemyUnit3 = game.add.group();
+	//group of enemy units on lanes
+	this.enemyUnit = game.add.group();
 	
-	this.enemyUnit1.enableBody = true;
-	this.enemyUnit2.enableBody = true;
-	this.enemyUnit3.enableBody = true;
-
-	
+	this.enemyUnit.enableBody = true;
 	
     // Set up timer
+	
     this.gameplayTimer = game.time.create(true);
-    this.gameplayTimer.add(180000, this.gotoGameWinState, this);
+    this.spawnTimer = game.time.create(true);
+	for(this.counter = 0; this.counter < 6; this.counter += 1){
+		//phase 1 - 1 unit per 5 sec
+		if(this.counter === 0){
+			for(this.c1 = 0; this.c1 < 6; this.c1 += 1){
+				this.spawn_delay = 5000 * this.c1;
+				//console.log("delay: " + this.spawn_delay);
+				this.spawnTimer.add(this.spawn_delay, this.spawnEnemyEvent1, this);
+			}
+		}
+		
+		//phase 2 - 1 unit per 3 sec
+		else if(this.counter === 1){
+			for(this.c2 = 0; this.c2 < 10; this.c2 += 1){
+				this.spawn_delay2 = 30000 + 3000 * this.c2;
+				this.spawnTimer.add(this.spawn_delay2, this.spawnEnemyEvent1, this);
+			}
+		}
+		//phase 3 - 2 units per 5 sec
+		else if(this.counter === 2){
+			for(this.c3 = 0; this.c3 < 6; this.c3 += 1){
+				this.spawn_delay3 = 60000 + 5000 * this.c3;
+				this.spawnTimer.add(this.spawn_delay3, this.spawnEnemyEvent2, this);
+			}
+		}
+		//phase 4 - 1 unit per 2 sec
+		
+		else if(this.counter === 3){
+			for(this.c4 = 0; this.c4 < 15; this.c4 += 1){
+				this.spawn_delay4 = 90000 + 2000 * this.c4;
+				this.spawnTimer.add(this.spawn_delay4, this.spawnEnemyEvent1, this);
+			}
+		}
+		//phase 5 - 2 units per 3 sec
+		else if(this.counter === 4){
+			for(this.c5 = 0; this.c5 < 10; this.c5 += 1){
+				this.spawn_delay5 = 120000 + 3000 * this.c5;
+				this.spawnTimer.add(this.spawn_delay5, this.spawnEnemyEvent2, this);
+			}
+		}
+		//phase 6 - 3 units per 3 sec
+		else if(this.counter === 5){
+			for(this.c6 = 0; this.c6 < 10; this.c6 += 1){
+				this.spawn_delay6 = 150000 + 3000 * this.c6;
+				this.spawnTimer.add(this.spawn_delay6, this.spawnEnemyEvent3, this);
+			}
+		}
+		
+	}
+	
+	this.gameplayTimer.add(180000, this.gotoGameWinState, this);
+	this.spawnTimer.start();
     this.gameplayTimer.start();
-    
-   
-    
-    //this.gameplayTimer
-    
-    //game.add.sprite(0,0, "sky");
-    
-    // Platforms
-	/*
-    this.platforms = game.add.group();
-    this.platforms.enableBody = true;
-    
-    // Ground
-    let ground = this.platforms.create(0, game.world.height - 64, "platform");
-    ground.scale.setTo(2,2);
-    ground.body.immovable = true;
-    
-    // Platforms
-    let ledge = this.platforms.create(400, 400, "platform");
-    ledge.body.immovable = true;
-    ledge = this.platforms.create(-150, 250, "platform");
-    ledge.body.immovable = true;
-    */
+  
     
     //Card group have to be declared first;
     this.tempCard = game.add.group();
     this.tempCard.enableBody = true;
     
     // Set up asherah pole
-    this.asherahPole = new AsherahPole(game, 0, this.laneHeight*2, this);
+    this.asherahPole = new AsherahPole(game, 120, this.laneHeight*2 - 45, this);
    
     // Add input over and input out callback function
     
@@ -114,73 +146,64 @@ gameplayState.prototype.create = function() {
         
     }
     
-    //Card Drag
+    // Spawn wall for testing
+//    this.wall =  new Wall(game, 1800, this.laneHeight - 75, this);
+//    this.wall =  new Wall(game, 1800, this.laneHeight*2 -75, this);
+//    this.wall =  new Wall(game, 1800, this.laneHeight*3 -75, this);
+//    this.wall =  new Wall(game, 1200, this.laneHeight - 75, this);
+//    this.wall =  new Wall(game, 1200, this.laneHeight*2 -75, this);
+//    this.wall =  new Wall(game, 1200, this.laneHeight*3 -75, this);
     
-    /*
-    this.cursors = game.input.keyboard.createCursorKeys();
-};
-    
-    // Score UI
-    this.scoreText = game.add.text(16,16,"Score: 0", {fontSize:"32px", fill:"#ffffff"});
-    */
-	//add units to lanes by pressing Q,W,E (testing purpose)
-	
-	//looks like we don't need them now
-	/*
-    this.Qkey = game.input.keyboard.addKey(Phaser.Keyboard.Q);
-	this.Wkey = game.input.keyboard.addKey(Phaser.Keyboard.W);
-	this.Ekey = game.input.keyboard.addKey(Phaser.Keyboard.E);
-	*/
-};
+}; // End of create
 
 gameplayState.prototype.update = function(){
 	
-    // Update group
-//    this.updateGroup(this.friendlyUnit1);
-//	this.updateGroup(this.friendlyUnit2);
-//	this.updateGroup(this.friendlyUnit3);
-    
-	//faito
-	//simply do health - enemy_damage
-    game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit1, this.fight ,null, this);
-	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit2, this.fight ,null, this);
-	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit3, this.fight ,null, this);
+    game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit, this.fight ,null, this);
+	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit, this.fight ,null, this);
+	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit, this.fight ,null, this);
 	
-	/*
-	if(this.Qkey.isDown){
-		console.log("q pressed");
-		this.addUnit(this.friendlyUnit1, 0);
-	}
-	if(this.Wkey.isDown){
-		console.log("w pressed");
-		this.addUnit(this.friendlyUnit2, 1);
-	}
-	if(this.Ekey.isDown){
-		console.log("w pressed");
-		this.addUnit(this.friendlyUnit3, 2);
-	}
-	*/
-	this.laneUpdate(this.friendlyUnit1);
-	this.laneUpdate(this.friendlyUnit2);
-	this.laneUpdate(this.friendlyUnit3);
-	//this.updateCards(this.tempCard);
-
-    // Update timer
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
-	
     
 };
 /*
 	parameters:
 		group - the friendlyUnit group this unit would join
-		mult - a variable used to control spawning position
+		mult - lane id
 
 	units are actually added into the group when the constructor of 
 	basicUnit is called
 */
-gameplayState.prototype.addUnit = function(group, mult) {
-	new basicUnit(group , 0, 40 + this.laneHeight*mult);
+gameplayState.prototype.addUnit = function(mult) {
+	//units would spawn from (350, 315)
+	if(mult === 0){
+		new basicUnit(this.friendlyUnit1 , 350, 397.5, mult);
+	}
+	else if(mult === 1){
+		new basicUnit(this.friendlyUnit2 , 350, 397.5, mult);
+	}
+	else if(mult === 2){
+		new basicUnit(this.friendlyUnit3 , 350, 397.5, mult);
+	}
+	
 };
+/*
+	similar to addUnit
+*/
+
+gameplayState.prototype.addEnemy = function(mult) {
+	//console.log("time elapsed in phase: " + this.enemyTimer.elapsed);
+	console.log("enemy generated on lane" + (mult+1));
+	if(mult === 0){
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5, mult);
+	}
+	else if(mult === 1){
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 + this.laneHeight, mult);
+	}
+	else if(mult === 2){
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 + 2 * this.laneHeight, mult);
+	}
+};
+
 
 gameplayState.prototype.render = function(){
     game.debug.geom(this.line1);
@@ -196,31 +219,65 @@ gameplayState.prototype.StartCooldown = function(Cards)
 {
     Cards.activated = false;
 }
-// On input down on card
-gameplayState.prototype.showHideCardInfo = function(sprite, pointer) {
-    
-    this.cardInfoText.alpha = 1;
-    
-    if (this.selectedCard === sprite) {
-        // hide card's info
-        this.cardInfoText.alpha = 0;
-        console.log("Hide card info");
-        this.selectedCard = null;
-    }
-    else {
-        
-        if (this.selectedCard !== null) {
-            // place it back(maybe) or other necessary changes for the original selected card
-        }
-        // Show currect selected card's info
-        this.cardInfoText.alpha = 1;
-        
-        // Change text based the sprite player is selecting
-        console.log("Show card info");
-        
-        this.selectedCard = sprite;
-    }
-};
+
+/*
+	spawn 1 enemy at random lane
+*/
+
+gameplayState.prototype.spawnEnemyEvent1 = function(){
+	console.log("spawn triggered");
+	this.something2 = 0;
+	for(this.something2 = 0; this.something2 < 1; this.something2 += 1){
+		this.lane_num = this.randomInt();
+		console.log("the random number is: " + this.lane_num);
+		if(this.lane_num === 0){
+			this.addEnemy(0);
+		}
+		else if(this.lane_num === 1){
+			this.addEnemy(1);
+		}
+		else if(this.lane_num === 2){
+			this.addEnemy(2);
+		}
+	}
+}
+
+//spawn 2 enemies on two different random lanes
+
+gameplayState.prototype.spawnEnemyEvent2 = function(){
+	console.log("spawn triggered");
+	this.something2 = 0;
+	this.prev_num = 3;
+	for(this.something2 = 0; this.something2 < 2; this.something2 += 1){
+		this.lane_num = this.randomInt();
+		while(this.lane_num === this.prev_num){
+			this.lane_num = this.randomInt();
+		}
+		this.prev_num = this.lane_num;
+		console.log("the random number is: " + this.lane_num);
+		if(this.lane_num === 0){
+			this.addEnemy(0);
+		}
+		else if(this.lane_num === 1){
+			this.addEnemy(1);
+		}
+		else if(this.lane_num === 2){
+			this.addEnemy(2);
+		}
+	}
+}
+
+//spawn 3 enemies (on all lanes)
+
+gameplayState.prototype.spawnEnemyEvent3 = function(){
+	console.log("spawn triggered");
+	this.something2 = 0;
+	for(this.something2 = 0; this.something2 < 3; this.something2 += 1){
+		this.addEnemy(0);
+		this.addEnemy(1);
+		this.addEnemy(2);
+	}
+}
 
 // Card draging effect
 gameplayState.prototype.dragCardStart = function(Cards, pointer, dragX, dragY) {
@@ -228,7 +285,46 @@ gameplayState.prototype.dragCardStart = function(Cards, pointer, dragX, dragY) {
 };
 
 gameplayState.prototype.dragCardUpdate = function(Cards, pointer, dragX, dragY, snapPoint) {
+    let mouseY = pointer.y;
+    let prevLaneID = this.selectedLaneID;
+    if (mouseY < this.laneHeight) {
+        this.selectedLaneID = 0;
+    }
+    else if (mouseY < this.laneHeight*2) {
+        this.selectedLaneID = 1;
+    }
+    else if (mouseY < this.laneHeight*3) {
+        this.selectedLaneID = 2;
+    }
+    else {
+        this.selectedLaneID = 3;
+    }
+    console.log(this.selectedLaneID);
     
+    // If selected lane changed
+    if (prevLaneID !== this.selectedLaneID) {
+        // Deselct previous units
+        if (prevLaneID === 0) {
+            Cards.deSelectingGroup(this.friendlyUnit1, 0);
+        }
+        else if (prevLaneID === 1) {
+            Cards.deSelectingGroup(this.friendlyUnit2, 1);
+        }
+        else if (prevLaneID === 2) {
+            Cards.deSelectingGroup(this.friendlyUnit3, 2);
+        }
+        
+        // Select current units
+        if (this.selectedLaneID === 0) {
+            Cards.selectingGroup(this.friendlyUnit1, 0);
+        }
+        else if (this.selectedLaneID === 1) {
+            Cards.selectingGroup(this.friendlyUnit2, 1);
+        }
+        else if (this.selectedLaneID === 2) {
+            Cards.selectingGroup(this.friendlyUnit3, 2);
+        }
+    }
 };
 
 gameplayState.prototype.dragCardStop = function(Cards, pointer) {
@@ -236,6 +332,19 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     
     // May need to invoke some functions to take effect of card or take it back to card area
     Cards.alpha = 1;
+    
+    // Deselect group
+    if (this.selectedLaneID === 0) {
+        Cards.deSelectingGroup(this.friendlyUnit1, 0);
+    }
+    else if (this.selectedLaneID === 1) {
+        Cards.deSelectingGroup(this.friendlyUnit2, 1);
+    }
+    else if (this.selectedLaneID === 2) {
+        Cards.deSelectingGroup(this.friendlyUnit3, 2);
+    }
+    // Reset selected lane
+    this.selectedLaneID = 3;
     
     // Deselect cards when they are placed in lanes
     if (mouseY < this.laneHeight*3) {
@@ -247,7 +356,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     {
         if ( mouseY <this.laneHeight) {
             console.log("Lane1");
-            this.addUnit(this.friendlyUnit1, 0);
+            this.addUnit(0);
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
             Cards.activated = true;
@@ -255,7 +364,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         }
         else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
             console.log("Lane2");
-            this.addUnit(this.friendlyUnit2, 1);
+            this.addUnit(1);
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
             Cards.activated = true;
@@ -264,7 +373,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
         }
         else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
             console.log("Lane3");
-            this.addUnit(this.friendlyUnit3, 2);
+            this.addUnit(2);
             Cards.x = Cards.savedx;
             Cards.y = Cards.savedy;
             Cards.activated = true;
@@ -291,15 +400,15 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
     {
         if ( mouseY <this.laneHeight) {
             console.log("Lane1");
-            Cards.useAbility(this.friendlyUnit1, this.enemyUnit1);
+            Cards.useAbility(this.friendlyUnit1, 0, pointer);
         }
         else if (this.laneHeight<=mouseY && mouseY <this.laneHeight*2) {
             console.log("Lane2");
-            Cards.useAbility(this.friendlyUnit2, this.enemyUnit2);
+            Cards.useAbility(this.friendlyUnit2, 1, pointer);
         }
         else if (this.laneHeight*2<=mouseY && mouseY <this.laneHeight*3) {
             console.log("Lane3");
-            Cards.useAbility(this.friendlyUnit3, this.enemyUnit3);
+            Cards.useAbility(this.friendlyUnit3, 2, pointer);
         }
         else if (this.laneHeight*3<=mouseY ) {
             console.log("Cards");
@@ -335,51 +444,37 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
 
 gameplayState.prototype.fight = function(unit, enemy){
 	//stop both sides
-	unit.body.velocity.x = 0;
-	enemy.body.velocity.x = 0;
-	unit.health -= enemy.damage;
-	enemy.health -= unit.damage;
-};
-gameplayState.prototype.laneUpdate = function(group){
-	if (group.length > 0){
-		//console.log("------------------------");
-		//iterate through all elements except last one
-//		while(group.cursorIndex < group.length - 1){
-//			//show unit health (testing purpose)
-//			//console.log(group.cursor.body.x);
-//			if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
-//				console.log(group.length);
-//				console.log("kill");
-//				group.cursor.kill();
-//				group.remove(group.cursor);
-//				console.log(group.length);
-//			}
-//			group.next();
-//			
-//		}
-		//now it's the last one
-		//console.log(group.cursor.body.x);
-//		if(group.cursor.body.x > game.world.width || group.cursor.health <= 0){
-//			console.log(group.length);
-//			console.log("kill");
-//			group.cursor.kill();
-//			group.remove(group.cursor);
-//			console.log(group.length);
-//			if(group.length === 0){
-//				group.destroy(true,true);
-//			}
-//			else{
-//				group.next();
-//			}
-//		}
+	
+	if(Math.abs(enemy.x - unit.x) <= 120 && Math.abs(enemy.y - unit.y) <=10){
+		var new_fight = false;
+		if(!(unit.in_fight)){
+			unit.go_fight = true;
+			new_fight = true;
+		}
+		if(!(enemy.in_fight)){
+			enemy.go_fight = true;
+			new_fight = true;
+		}
+		//fight while both are alive
+		//the new_fight is to make sure we only enter the while loop
+		//once because this function is constantly called when soldiers collide
+		if(unit.alive && enemy.alive && new_fight){
+			console.log("enter fight");
+			unit.attacking_enemy = enemy;
+			enemy.attacking_enemy = unit;
+		}
 	}
+	//enemy.damage(unit.atkdmg);
+	//console.log("enemy hp is now " + enemy.health);
+	//console.log("collide");
+	//unit.health -= enemy.damage;
+	//enemy.health -= unit.damage;
 };
+
 gameplayState.prototype.updateCards = function(tempCard){
    
-    for(i = 0; i < tempCard.length; i++)
-    {
-        if(tempCard.children[i].body.velocity.x < 0)
-        {
+    for(i = 0; i < tempCard.length; i++){
+        if(tempCard.children[i].body.velocity.x < 0){
             tempCard.children[i].stop();
             //tempCard.children[i].x = tempCard.children[i].lastx;
             
@@ -402,4 +497,10 @@ gameplayState.prototype.msToTime = function(s) {
     else {
         return mins + ':' + secs;
     }
+};
+/*
+	Generate random int
+*/
+gameplayState.prototype.randomInt = function(){
+  return Math.floor(Math.random() * Math.floor(3));
 };
