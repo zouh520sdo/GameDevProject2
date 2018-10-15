@@ -25,6 +25,8 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.animations.add("run", [1,2,3,4], 10, true);
     this.unit.animations.add("combat", [5,0,6,7], 10, true);
     this.unit.animations.add("death", [8,9,10], 10, false);
+    this.unit.animations.add("divineDeath", [11,12,13,14,15,16], 10, false);
+    this.unit.deadBySpell = false;
 	this.unit.in_fight = false;
 	this.unit.go_fight = false;
 	this.unit.attacking_enemy = null;
@@ -92,6 +94,7 @@ basicEnemyUnit.prototype.create = function(){
     // Kill lane_id matches
     this.unit.killOnLane = function(id) {
         if (this.lane_id === id) {
+            this.deadBySpell = true;
             this.damage(10000);
         }
     };
@@ -196,7 +199,7 @@ basicEnemyUnit.prototype.create = function(){
 		}
 		
 		//killed
-        if(this.health <= 0 && (this.animations.currentAnim.name === "death") && this.animations.currentAnim.isFinished){
+        if(this.health <= 0 && ((this.animations.currentAnim.name === "death") || (this.animations.currentAnim.name === "divineDeath")) && this.animations.currentAnim.isFinished){
 			this.alive = false;
             this.kill();
             this.parent.remove(this);
@@ -210,7 +213,15 @@ basicEnemyUnit.prototype.create = function(){
 			this.health -= amount;
 			console.log("enemy health: " + this.health);
 			if(this.health <= 0){
-				this.animations.play("death", 10, false, true);
+                this.body.velocity.x=0;
+                this.body.velocity.y=0;
+
+                if (this.deadBySpell) {
+                    this.animations.play("divineDeath");
+                } 
+                else {
+				    this.animations.play("death", 10, false, true);
+                }
 			}
 		}
 	}
