@@ -184,7 +184,10 @@ gameplayState.prototype.update = function(){
 	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit, this.fight ,null, this);
 	game.physics.arcade.overlap(this.enemyUnit, this.asherahPole, this.attackPole, null, this);
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
-    
+    if(!(this.asherahPole.alive)){
+		console.log("oof");
+    	game.state.start("GGWP");
+    }
 };
 
 gameplayState.prototype.attackPole = function(pole, enemy){

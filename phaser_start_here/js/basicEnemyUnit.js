@@ -130,7 +130,7 @@ basicEnemyUnit.prototype.create = function(){
         }
 		
 		this.velo_x_mult = 1486.0/325.0;
-		//start moving
+		//start moving
 		if(this.animations.currentAnim.name === "idle"){
 			this.body.velocity.x = -18 * (this.velo_x_mult) - 40;
 			this.animations.play("run");

@@ -110,7 +110,7 @@ class AsherahPole extends Phaser.Sprite {
     
     update() {
         super.update();
-        
+        console.log(this);
         // Adding energy by time
         this.addEnergy(this.chargeRateByTime * this.game.time.elapsed / 1000);
         
@@ -119,6 +119,7 @@ class AsherahPole extends Phaser.Sprite {
         
         if (this.health <= 0) {
             // Display defeated UI
+			
         }
     };
 	damaged(dmg) {
