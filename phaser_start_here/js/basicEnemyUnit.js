@@ -2,12 +2,16 @@
 //and each lane has its own group of friendly units and enemy units
 //lane is an int -- 1, 2 or 3
 
-let basicEnemyUnit = function(group, lane_x, lane_y, lane_id){
+let basicEnemyUnit = function(group, lane_x, lane_y, lane_id, pole){
 	this.lane_x = lane_x;
 	this.lane_y = lane_y;
-	this.speed = 100;
+    this.speed = 100;
+    this.pole = pole;
 	this.create();
+      
 	this.unit.lane_id = lane_id;
+  
+  
 	console.log("enemy unit constructor:");
 	console.log(group);
 	group.add(this.unit);
@@ -18,9 +22,12 @@ basicEnemyUnit.prototype.create = function(){
 	//go with murph for now
 	console.log("creating basic unit");
 	console.log(this);
+     
 	this.unit = game.add.sprite(this.lane_x, this.lane_y, "invader");
     // Create Animations 
     //this.unit.animations.add("spawn", [0,1,2,3,4,5,6,7,8], 10, false);
+     console.log("SDFRTGGRFDS");
+    console.log(this.pole);
     this.unit.animations.add("idle", [0], 10, true);
     this.unit.animations.add("run", [1,2,3,4], 10, true);
     this.unit.animations.add("combat", [5,0,6,7], 10, true);
@@ -31,8 +38,12 @@ basicEnemyUnit.prototype.create = function(){
 	this.unit.go_fight = false;
 	this.unit.attacking_enemy = null;
     this.unit.atkspd = 500; //attack every 0.5 sec
+    
+    //pole related variable
 	this.unit.attacking_pole = false;
 	this.unit.go_atk_pole = false;
+   
+    
 	//make them weak for now
 	this.unit.health = 200;
     this.unit.maxHealth = 200;
@@ -284,5 +295,9 @@ basicEnemyUnit.prototype.create = function(){
 		this.body.velocity.y = 0;
 	}
     // Play run animation
+    
     this.unit.animations.play("spawn");
+    
+    this.unit.events.onKilled.add(this.pole.addEnergyonKill, this.pole);
+
 };

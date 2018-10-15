@@ -108,9 +108,12 @@ class AsherahPole extends Phaser.Sprite {
         return this.energy >= this.fullEnergy;
     }
     
+    addEnergyonKill() {
+        this.addEnergy(30);
+    };
     update() {
         super.update();
-        console.log(this);
+      
         // Adding energy by time
         this.addEnergy(this.chargeRateByTime * this.game.time.elapsed / 1000);
         
