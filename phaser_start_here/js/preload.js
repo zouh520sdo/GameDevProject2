@@ -18,7 +18,27 @@ preloadState.prototype.preload = function () {
     game.load.image("Buff_DamageUp", "assets/Damage_Up.png");
     game.load.image("Buff_HealthUp", "assets/HealthUp.png");
     game.load.image("Buff_SpeedUp", "assets/Speed_Up.png");
+    game.load.image("tutorial1", "assets/tutorial1.png");
+    game.load.image("tutorial2", "assets/tutorial2.png");
+    game.load.image("tutorial3", "assets/tutorial3.png");
     
+    
+    //Cards 
+     game.load.image("Bronze_Spawn", "assets/Bronze_Spawn.png");
+     game.load.image("Silver_DamageBuff", "assets/Silver_DamageBuff.png");
+     game.load.image("Silver_HPBuff", "assets/Silver_HPBuff.png");
+     game.load.image("Silver_SpeedBuff", "assets/Silver_SpeedBuff.png");
+     game.load.image("Gold_KillLane", "assets/Gold_KillLane.png");
+     game.load.image("Gold_HealLane", "assets/Gold_HealLane.png");
+     game.load.image("Gold_BuildWall", "assets/Gold_BuildWall.png");
+     game.load.image("Diamond_DamageAll", "assets/Diamond_DamageAll.png");
+     game.load.image("Diamond_HealAll", "assets/Diamond_HealAll.png");
+    
+    
+    
+    
+    
+    game.load.image("titlescreen", "assets/titlescreen.png");
     // spritesheet
     game.load.spritesheet("murph", "assets/character.png", 32, 48);
     game.load.spritesheet("defender", "assets/Defender_SpriteSheet2.png", 256, 180);
@@ -30,7 +50,7 @@ preloadState.prototype.preload = function () {
 };
 
 preloadState.prototype.create = function () {
-    game.state.start("Game");
+    game.state.start("Title");
 };
 
 preloadState.prototype.update = function () {

@@ -4,23 +4,66 @@ class Cards extends Phaser.Sprite{
     //constructor
     constructor(game, num, id, state)
     {
-        super(game,num * 240, state.laneHeight * 3, "card" + (id%3+2));
+        super(game,num * 300, state.laneHeight * 3, "card1" );
         this.gameState = state;
         this.laneHeight = this.gameState.laneHeight;
         this.tempCards = this.gameState.tempCard;
         this.permCards = this.gameState.permcard;
-        this.savedx = num * 240;
+        this.savedx = num * 300;
         this.savedy = this.y;
-        this.lastx = (num* 240) - 240;
+        this.lastx = (num* 300) - 300;
         this.exist = false;
         this.activated = false;
         this.id = id;
         this.num = num;
         this.game.physics.enable(this);
         
+        switch (id) {
+                case 1:
+                    console.log("Bronze_Spawn");
+                    this.loadTexture("Bronze_Spawn");
+                    break;
+                case 2:
+                     console.log("Silver_DamageBuff");
+                     this.loadTexture("Silver_DamageBuff");
+                    break;
+                case 3:
+                     console.log("Silver_HPBuff");
+                     this.loadTexture("Silver_HPBuff");
+                    break;
+                case 4:
+                     console.log("Silver_SpeedBuff");
+                     this.loadTexture("Silver_SpeedBuff");
+                    break;
+                case 5:
+                     console.log("Gold_HealLane");
+                    this.loadTexture("Gold_HealLane");
+                    break;
+                case 6:
+                     console.log("Diamond_HealAll");
+                   this.loadTexture("Diamond_HealAll");
+                    break;
+                case 7:
+                     console.log("Gold_KillLane");
+                     this.loadTexture("Gold_KillLane");
+                    break;
+                case 8:
+                     console.log("Diamond_DamageAll");
+                     this.loadTexture("Diamond_DamageAll");
+                    break;
+                case 9:
+                     console.log("Gold_BuildWall");
+                     this.loadTexture("Gold_BuildWall");
+                    break;
+                default:
+                    
+            }
+        
+        
+        
         // For cards have cooldown
         if (this.id == 1) {
-            this.cdMask = game.add.sprite(0,0,"card1");
+            this.cdMask = game.add.sprite(0,0,"Bronze_Spawn");
             this.cdMask.tint = 0x000000;
             this.cdMask.alpha = 0.65;
             this.addChild(this.cdMask);
@@ -151,7 +194,7 @@ class Cards extends Phaser.Sprite{
                 unitsGroup.children[i].helperhp();
             }   
         };
-      
+     
         Cards.prototype.deSelectingGroup = function(unitsGroup, enemiesLaneID) {
             switch (this.id) {
                 case 2:
@@ -263,13 +306,14 @@ class Cards extends Phaser.Sprite{
     
     }
 
-    //effect based on id of the card
- 
+
 };
 
 Cards.category = {
     bronze:[1],
     silver:[2,3,4],
-    gold:[5,6,7,8,9]
+    gold:[5,7,9],
+    diamond:[6,8]
 };
 
+ 
