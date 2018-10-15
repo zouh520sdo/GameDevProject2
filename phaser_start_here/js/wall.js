@@ -21,17 +21,30 @@ class Wall extends Phaser.Sprite {
         this.destroyTimer = game.time.create(this, true);
         this.destroyTimer.add(10000, this.goingToDestroy, this);
         this.destroyTimer.start();
+        
+        // Array for stucked units
+        this.stuckedUnits = [];
     }
     
     update() {
         super.update();
-        game.physics.arcade.collide(this, this.gameState.enemyUnit);
-        game.physics.arcade.collide(this, this.gameState.friendlyUnit1);
-        game.physics.arcade.collide(this, this.gameState.friendlyUnit2);
-        game.physics.arcade.collide(this, this.gameState.friendlyUnit3);
+        game.physics.arcade.overlap(this, this.gameState.enemyUnit, this.blockMoving, null, this);
+        game.physics.arcade.overlap(this, this.gameState.friendlyUnit1, this.blockMoving, null, this);
+        game.physics.arcade.overlap(this, this.gameState.friendlyUnit2, this.blockMoving, null, this);
+        game.physics.arcade.overlap(this, this.gameState.friendlyUnit3, this.blockMoving, null, this);
         
         if (this.animations.currentAnim.name === "destroy" && this.animations.currentAnim.isFinished) {
+            for (let i=0; i<this.stuckedUnits.length; i++) {
+                this.stuckedUnits[i].stopStucked();
+            }
             this.destroy();
+        }
+    }
+    
+    blockMoving(wall, unit) {
+        if (!unit.is_Stucked) {
+            unit.startStucked();
+            this.stuckedUnits.push(unit);
         }
     }
     

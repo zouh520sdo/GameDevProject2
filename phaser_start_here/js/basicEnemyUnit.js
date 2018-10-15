@@ -44,6 +44,22 @@ basicEnemyUnit.prototype.create = function(){
 	this.unit.prev_velo_x = -100;
 	this.unit.prev_velo_y = -100;
     
+    // For wall
+    this.unit.is_Stucked = false;
+    this.unit.startStucked = function() {
+        this.is_Stucked = true;
+        this.prev_velo_x = this.body.velocity.x;
+        this.prev_velo_y = this.body.velocity.y;
+        
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
+    };
+    this.unit.stopStucked = function() {
+        this.is_Stucked = false;
+        this.body.velocity.x = this.prev_velo_x;
+        this.body.velocity.y = this.prev_velo_y;
+    };
+    
     // For selecting effect
     this.unit.isSelected = false;
     this.unit.selectingTime = 0;
@@ -101,7 +117,7 @@ basicEnemyUnit.prototype.create = function(){
         }
 		
 		this.velo_x_mult = 1486.0/325.0;
-		//start moving	
+		//start moving
 		if(this.animations.currentAnim.name === "idle"){
 			this.body.velocity.x = -18 * (this.velo_x_mult) - 40;
 			this.animations.play("run");
@@ -187,6 +203,7 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.enter_fight = function(){
 		this.animations.play("combat");
     	this.in_fight = true;
+        
 		this.prev_velo_x = this.body.velocity.x;
 		this.prev_velo_y = this.body.velocity.y;
 		this.body.velocity.x = 0;

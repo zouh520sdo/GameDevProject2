@@ -147,9 +147,12 @@ gameplayState.prototype.create = function() {
     }
     
     // Spawn wall for testing
-//    this.wall =  new Wall(game, 800, this.laneHeight - 75, this);
-//    this.wall =  new Wall(game, 800, this.laneHeight*2 -75, this);
-//    this.wall =  new Wall(game, 800, this.laneHeight*3 -75, this);
+//    this.wall =  new Wall(game, 1800, this.laneHeight - 75, this);
+//    this.wall =  new Wall(game, 1800, this.laneHeight*2 -75, this);
+//    this.wall =  new Wall(game, 1800, this.laneHeight*3 -75, this);
+//    this.wall =  new Wall(game, 1200, this.laneHeight - 75, this);
+//    this.wall =  new Wall(game, 1200, this.laneHeight*2 -75, this);
+//    this.wall =  new Wall(game, 1200, this.laneHeight*3 -75, this);
     
 }; // End of create
 

@@ -33,6 +33,7 @@ basicUnit.prototype.create = function(){
 	this.unit.body.velocity.x = 0;
 	this.unit.body.velocity.y = 0;
     this.unit.speed = this.speed;
+    this.unit.bonusSpeed = 0;
     this.unit.in_lane = false;
 	//some random number
 	this.unit.prev_velo_x = -100;
@@ -41,6 +42,22 @@ basicUnit.prototype.create = function(){
 	this.unit.attacked = false;
 	this.unit.spawn_interrupted = true;
 	this.unit.stopped_at_border = false;
+    
+    // For wall
+    this.unit.is_Stucked = false;
+    this.unit.startStucked = function() {
+        this.is_Stucked = true;
+        this.prev_velo_x = this.body.velocity.x;
+        this.prev_velo_y = this.body.velocity.y;
+        
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
+    };
+    this.unit.stopStucked = function() {
+        this.is_Stucked = false;
+        this.body.velocity.x = this.prev_velo_x;
+        this.body.velocity.y = this.prev_velo_y;
+    };
     
     // For selecting effect
     this.unit.isSelected = false;
@@ -322,7 +339,7 @@ basicUnit.prototype.create = function(){
         this.speedUpStack--; 
         this.speedUpTargetScale = this.buffScaleOnStack(this.speedUpStack);
       
-        if (this.in_fight) {
+        if (this.in_fight || this.is_Stucked) {
             this.prev_velo_x = Math.max(0, this.prev_velo_x-50);
         }
         else {
@@ -339,7 +356,7 @@ basicUnit.prototype.create = function(){
           
             this.cooldown = game.time.create(this, true);
             this.cooldown.add(10000, this.resetspeed, this);
-             this.cooldown.start();
+            this.cooldown.start();
            
         };
       
