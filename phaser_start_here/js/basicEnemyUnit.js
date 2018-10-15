@@ -70,6 +70,9 @@ basicEnemyUnit.prototype.create = function(){
     
     // For damage all effect
     this.unit.meteorMask = game.add.sprite(140,200,"meteor");
+    this.unit.meteorMask.origin = [-985,-925];
+    this.unit.meteorMask.target = [140, 200];
+    this.unit.meteorMask.speed = 200;
     this.unit.meteorMask.anchor.set(0.5,1);
     this.unit.meteorMask.animations.add("flying",[0,1,2],8,true);
     this.unit.meteorMask.animations.add("impact", [3,4,5,6,7],8,false);
@@ -77,9 +80,11 @@ basicEnemyUnit.prototype.create = function(){
     
     this.unit.addChild(this.unit.meteorMask);
     this.unit.meteorDamageAnim = function(amount) {
-        this.damage(amount);
+        //this.damage(amount);
+        this.meteorMask.position.x = this.meteorMask.origin[0];
+        this.meteorMask.position.y = this.meteorMask.origin[1];
         this.meteorMask.alpha = 1;
-        this.meteorMask.animations.play("impact");
+        this.meteorMask.animations.play("flying");
     }
     
     // For selecting effect
