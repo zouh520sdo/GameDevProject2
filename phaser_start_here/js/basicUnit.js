@@ -42,6 +42,7 @@ basicUnit.prototype.create = function(){
 	this.unit.attacked = false;
 	this.unit.spawn_interrupted = true;
 	this.unit.stopped_at_border = false;
+	this.unit.extra_spd = 0;
     
     // For wall
     this.unit.is_Stucked = false;
@@ -59,7 +60,7 @@ basicUnit.prototype.create = function(){
     this.unit.stopStucked = function() {
         if (this.is_Stucked) {
             this.is_Stucked = false;
-            this.body.velocity.x = this.prev_velo_x;
+            this.body.velocity.x = this.prev_velo_x  + this.extra_spd;
             this.body.velocity.y = this.prev_velo_y;
         }
     };
@@ -173,17 +174,17 @@ basicUnit.prototype.create = function(){
 			
 			if(this.lane_id === 0){
 				this.body.velocity.y = -135;
-				this.body.velocity.x = (18 * (this.velo_x_mult)) - 20;
+				this.body.velocity.x = (18 * (this.velo_x_mult)) - 20  + this.extra_spd;
 			}
 			else if(this.lane_id === 1){
-				this.body.velocity.x = 18 * (this.velo_x_mult) + 40;
+				this.body.velocity.x = 18 * (this.velo_x_mult) + 40  + this.extra_spd;
 			}
 			//going from (350, 397.5) to (1936, 722.5)
 			//dx = 1486
 			//dy = 325
 			else if(this.lane_id === 2){
 				this.body.velocity.y = 135;
-				this.body.velocity.x = (18 * (this.velo_x_mult)) - 20;
+				this.body.velocity.x = (18 * (this.velo_x_mult)) - 20  + this.extra_spd;
 			}
             this.animations.play("run");
         }
@@ -210,7 +211,7 @@ basicUnit.prototype.create = function(){
 				//this if section should only trigger once
 				if(this.body.x < 1936 && !(this.in_lane)){
 					console.log("in lane now");
-					this.body.velocity.x = 18 * (this.velo_x_mult) + 40;
+					this.body.velocity.x = 18 * (this.velo_x_mult) + 40  + this.extra_spd;
 					this.in_lane = true;
 				}
 				//stop when the unit reaches a certain points
@@ -230,7 +231,7 @@ basicUnit.prototype.create = function(){
 				//this if section should only trigger once
 				if(this.body.x < 1936 && !(this.in_lane)){
 					console.log("in lane now");
-					this.body.velocity.x = 18 * (this.velo_x_mult) + 40;
+					this.body.velocity.x = 18 * (this.velo_x_mult) + 40  + this.extra_spd;
 					this.in_lane = true;
 				}
 				//stop when the unit reaches a certain points
@@ -290,20 +291,20 @@ basicUnit.prototype.create = function(){
 					if(this.lane_id === 0){
 						console.log("gg1");
 						this.body.velocity.y = -135;
-						this.body.velocity.x = 18 * (this.velo_x_mult) - 20;
+						this.body.velocity.x = 18 * (this.velo_x_mult) - 20  + this.extra_spd;
 					}
 					else if(this.lane_id === 1){
-						console.log("gg2");
-						this.body.velocity.x = 18 * (this.velo_x_mult) + 40;
+						console.log("gg2"); 
+						this.body.velocity.x = 18 * (this.velo_x_mult) + 40  + this.extra_spd;
 					}
 					else if(this.lane_id === 2){
 						console.log("gg3");
 						this.body.velocity.y = 135;
-						this.body.velocity.x = 18 * (this.velo_x_mult) - 20;
+						this.body.velocity.x = 18 * (this.velo_x_mult) - 20  + this.extra_spd;
 					}
 				}
 				else{
-					this.body.velocity.x = this.prev_velo_x;
+					this.body.velocity.x = this.prev_velo_x  + this.extra_spd;
 					this.body.velocity.y = this.prev_velo_y;
 				}
 				this.in_fight = false;
@@ -367,13 +368,14 @@ basicUnit.prototype.create = function(){
         // Set damage up scale
         this.speedUpStack--; 
         this.speedUpTargetScale = this.buffScaleOnStack(this.speedUpStack);
-      
+      /*
         if (this.in_fight || this.is_Stucked) {
             this.prev_velo_x = Math.max(0, this.prev_velo_x-50);
         }
-        else {
-            this.body.velocity.x = Math.max(0, this.body.velocity.x-50);
-        }
+		*/
+        
+        this.extra_spd -= 50;
+        
     };
     
       this.unit.helperspeed = function()
