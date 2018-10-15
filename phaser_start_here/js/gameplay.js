@@ -226,13 +226,19 @@ gameplayState.prototype.addEnemy = function(mult) {
 	//console.log("time elapsed in phase: " + this.enemyTimer.elapsed);
 	console.log("enemy generated on lane" + (mult+1));
 	if(mult === 0){
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 55, mult);
+        console.log("SFDDS");
+         console.log(this.asherahPole);
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 55, mult, this.asherahPole);
 	}
 	else if(mult === 1){
-		new basicEnemyUnit(this.enemyUnit, 2500, 397.5 - 60, mult);
+          console.log("SFDDS");
+         console.log(this.asherahPole);
+		new basicEnemyUnit(this.enemyUnit, 2500, 397.5 - 60, mult, this.asherahPole);
 	}
 	else if(mult === 2){
-		new basicEnemyUnit(this.enemyUnit, 2500, 722.5 - 55, mult);
+          console.log("SFDDS");
+         console.log(this.asherahPole);
+		new basicEnemyUnit(this.enemyUnit, 2500, 722.5 - 55, mult, this.asherahPole);
 	}
 };
 
