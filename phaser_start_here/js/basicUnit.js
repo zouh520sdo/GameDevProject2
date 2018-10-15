@@ -139,7 +139,7 @@ basicUnit.prototype.create = function(){
     };
     
     // Debug UI
-    this.unit.isDebug = false;
+    this.unit.isDebug = true;
     if (this.unit.isDebug) {
         this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
         this.unit.addChild(this.unit.debugText);

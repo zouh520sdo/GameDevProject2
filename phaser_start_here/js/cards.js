@@ -289,15 +289,15 @@ class Cards extends Phaser.Sprite{
                     break;
                 case 6:
                     console.log("HEAL ALL");
-                    this.gameState.friendlyUnit1.callAll("healAnim", null, 250);
-                    this.gameState.friendlyUnit2.callAll("healAnim", null, 250);
-                    this.gameState.friendlyUnit3.callAll("healAnim", null, 250);
+                    this.gameState.friendlyUnit1.callAll("healAnim", null, 10000);
+                    this.gameState.friendlyUnit2.callAll("healAnim", null, 10000);
+                    this.gameState.friendlyUnit3.callAll("healAnim", null, 10000);
                     break;
                 case 7:
                     this.gameState.enemyUnit.callAll("killOnLane", null, enemiesLaneID);
                     break;
                 case 8:
-                    this.gameState.enemyUnit.callAll("meteorDamageAnim", null, 100);
+                    this.gameState.enemyUnit.callAll("meteorDamageAnim", null, 10000);
                     break;
                 case 9:
                     console.log("FORTIFICATION");

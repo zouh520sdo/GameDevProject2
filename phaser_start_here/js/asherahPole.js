@@ -50,13 +50,13 @@ class AsherahPole extends Phaser.Sprite {
                 let rantemp = this.game.rnd.integerInRange(2,4);
                 // random card category
                 let prob = Math.random();
-                if (prob < 0.7) {
+                if (prob < 0) {
                     // Silver card
                     console.log("Get silver card");
                     rantemp = Cards.category.silver[game.rnd.integerInRange(0, Cards.category.silver.length-1)];
                     console.log(rantemp);
                 }
-                else if (prob < 0.9){
+                else if (prob < 0){
                     console.log("Get gold card");
                     rantemp = Cards.category.gold[game.rnd.integerInRange(0, Cards.category.gold.length-1)];
                     console.log(rantemp);
