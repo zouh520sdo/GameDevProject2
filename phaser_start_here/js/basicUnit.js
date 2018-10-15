@@ -46,17 +46,22 @@ basicUnit.prototype.create = function(){
     // For wall
     this.unit.is_Stucked = false;
     this.unit.startStucked = function() {
-        this.is_Stucked = true;
-        this.prev_velo_x = this.body.velocity.x;
-        this.prev_velo_y = this.body.velocity.y;
-        
-        this.body.velocity.x = 0;
-        this.body.velocity.y = 0;
+        if (!this.in_fight && !this.is_Stucked) {
+            this.is_Stucked = true;
+
+            this.prev_velo_x = this.body.velocity.x;
+            this.prev_velo_y = this.body.velocity.y;
+
+            this.body.velocity.x = 0;
+            this.body.velocity.y = 0;
+        }
     };
     this.unit.stopStucked = function() {
-        this.is_Stucked = false;
-        this.body.velocity.x = this.prev_velo_x;
-        this.body.velocity.y = this.prev_velo_y;
+        if (this.is_Stucked) {
+            this.is_Stucked = false;
+            this.body.velocity.x = this.prev_velo_x;
+            this.body.velocity.y = this.prev_velo_y;
+        }
     };
     
     // For selecting effect
