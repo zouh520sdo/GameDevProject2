@@ -16,6 +16,7 @@ class Cards extends Phaser.Sprite{
         this.activated = false;
         this.id = id;
         this.num = num;
+        this.permCooldown = 6;
         this.game.physics.enable(this);
         
         switch (id) {
@@ -116,13 +117,13 @@ class Cards extends Phaser.Sprite{
         Cards.prototype.startcd = function()
         {
             this.cooldown = game.time.create(this, true);
-            this.cooldown.add(8000, this.switch, this);
+            this.cooldown.add(this.permCooldown * 1000, this.switch, this);
             this.cooldown.start();
         };
         
         Cards.prototype.update = function() {
             if (this.cooldown !== undefined && this.cooldown.running && this.cdMask !== undefined) {
-                this.cdMask.scale.set(1, this.cooldown.duration / 8000);
+                this.cdMask.scale.set(1, this.cooldown.duration / (this.permCooldown*1000));
             }
         };
         
