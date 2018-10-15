@@ -50,7 +50,7 @@ basicUnit.prototype.create = function(){
         if (!this.in_fight && !this.is_Stucked) {
             this.is_Stucked = true;
 
-            this.prev_velo_x = this.body.velocity.x - this.extra_spd;
+            this.prev_velo_x = Math.max(0, this.body.velocity.x - this.extra_spd);
             this.prev_velo_y = this.body.velocity.y;
 
             this.body.velocity.x = 0;
@@ -330,7 +330,7 @@ basicUnit.prototype.create = function(){
     this.unit.enter_fight = function(){
 		this.animations.play("combat");
     	this.in_fight = true;
-		this.prev_velo_x = this.body.velocity.x - this.extra_spd;
+		this.prev_velo_x = Math.max(0, this.body.velocity.x - this.extra_spd);
 		this.prev_velo_y = this.body.velocity.y;
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
