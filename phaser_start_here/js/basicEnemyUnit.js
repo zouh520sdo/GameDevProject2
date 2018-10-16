@@ -341,7 +341,7 @@ basicEnemyUnit.prototype.create = function(){
 			this.alive = false;
             this.kill();
             this.parent.remove(this);
-            console.log(this.name + " is killed");
+            this.destroy();
         }
 		
     };

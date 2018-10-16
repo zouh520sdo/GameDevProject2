@@ -260,16 +260,6 @@ basicUnit.prototype.create = function(){
 			this.go_fight = false;
 		}
 		
-		
-		
-		//killed
-        if(this.health <= 0 && (this.animations.currentAnim.name === "death") && this.animations.currentAnim.isFinished){
-			this.alive = false;
-            this.kill();
-            this.parent.remove(this);
-            console.log(this.name + " is killed");
-        }
-		
 		//attack dayo
 		if(this.animations.currentAnim.name === "combat"){
 			if(this.animations.currentFrame.index === 15 && !(this.attacked)){
@@ -314,6 +304,14 @@ basicUnit.prototype.create = function(){
 				this.in_fight = false;
 			}
 		}
+        
+        //killed
+        if(this.health <= 0 && (this.animations.currentAnim.name === "death") && this.animations.currentAnim.isFinished){
+			this.alive = false;
+            this.kill();
+            this.parent.remove(this);
+            this.destroy();
+        }
     };
 	//override damage
 	this.unit.damage = function(amount){
