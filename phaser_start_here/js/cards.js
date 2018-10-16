@@ -305,7 +305,8 @@ class Cards extends Phaser.Sprite{
                     break;
                 case 9:
                     console.log("FORTIFICATION");
-                    new Wall(game, Math.max(800, pointer.x), this.gameState.laneHeight*(enemiesLaneID+1)-75, this.gameState);
+                    let wally = new Wall(game, Math.max(800, pointer.x), this.gameState.laneHeight*(enemiesLaneID+1)-75, this.gameState);
+                    game.wall.add(wally);
                     break;
                 default:
                     

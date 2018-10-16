@@ -111,6 +111,10 @@ gameplayState.prototype.create = function() {
     //arrow group
     game.arrow = game.add.group();
     game.arrow.enableBody = true;
+    
+    //wall group
+    game.wall = game.add.group();
+    game.wall.enableBody = true;
     // Set up asherah pole
     this.asherahPole = new AsherahPole(game, 120, this.laneHeight*2 - 45, this);
     game.physics.arcade.enable(this.asherahPole);
@@ -188,6 +192,7 @@ gameplayState.prototype.update = function(){
     game.physics.arcade.overlap(this.friendlyUnit1, game.arrow, this.deletearrow ,null, this);
     game.physics.arcade.overlap(this.friendlyUnit2, game.arrow, this.deletearrow ,null, this);
     game.physics.arcade.overlap(this.friendlyUnit3, game.arrow, this.deletearrow ,null, this);
+    game.physics.arcade.overlap(game.wall, game.arrow, this.blockarrow ,null, this);
 	game.physics.arcade.overlap(this.enemyUnit, this.asherahPole, this.attackPole, null, this);
     game.physics.arcade.overlap(game.arrow, this.asherahPole, this.arrowPole, null, this);
 
@@ -207,6 +212,10 @@ gameplayState.prototype.update = function(){
         }
 
 };
+gameplayState.prototype.blockarrow = function(wall,arrow)
+{
+    arrow.destroy();
+}
 gameplayState.prototype.arrowPole = function(pole,arrow)
 {
     if(Math.abs(pole.x - arrow.x) <= 60 && Math.abs(pole.y - arrow.y) >= 10)
