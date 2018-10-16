@@ -298,7 +298,7 @@ gameplayState.prototype.addEnemy = function(mult) {
 	console.log("enemy generated on lane" + (mult+1));
     let prob = Math.random();
     let unitid = 0;
-    if(prob < 0){
+    if(prob < 0.8){
         unitid = 1;
     }
     else{
