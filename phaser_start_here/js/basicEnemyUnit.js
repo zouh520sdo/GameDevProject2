@@ -189,7 +189,7 @@ basicEnemyUnit.prototype.create = function(){
            
 		//turn towards the pole
         if(this.lane_id === 0 && !(this.in_lane) && !(this.in_shift)){
-			if(this.body.x <= 498.48533333333285){
+			if(this.body.x <= 493.293538461538){
 				this.in_shift = true;
 				this.body.velocity.y = 135;
 				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);

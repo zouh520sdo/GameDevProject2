@@ -201,7 +201,7 @@ basicUnit.prototype.create = function(){
         
 		//done shifting into their own lanes
         if(this.lane_id === 0){
-			if(this.body.y <= 72.5 - 55){
+			if(this.body.y <= 72.5 - 45){
 				if(this.body.velocity.y !== 0){
 					console.log(this.body.x);
 					this.body.velocity.y = 0;

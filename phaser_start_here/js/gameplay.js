@@ -229,7 +229,7 @@ gameplayState.prototype.addEnemy = function(mult) {
 	if(mult === 0){
         console.log("SFDDS");
          console.log(this.asherahPole);
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 55, mult, this.asherahPole);
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 45, mult, this.asherahPole);
 	}
 	else if(mult === 1){
           console.log("SFDDS");
