@@ -134,7 +134,7 @@ basicEnemyUnit.prototype.create = function(){
     // Debug UI
     this.unit.isDebug = true;
     if (this.unit.isDebug) {
-        this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
+        this.unit.debugText = game.add.text(115,0,"health", {fontSize:"28px", fill:"#ffffff"});
         this.unit.addChild(this.unit.debugText);
     }
     // Override update function
@@ -142,7 +142,7 @@ basicEnemyUnit.prototype.create = function(){
         
         // Debug
         if (this.isDebug) {
-            this.debugText.text = this.health + " / " + this.maxHealth;
+            this.debugText.text = Math.max(0,Math.ceil(this.health)) + " / " + this.maxHealth;
         }
         
 		//console.log("unit health: " + this.health);

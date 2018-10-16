@@ -92,9 +92,9 @@ basicUnit.prototype.create = function(){
     };
     
     // Add buff
-    this.unit.buff_DamageUp = game.add.sprite(90,28,"Buff_DamageUp");
-    this.unit.buff_HealthUp = game.add.sprite(35,28,"Buff_HealthUp");
-    this.unit.buff_SpeedUp = game.add.sprite(140,28,"Buff_SpeedUp");
+    this.unit.buff_DamageUp = game.add.sprite(90,5,"Buff_DamageUp");
+    this.unit.buff_HealthUp = game.add.sprite(35,5,"Buff_HealthUp");
+    this.unit.buff_SpeedUp = game.add.sprite(140,5,"Buff_SpeedUp");
     
     this.unit.buff_DamageUp.anchor.set(0.5,1);
     this.unit.buff_HealthUp.anchor.set(0.5,1);
@@ -141,7 +141,7 @@ basicUnit.prototype.create = function(){
     // Debug UI
     this.unit.isDebug = true;
     if (this.unit.isDebug) {
-        this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
+        this.unit.debugText = game.add.text(20,5,"health", {fontSize:"28px", fill:"#ffffff"});
         this.unit.addChild(this.unit.debugText);
     }
 
@@ -150,7 +150,7 @@ basicUnit.prototype.create = function(){
         
         // Debug
         if (this.isDebug) {
-            this.debugText.text = this.health + " / " + this.maxHealth;
+            this.debugText.text = Math.max(0,Math.ceil(this.health)) + " / " + this.maxHealth;
         }
         
         // Hide healing effect
