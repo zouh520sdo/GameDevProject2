@@ -87,6 +87,9 @@ basicEnemyUnit.prototype.create = function(){
         this.unit.maxHealth = 150;
 	    this.unit.atkdmg = 1;
         this.unit.body.setSize( 1024, 180, -500, 0)
+		//////////////////////
+		//                  //
+		//////////////////////
         }
     // For wall
     this.unit.is_Stucked = false;
@@ -95,7 +98,7 @@ basicEnemyUnit.prototype.create = function(){
             this.is_Stucked = true;
             this.prev_velo_x = this.body.velocity.x;
             this.prev_velo_y = this.body.velocity.y;
-
+			this.animations.play("idle");
             this.body.velocity.x = 0;
             this.body.velocity.y = 0;
         }
@@ -103,6 +106,7 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.stopStucked = function() {
         if (this.is_Stucked) {
             this.is_Stucked = false;
+			//this.animations.play("run");
             this.body.velocity.x = this.prev_velo_x;
             this.body.velocity.y = this.prev_velo_y;
         }
@@ -211,7 +215,7 @@ basicEnemyUnit.prototype.create = function(){
 		
 		this.velo_x_mult = 1486.0/325.0;
 		//start moving
-		if(this.animations.currentAnim.name === "idle"){
+		if(this.animations.currentAnim.name === "idle" && !(this.is_Stucked)){
 			this.body.velocity.x = -18 * (this.velo_x_mult) - 40;
 			this.animations.play("run");
 		}

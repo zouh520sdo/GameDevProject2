@@ -43,7 +43,7 @@ class Wall extends Phaser.Sprite {
     
     blockMoving(wall, unit) {
         if (!unit.is_Stucked) {
-            console.log("Get stucked!!");
+            console.log("Get stucked");
             unit.startStucked();
             this.stuckedUnits.push(unit);
         }
