@@ -201,7 +201,7 @@ basicUnit.prototype.create = function(){
         
 		//done shifting into their own lanes
         if(this.lane_id === 0){
-			if(this.body.y <= 72.5 - 55){
+			if(this.body.y <= 72.5 - 45){
 				if(this.body.velocity.y !== 0){
 					console.log(this.body.x);
 					this.body.velocity.y = 0;
@@ -218,6 +218,7 @@ basicUnit.prototype.create = function(){
 				else if (this.body.x >= 1936 && !(this.stopped_on_border)){
 					this.stopped_on_border = true;
 					this.body.velocity.x = 0;
+                    this.extra_spd = 0;
 					this.animations.play("idle");
 				}
 			}
@@ -238,6 +239,7 @@ basicUnit.prototype.create = function(){
 				else if(this.body.x >= 1936 && !(this.stopped_on_border)){
 					this.stopped_on_border = true;
 					this.body.velocity.x = 0;
+                    this.extra_spd = 0;
 					this.animations.play("idle");
 				}
 			}
@@ -246,6 +248,7 @@ basicUnit.prototype.create = function(){
 			if(this.body.x >= 1936 && !(this.stopped_on_border)){
 				this.stopped_on_border = true;
 				this.body.velocity.x = 0;
+                this.extra_spd = 0;
 				this.animations.play("idle");
 			}
 		}
@@ -374,7 +377,7 @@ basicUnit.prototype.create = function(){
         }
 		*/
         
-        this.extra_spd -= 80;
+        this.extra_spd = Math.max(0, this.extra_spd-80);
       
         if (!this.in_fight && !this.is_Stucked) {
             this.body.velocity.x = Math.max(0, this.body.velocity.x - 80);
