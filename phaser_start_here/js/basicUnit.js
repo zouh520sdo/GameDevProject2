@@ -49,7 +49,7 @@ basicUnit.prototype.create = function(){
     this.unit.startStucked = function() {
         if (!this.in_fight && !this.is_Stucked) {
             this.is_Stucked = true;
-
+			this.animations.play("idle");
             this.prev_velo_x = Math.max(0, this.body.velocity.x - this.extra_spd);
             this.prev_velo_y = this.body.velocity.y;
 
