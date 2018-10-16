@@ -295,10 +295,10 @@ basicEnemyUnit.prototype.create = function(){
 				console.log("attack");
                 if(this.class_id === 2)
                     {
-                        let arrow = game.add.sprite(this.body.x + 500, this.body.y + 75, "arrow");
+                        let arrow = game.add.sprite(this.body.x + 550, this.body.y + 88, "arrow");
                         game.physics.arcade.enable(arrow);
                         arrow.enableBody = true;
-                        arrow.body.velocity.x = -300;
+                        arrow.body.velocity.x = -600;
                         game.arrow.add(arrow);
                     }
 			
