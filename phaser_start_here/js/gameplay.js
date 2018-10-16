@@ -558,7 +558,7 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
 
 gameplayState.prototype.fight = function(unit, enemy){
 	//stop both sides
-    console.log(Math.abs(enemy.x - unit.x));
+   // console.log(Math.abs(enemy.x - unit.x));
 	if(Math.abs(enemy.x - unit.x) <= 120 && Math.abs(enemy.y - unit.y) <=10 && enemy.class_id === 1)
        {
 		var new_fight = false;
