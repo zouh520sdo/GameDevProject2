@@ -24,28 +24,31 @@ preloadState.prototype.preload = function () {
     
     
     //Cards 
-     game.load.image("Bronze_Spawn", "assets/Bronze_Spawn.png");
-     game.load.image("Silver_DamageBuff", "assets/Silver_DamageBuff.png");
-     game.load.image("Silver_HPBuff", "assets/Silver_HPBuff.png");
-     game.load.image("Silver_SpeedBuff", "assets/Silver_SpeedBuff.png");
-     game.load.image("Gold_KillLane", "assets/Gold_KillLane.png");
-     game.load.image("Gold_HealLane", "assets/Gold_HealLane.png");
-     game.load.image("Gold_BuildWall", "assets/Gold_BuildWall.png");
-     game.load.image("Diamond_DamageAll", "assets/Diamond_DamageAll.png");
-     game.load.image("Diamond_HealAll", "assets/Diamond_HealAll.png");
+    game.load.image("Bronze_Spawn", "assets/Bronze_Spawn.png");
+    game.load.image("Silver_DamageBuff", "assets/Silver_DamageBuff.png");
+    game.load.image("Silver_HPBuff", "assets/Silver_HPBuff.png");
+    game.load.image("Silver_SpeedBuff", "assets/Silver_SpeedBuff.png");
+    game.load.image("Gold_KillLane", "assets/Gold_KillLane.png");
+    game.load.image("Gold_HealLane", "assets/Gold_HealLane.png");
+    game.load.image("Gold_BuildWall", "assets/Gold_BuildWall.png");
+    game.load.image("Diamond_DamageAll", "assets/Diamond_DamageAll.png");
+    game.load.image("Diamond_HealAll", "assets/Diamond_HealAll.png");
     game.load.image("deck", "assets/Card_desk.png")
     
     
     game.load.image("titlescreen", "assets/titlescreen2.png");
+    game.load.image("arrow", "assets/Arrow_Sprite.png");
     // spritesheet
     game.load.spritesheet("murph", "assets/character.png", 32, 48);
     game.load.spritesheet("defender", "assets/Defender_SpriteSheet2.png", 256, 180);
     game.load.spritesheet("invader", "assets/Invader_SpriteSheet2.png", 256, 180);
+    game.load.spritesheet("invader2", "assets/Invader_Archer_SpriteSheet.png", 256, 180);
     game.load.spritesheet("pole", "assets/AsherahPole_SpriteSheet.png", 320, 640);
     game.load.spritesheet("invader_archer", "assets/Invader_Archer_SpriteSheet.png", 256, 180);
     game.load.spritesheet("wall", "assets/Wall_SpriteSheet.png", 160, 224);
     game.load.spritesheet("healing", "assets/Healing_SpriteSheet.png", 256, 192);
     game.load.spritesheet("meteor", "assets/Meteor_SpriteSheet.png", 440, 310); 
+   
     
     game.load.spritesheet("menubutton", "assets/MenuButton_SpriteSheet.png",450, 105);
     game.load.spritesheet("nextbutton", "assets/NextButton_SpriteSheet.png", 450, 105);

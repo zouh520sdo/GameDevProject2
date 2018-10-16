@@ -2,15 +2,17 @@
 //and each lane has its own group of friendly units and enemy units
 //lane is an int -- 1, 2 or 3
 
-let basicEnemyUnit = function(group, lane_x, lane_y, lane_id, pole){
+let basicEnemyUnit = function(group, lane_x, lane_y, lane_id, pole, class_id){
 	this.lane_x = lane_x;
 	this.lane_y = lane_y;
     this.speed = 100;
     this.pole = pole;
+    this.class_id = class_id;
 	this.create();
-      
+    
 	this.unit.lane_id = lane_id;
-  
+   
+   
   
 	console.log("enemy unit constructor:");
 	console.log(group);
@@ -22,12 +24,17 @@ basicEnemyUnit.prototype.create = function(){
 	//go with murph for now
 	console.log("creating basic unit");
 	console.log(this);
-     
+   
+     if(this.class_id === 1)
+         {
 	this.unit = game.add.sprite(this.lane_x, this.lane_y, "invader");
+         }
+    else{
+        this.unit = game.add.sprite(this.lane_x, this.lane_y, "invader2");
+    }
+     this.unit.class_id = this.class_id;
     // Create Animations 
     //this.unit.animations.add("spawn", [0,1,2,3,4,5,6,7,8], 10, false);
-     console.log("SDFRTGGRFDS");
-    console.log(this.pole);
     this.unit.animations.add("idle", [0], 10, true);
     this.unit.animations.add("run", [1,2,3,4], 10, true);
     this.unit.animations.add("combat", [5,0,6,7], 10, true);
@@ -37,8 +44,12 @@ basicEnemyUnit.prototype.create = function(){
 	this.unit.in_fight = false;
 	this.unit.go_fight = false;
 	this.unit.attacking_enemy = null;
+    if(this.classid === 1){
     this.unit.atkspd = 500; //attack every 0.5 sec
-    
+    }
+    else{
+        this.unit.atkspd = 250;
+    }
     //pole related variable
 	this.unit.attacking_pole = false;
 	this.unit.go_atk_pole = false;
@@ -48,6 +59,8 @@ basicEnemyUnit.prototype.create = function(){
 	this.unit.health = 200;
     this.unit.maxHealth = 200;
 	this.unit.atkdmg = 50;
+    //archer stats
+    
 	game.physics.arcade.enable(this.unit);
 	this.unit.body.velocity.x = 0;
     this.unit.speed = this.speed;
@@ -59,6 +72,13 @@ basicEnemyUnit.prototype.create = function(){
 	this.unit.prev_velo_x = -100;
 	this.unit.prev_velo_y = -100;
     
+     if(this.class_id === 2)
+        {
+        this.unit.health = 150;
+        this.unit.maxHealth = 150;
+	    this.unit.atkdmg = 1;
+        this.unit.body.setSize( 1024, 180, -500, 0)
+        }
     // For wall
     this.unit.is_Stucked = false;
     this.unit.startStucked = function() {
@@ -189,32 +209,85 @@ basicEnemyUnit.prototype.create = function(){
            
 		//turn towards the pole
         if(this.lane_id === 0 && !(this.in_lane) && !(this.in_shift)){
+            if(this.class_id === 1)
+                {
 			if(this.body.x <= 498.48533333333285){
 				this.in_shift = true;
 				this.body.velocity.y = 135;
 				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
 			}
+                }
+            else 
+                {
+                    
+                    
+            if(this.body.x <= 498.48533333333285 - 500){
+                
+				this.in_shift = true;
+				this.body.velocity.y = 135;
+				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
+                
+			}
+                }
         }
 		else if(this.lane_id === 2 && !(this.in_lane) && !(this.in_shift)){
+            if(this.class_id === 1)
+                {
 			if(this.body.x <= 502.63876923076873){
 				this.in_shift = true;
 				this.body.velocity.y = -135;
 				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
 			}
+                }
+            else
+                {
+            if(this.body.x <= 502.63876923076873 - 500){
+                 this.body.velocity.x = 0;
+               
+                
+				this.in_shift = true;
+				this.body.velocity.y = -135;
+				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
+                
+			}
+                    
+                }
 		}
 		//now at center lane
 		//this section should also be triggered once
 		if(this.body.y <= (402.5 - 60) && this.body.y >= (392.5 - 60) && this.lane_id !== 1 && !(this.in_lane)){
+            if(this.class_id === 1)
+                {
 			this.body.velocity.y = 0;
 			this.body.velocity.x = -18 * (this.velo_x_mult) - 40;
 			this.in_lane = true;
+                }
+              else
+                {
+            if(this.body.x <= 502.63876923076873 - 500){
+                 this.body.velocity.x = 0;
+                this.animations.play("idle");
+            }
 		}
+        }
 		
 		if(this.animations.currentAnim.name === "combat"){
 			if(this.animations.currentFrame.index === 7 && !(this.attacked)){
-				this.attacked = true;
+                if(this.class_id === 1)
+                    {
+				        this.attacked = true;
+                        this.attacking_enemy.damage(this.atkdmg);
+                    }
 				console.log("attack");
-				this.attacking_enemy.damage(this.atkdmg);
+                if(this.class_id === 2)
+                    {
+                        let arrow = game.add.sprite(this.body.x + 500, this.body.y + 75, "arrow");
+                        game.physics.arcade.enable(arrow);
+                        arrow.enableBody = true;
+                        arrow.body.velocity.x = -300;
+                        game.arrow.add(arrow);
+                    }
+			
 			}
 			else if(this.animations.currentFrame.index !== 7){
 				this.attacked = false;
