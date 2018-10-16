@@ -35,8 +35,11 @@ class Wall extends Phaser.Sprite {
         
         if (this.animations.currentAnim.name === "destroy" && this.animations.currentAnim.isFinished) {
             for (let i=0; i<this.stuckedUnits.length; i++) {
-                if (!this.stuckedUnits[i] === undefined && !this.stuckedUnits[i] === null) {
+                try {
                     this.stuckedUnits[i].stopStucked();
+                }
+                catch(err) {
+                    // Do nothing
                 }
             }
             this.destroy();
