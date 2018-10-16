@@ -35,11 +35,20 @@ basicEnemyUnit.prototype.create = function(){
      this.unit.class_id = this.class_id;
     // Create Animations 
     //this.unit.animations.add("spawn", [0,1,2,3,4,5,6,7,8], 10, false);
-    this.unit.animations.add("idle", [0], 10, true);
-    this.unit.animations.add("run", [1,2,3,4], 10, true);
-    this.unit.animations.add("combat", [5,0,6,7], 10, true);
-    this.unit.animations.add("death", [8,9,10], 10, false);
-    this.unit.animations.add("divineDeath", [11,12,13,14,15,16], 10, false);
+    if (this.class_id === 1) {
+        this.unit.animations.add("idle", [0], 10, true);
+        this.unit.animations.add("run", [1,2,3,4], 10, true);
+        this.unit.animations.add("combat", [5,0,6,7], 10, true);
+        this.unit.animations.add("death", [8,9,10], 10, false);
+        this.unit.animations.add("divineDeath", [11,12,13,14,15,16], 10, false);
+    }
+    else if (this.class_id === 2) {
+        this.unit.animations.add("idle", [0], 10, true);
+        this.unit.animations.add("run", [1,2,3,4], 10, true);
+        this.unit.animations.add("combat", [5,6,7,8], 10, true);
+        this.unit.animations.add("death", [9,10,11], 10, false);
+        this.unit.animations.add("divineDeath", [12,13,14,15,16,17], 10, false);
+    }
     this.unit.deadBySpell = false;
 	this.unit.in_fight = false;
 	this.unit.go_fight = false;
