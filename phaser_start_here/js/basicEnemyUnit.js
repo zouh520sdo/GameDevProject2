@@ -87,6 +87,7 @@ basicEnemyUnit.prototype.create = function(){
         this.unit.maxHealth = 150;
 	    this.unit.atkdmg = 1;
         this.unit.body.setSize( 1024, 180, -500, 0)
+		//530            sprite:196        298//  
 		//////////////////////
 		//                  //
 		//////////////////////

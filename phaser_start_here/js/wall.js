@@ -28,7 +28,7 @@ class Wall extends Phaser.Sprite {
     
     update() {
         super.update();
-        game.physics.arcade.overlap(this, this.gameState.enemyUnit, this.blockMoving, null, this);
+        game.physics.arcade.overlap(this, this.gameState.enemyUnit, this.blockMoving, this.archerCheck, this);
         game.physics.arcade.overlap(this, this.gameState.friendlyUnit1, this.blockMoving, null, this);
         game.physics.arcade.overlap(this, this.gameState.friendlyUnit2, this.blockMoving, null, this);
         game.physics.arcade.overlap(this, this.gameState.friendlyUnit3, this.blockMoving, null, this);
@@ -52,4 +52,21 @@ class Wall extends Phaser.Sprite {
     goingToDestroy() {
         this.animations.play("destroy");
     }
+	archerCheck(wall, unit) {
+		if(unit.class_id === 2){
+			if((wall.body.x - unit.body.x >= (530)) && (wall.body.x - unit.body.x) <= (530 + 196)){
+				console.log("gg");
+				return true;
+			}
+			else{
+				console.log("gg2");
+				return false;
+			}
+		//		                 wall
+		//	   hitbox.    archer
+		}
+		else if(unit.class_id === 1){
+			return true;
+		}
+	}
 }
