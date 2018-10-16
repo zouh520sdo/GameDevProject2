@@ -320,9 +320,9 @@ gameplayState.prototype.addEnemy = function(mult) {
 
 
 gameplayState.prototype.render = function(){
-    game.debug.geom(this.line1);
-    game.debug.geom(this.line2);
-    game.debug.geom(this.line3);
+//    game.debug.geom(this.line1);
+//    game.debug.geom(this.line2);
+//    game.debug.geom(this.line3);
 };
 
 gameplayState.prototype.gotoGameWinState = function(){
