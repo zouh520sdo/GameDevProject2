@@ -297,7 +297,7 @@ gameplayState.prototype.addEnemy = function(mult) {
     }
 	if(mult === 0){
        
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 55, mult, this.asherahPole, unitid);
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 45, mult, this.asherahPole, unitid);
 	}
 	else if(mult === 1){
          

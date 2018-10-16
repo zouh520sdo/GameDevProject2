@@ -211,7 +211,6 @@ basicEnemyUnit.prototype.create = function(){
         if(this.lane_id === 0 && !(this.in_lane) && !(this.in_shift)){
             if(this.class_id === 1)
                 {
-			if(this.body.x <= 498.48533333333285){
 			if(this.body.x <= 493.293538461538){
 				this.in_shift = true;
 				this.body.velocity.y = 135;
@@ -222,7 +221,7 @@ basicEnemyUnit.prototype.create = function(){
                 {
                     
                     
-            if(this.body.x <= 498.48533333333285 - 500){
+           if(this.body.x <= 493.293538461538 - 500){
                 
 				this.in_shift = true;
 				this.body.velocity.y = 135;
