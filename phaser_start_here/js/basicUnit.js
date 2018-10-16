@@ -60,6 +60,7 @@ basicUnit.prototype.create = function(){
     this.unit.stopStucked = function() {
         if (this.is_Stucked) {
             this.is_Stucked = false;
+            this.animations.play("run");
             this.body.velocity.x = this.prev_velo_x  + this.extra_spd;
             this.body.velocity.y = this.prev_velo_y;
         }
