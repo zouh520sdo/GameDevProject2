@@ -39,6 +39,7 @@ preloadState.prototype.preload = function () {
     game.load.image("titlescreen", "assets/titlescreen2.png");
      game.load.image("gameover", "assets/Defeat_Screen.png");
      game.load.image("victory", "assets/Victory_Screen.png");
+     game.load.image("intro", "assets/ExpositionScreen.png");
     
     
     

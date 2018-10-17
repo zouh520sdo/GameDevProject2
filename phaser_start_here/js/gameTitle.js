@@ -15,7 +15,7 @@ gameTitle.prototype.create = function() {
 
 gameTitle.prototype.titleactionOnClick = function() {
     this.button_snd.play();
-     game.state.start("Game");
+     game.state.start("Intro");
 }
  
 gameTitle.prototype.tutactionOnClick = function() {
