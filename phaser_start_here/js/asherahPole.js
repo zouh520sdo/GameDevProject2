@@ -50,7 +50,7 @@ class AsherahPole extends Phaser.Sprite {
                 let rantemp = this.game.rnd.integerInRange(2,4);
                 // random card category
                 let prob = Math.random();
-                if (prob < 0.7) {
+                if (prob < 0.6) {
                     // Silver card
                     console.log("Get silver card");
                     rantemp = Cards.category.silver[game.rnd.integerInRange(0, Cards.category.silver.length-1)];
@@ -108,9 +108,12 @@ class AsherahPole extends Phaser.Sprite {
         return this.energy >= this.fullEnergy;
     }
     
+    addEnergyonKill() {
+        this.addEnergy(10);
+    };
     update() {
         super.update();
-        console.log(this);
+      
         // Adding energy by time
         this.addEnergy(this.chargeRateByTime * this.game.time.elapsed / 1000);
         

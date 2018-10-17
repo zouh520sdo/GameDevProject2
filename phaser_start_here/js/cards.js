@@ -16,6 +16,7 @@ class Cards extends Phaser.Sprite{
         this.activated = false;
         this.id = id;
         this.num = num;
+        this.permCooldown = 6;
         this.game.physics.enable(this);
         
         switch (id) {
@@ -116,13 +117,13 @@ class Cards extends Phaser.Sprite{
         Cards.prototype.startcd = function()
         {
             this.cooldown = game.time.create(this, true);
-            this.cooldown.add(8000, this.switch, this);
+            this.cooldown.add(this.permCooldown * 1000, this.switch, this);
             this.cooldown.start();
         };
         
         Cards.prototype.update = function() {
             if (this.cooldown !== undefined && this.cooldown.running && this.cdMask !== undefined) {
-                this.cdMask.scale.set(1, this.cooldown.duration / 8000);
+                this.cdMask.scale.set(1, this.cooldown.duration / (this.permCooldown*1000));
             }
         };
         
@@ -177,7 +178,10 @@ class Cards extends Phaser.Sprite{
                     }
 					
 					*/
-					unitsGroup.children[i].extra_spd += 50;
+					unitsGroup.children[i].extra_spd += 80;
+                    if (!unitsGroup.children[i].in_fight && !unitsGroup.children[i].is_Stucked) {
+                        unitsGroup.children[i].body.velocity.x += 80;
+                    }
                     console.log(unitsGroup.children[i].body.velocity.x);
 
                     unitsGroup.children[i].helperspeed();
@@ -289,19 +293,20 @@ class Cards extends Phaser.Sprite{
                     break;
                 case 6:
                     console.log("HEAL ALL");
-                    this.gameState.friendlyUnit1.callAll("healAnim", null, 250);
-                    this.gameState.friendlyUnit2.callAll("healAnim", null, 250);
-                    this.gameState.friendlyUnit3.callAll("healAnim", null, 250);
+                    this.gameState.friendlyUnit1.callAll("healAnim", null, 10000);
+                    this.gameState.friendlyUnit2.callAll("healAnim", null, 10000);
+                    this.gameState.friendlyUnit3.callAll("healAnim", null, 10000);
                     break;
                 case 7:
                     this.gameState.enemyUnit.callAll("killOnLane", null, enemiesLaneID);
                     break;
                 case 8:
-                    this.gameState.enemyUnit.callAll("meteorDamageAnim", null, 100);
+                    this.gameState.enemyUnit.callAll("meteorDamageAnim", null, 10000);
                     break;
                 case 9:
                     console.log("FORTIFICATION");
-                    new Wall(game, Math.max(800, pointer.x), this.gameState.laneHeight*(enemiesLaneID+1)-75, this.gameState);
+                    let wally = new Wall(game, Math.max(800, pointer.x), this.gameState.laneHeight*(enemiesLaneID+1)-75, this.gameState);
+                    game.wall.add(wally);
                     break;
                 default:
                     

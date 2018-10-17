@@ -11,7 +11,7 @@ gameplayState.prototype.create = function() {
     
     // Turn on physics before anything else
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    
+  
     // Set up heights for different area
 	//1125-150 = 975
 	//gap = 72.5
@@ -19,6 +19,7 @@ gameplayState.prototype.create = function() {
 	//325/2 = 162.5...
 	
     this.cardAreaHeight = 150;
+ 
     this.laneHeight = (game.world.height - this.cardAreaHeight) / 3.0;
     
     // debug line
@@ -30,7 +31,7 @@ gameplayState.prototype.create = function() {
     
     // Create map
     this.map = game.add.sprite(0,0,"map");
-    
+    this.deck = game.add.sprite(0, game.world.height - this.cardAreaHeight, "deck");
 	//groups of friendly units on lanes
 	this.friendlyUnit1 = game.add.group();
 	this.friendlyUnit2 = game.add.group();
@@ -107,6 +108,13 @@ gameplayState.prototype.create = function() {
     this.tempCard = game.add.group();
     this.tempCard.enableBody = true;
     
+    //arrow group
+    game.arrow = game.add.group();
+    game.arrow.enableBody = true;
+    
+    //wall group
+    game.wall = game.add.group();
+    game.wall.enableBody = true;
     // Set up asherah pole
     this.asherahPole = new AsherahPole(game, 120, this.laneHeight*2 - 45, this);
     game.physics.arcade.enable(this.asherahPole);
@@ -178,24 +186,87 @@ gameplayState.prototype.create = function() {
 }; // End of create
 
 gameplayState.prototype.update = function(){
-	
     game.physics.arcade.overlap(this.friendlyUnit1, this.enemyUnit, this.fight ,null, this);
 	game.physics.arcade.overlap(this.friendlyUnit2, this.enemyUnit, this.fight ,null, this);
-	game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit, this.fight ,null, this);
+    game.physics.arcade.overlap(this.friendlyUnit3, this.enemyUnit, this.fight ,null, this); 
+    game.physics.arcade.overlap(this.friendlyUnit1, game.arrow, this.deletearrow ,null, this);
+    game.physics.arcade.overlap(this.friendlyUnit2, game.arrow, this.deletearrow ,null, this);
+    game.physics.arcade.overlap(this.friendlyUnit3, game.arrow, this.deletearrow ,null, this);
+    game.physics.arcade.overlap(game.wall, game.arrow, this.blockarrow ,null, this);
 	game.physics.arcade.overlap(this.enemyUnit, this.asherahPole, this.attackPole, null, this);
+    game.physics.arcade.overlap(game.arrow, this.asherahPole, this.arrowPole, null, this);
+
+    
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
     if(!(this.asherahPole.alive)){
 		console.log("oof");
     	game.state.start("GGWP");
     }
-};
+    for(let i = 0; i < game.arrow.length; i++)
+        {
+            if(game.arrow.children[i].body.x <-400)
+                {
+                    console.log("arrow killed");
+                    game.arrow.children[i].destroy();
+                }
+        }
 
+};
+gameplayState.prototype.blockarrow = function(wall,arrow)
+{
+    arrow.destroy();
+}
+gameplayState.prototype.arrowPole = function(pole,arrow)
+{
+    if(Math.abs(pole.x - arrow.x) <= 60 && Math.abs(pole.y - arrow.y) >= 10)
+       {
+           pole.damage(1);
+           arrow.kill();
+       }
+    
+}
+gameplayState.prototype.deletearrow = function(unit,arrow)
+{
+    if(Math.abs(unit.x - arrow.x) <= 60 && Math.abs(unit.y - arrow.y) >= 10)
+       {
+           unit.damage(2);
+           arrow.kill();
+       }
+}
 gameplayState.prototype.attackPole = function(pole, enemy){
+    if(enemy.class_id === 1)
+        {
 	if(!(enemy.in_fight) && !(enemy.attacking_pole)){
 		console.log("start attacking pole");
 		enemy.attacking_enemy = pole;
 		enemy.go_atk_pole = true;
-	}
+    }
+        }
+    else{
+        console.log("ENEMYPOS" + enemy.body.x);
+        if(enemy.body.x <= -150)
+            {
+                if(!(enemy.in_fight) && !(enemy.attacking_pole)){
+		console.log("start attacking pole");
+		enemy.attacking_enemy = pole;
+		enemy.go_atk_pole = true;
+    }
+                
+                
+            }
+    }
+    /*
+    else{
+        if(enemy.body.x <= -150)
+        {
+        if(!(enemy.in_fight) && !(enemy.attacking_pole)){
+		      console.log("start attacking pole");
+		      enemy.attacking_enemy = pole;
+		      enemy.go_atk_pole = true;
+        }
+        }
+    }
+    */
 }
 /*
 	parameters:
@@ -225,22 +296,33 @@ gameplayState.prototype.addUnit = function(mult) {
 gameplayState.prototype.addEnemy = function(mult) {
 	//console.log("time elapsed in phase: " + this.enemyTimer.elapsed);
 	console.log("enemy generated on lane" + (mult+1));
+    let prob = Math.random();
+    let unitid = 0;
+    if(prob < 0.8){
+        unitid = 1;
+    }
+    else{
+        unitid = 2;
+    }
 	if(mult === 0){
-		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 55, mult);
+       
+		new basicEnemyUnit(this.enemyUnit, 2500, 72.5 - 45, mult, this.asherahPole, unitid);
 	}
 	else if(mult === 1){
-		new basicEnemyUnit(this.enemyUnit, 2500, 397.5 - 60, mult);
+         
+		new basicEnemyUnit(this.enemyUnit, 2500, 397.5 - 60, mult, this.asherahPole, unitid);
 	}
 	else if(mult === 2){
-		new basicEnemyUnit(this.enemyUnit, 2500, 722.5 - 55, mult);
+        
+		new basicEnemyUnit(this.enemyUnit, 2500, 722.5 - 55, mult, this.asherahPole, unitid);
 	}
 };
 
 
 gameplayState.prototype.render = function(){
-    game.debug.geom(this.line1);
-    game.debug.geom(this.line2);
-    game.debug.geom(this.line3);
+//    game.debug.geom(this.line1);
+//    game.debug.geom(this.line2);
+//    game.debug.geom(this.line3);
 };
 
 gameplayState.prototype.gotoGameWinState = function(){
@@ -476,8 +558,9 @@ gameplayState.prototype.dragCardStop = function(Cards, pointer) {
 
 gameplayState.prototype.fight = function(unit, enemy){
 	//stop both sides
-	
-	if(Math.abs(enemy.x - unit.x) <= 120 && Math.abs(enemy.y - unit.y) <=10){
+   // console.log(Math.abs(enemy.x - unit.x));
+	if(Math.abs(enemy.x - unit.x) <= 120 && Math.abs(enemy.y - unit.y) <=10 && enemy.class_id === 1)
+       {
 		var new_fight = false;
 		if(!(unit.in_fight)){
 			unit.go_fight = true;
@@ -496,11 +579,34 @@ gameplayState.prototype.fight = function(unit, enemy){
 			enemy.attacking_enemy = unit;
 		}
 	}
-	//enemy.damage(unit.atkdmg);
-	//console.log("enemy hp is now " + enemy.health);
-	//console.log("collide");
-	//unit.health -= enemy.damage;
-	//enemy.health -= unit.damage;
+    
+        if(Math.abs(enemy.x - unit.x) <= 1500 && Math.abs(enemy.y - unit.y) <=10 && enemy.class_id === 2 && enemy.x <= 1936 )
+        {
+            var new_fight = false;
+		if(!(enemy.in_fight)){
+			enemy.go_fight = true;
+			new_fight = true;
+		}
+		//fight while both are alive
+		//the new_fight is to make sure we only enter the while loop
+		//once because this function is constantly called when soldiers collide
+		if(unit.alive && enemy.alive && new_fight){
+            enemy.attacking_enemy = unit;
+        }  
+        }
+     if(Math.abs(enemy.x - unit.x) <= 120 && Math.abs(enemy.y - unit.y) <=10 && enemy.class_id === 2)
+         {
+             var new_fight = false;
+		if(!(unit.in_fight)){
+			unit.go_fight = true;
+			new_fight = true;
+		}
+             if(unit.alive && enemy.alive && new_fight){
+			unit.attacking_enemy = enemy;
+			
+        }  
+         }
+        
 };
 
 gameplayState.prototype.updateCards = function(tempCard){

@@ -112,3 +112,36 @@ Sprite Dimension = 256x192
 Healing Animation = [0, 1, 2, 3, 4, 5]
 ____________________________________________________________________________________________________
 
+TitleScreen2 = Contains Titlescreen asset. Buttons go under the Title
+
+===================
+File Dimensions = 2436x1125
+Sprite Dimensions = 2436x1125
+_____________________________________________________________________________________________________
+
+Button_SpriteSheets = Contains idle and pressed state for each play, menu, next,
+		      and tutorial
+====================
+File Dimensions = 900x105
+Sprite Dimensions = 450x105
+Off = [0]
+On = [1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

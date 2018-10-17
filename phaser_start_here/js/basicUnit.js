@@ -49,8 +49,8 @@ basicUnit.prototype.create = function(){
     this.unit.startStucked = function() {
         if (!this.in_fight && !this.is_Stucked) {
             this.is_Stucked = true;
-
-            this.prev_velo_x = this.body.velocity.x;
+			this.animations.play("idle");
+            this.prev_velo_x = Math.max(0, this.body.velocity.x - this.extra_spd);
             this.prev_velo_y = this.body.velocity.y;
 
             this.body.velocity.x = 0;
@@ -60,6 +60,7 @@ basicUnit.prototype.create = function(){
     this.unit.stopStucked = function() {
         if (this.is_Stucked) {
             this.is_Stucked = false;
+            this.animations.play("run");
             this.body.velocity.x = this.prev_velo_x  + this.extra_spd;
             this.body.velocity.y = this.prev_velo_y;
         }
@@ -92,9 +93,9 @@ basicUnit.prototype.create = function(){
     };
     
     // Add buff
-    this.unit.buff_DamageUp = game.add.sprite(90,28,"Buff_DamageUp");
-    this.unit.buff_HealthUp = game.add.sprite(35,28,"Buff_HealthUp");
-    this.unit.buff_SpeedUp = game.add.sprite(140,28,"Buff_SpeedUp");
+    this.unit.buff_DamageUp = game.add.sprite(90,5,"Buff_DamageUp");
+    this.unit.buff_HealthUp = game.add.sprite(35,5,"Buff_HealthUp");
+    this.unit.buff_SpeedUp = game.add.sprite(140,5,"Buff_SpeedUp");
     
     this.unit.buff_DamageUp.anchor.set(0.5,1);
     this.unit.buff_HealthUp.anchor.set(0.5,1);
@@ -139,9 +140,9 @@ basicUnit.prototype.create = function(){
     };
     
     // Debug UI
-    this.unit.isDebug = false;
+    this.unit.isDebug = true;
     if (this.unit.isDebug) {
-        this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
+        this.unit.debugText = game.add.text(20,5,"health", {fontSize:"28px", fill:"#ffffff"});
         this.unit.addChild(this.unit.debugText);
     }
 
@@ -150,7 +151,7 @@ basicUnit.prototype.create = function(){
         
         // Debug
         if (this.isDebug) {
-            this.debugText.text = this.health + " / " + this.maxHealth;
+            this.debugText.text = Math.max(0,Math.ceil(this.health)) + " / " + this.maxHealth;
         }
         
         // Hide healing effect
@@ -201,7 +202,7 @@ basicUnit.prototype.create = function(){
         
 		//done shifting into their own lanes
         if(this.lane_id === 0){
-			if(this.body.y <= 72.5 - 55){
+			if(this.body.y <= 72.5 - 45){
 				if(this.body.velocity.y !== 0){
 					console.log(this.body.x);
 					this.body.velocity.y = 0;
@@ -218,6 +219,7 @@ basicUnit.prototype.create = function(){
 				else if (this.body.x >= 1936 && !(this.stopped_on_border)){
 					this.stopped_on_border = true;
 					this.body.velocity.x = 0;
+                    this.extra_spd = 0;
 					this.animations.play("idle");
 				}
 			}
@@ -238,6 +240,7 @@ basicUnit.prototype.create = function(){
 				else if(this.body.x >= 1936 && !(this.stopped_on_border)){
 					this.stopped_on_border = true;
 					this.body.velocity.x = 0;
+                    this.extra_spd = 0;
 					this.animations.play("idle");
 				}
 			}
@@ -246,6 +249,7 @@ basicUnit.prototype.create = function(){
 			if(this.body.x >= 1936 && !(this.stopped_on_border)){
 				this.stopped_on_border = true;
 				this.body.velocity.x = 0;
+                this.extra_spd = 0;
 				this.animations.play("idle");
 			}
 		}
@@ -255,16 +259,6 @@ basicUnit.prototype.create = function(){
 			this.enter_fight();
 			this.go_fight = false;
 		}
-		
-		
-		
-		//killed
-        if(this.health <= 0 && (this.animations.currentAnim.name === "death") && this.animations.currentAnim.isFinished){
-			this.alive = false;
-            this.kill();
-            this.parent.remove(this);
-            console.log(this.name + " is killed");
-        }
 		
 		//attack dayo
 		if(this.animations.currentAnim.name === "combat"){
@@ -310,6 +304,14 @@ basicUnit.prototype.create = function(){
 				this.in_fight = false;
 			}
 		}
+        
+        //killed
+        if(this.health <= 0 && (this.animations.currentAnim.name === "death") && this.animations.currentAnim.isFinished){
+			this.alive = false;
+            this.kill();
+            this.parent.remove(this);
+            this.destroy();
+        }
     };
 	//override damage
 	this.unit.damage = function(amount){
@@ -330,7 +332,7 @@ basicUnit.prototype.create = function(){
     this.unit.enter_fight = function(){
 		this.animations.play("combat");
     	this.in_fight = true;
-		this.prev_velo_x = this.body.velocity.x;
+		this.prev_velo_x = Math.max(0, this.body.velocity.x - this.extra_spd);
 		this.prev_velo_y = this.body.velocity.y;
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
@@ -374,7 +376,11 @@ basicUnit.prototype.create = function(){
         }
 		*/
         
-        this.extra_spd -= 50;
+        this.extra_spd = Math.max(0, this.extra_spd-80);
+      
+        if (!this.in_fight && !this.is_Stucked) {
+            this.body.velocity.x = Math.max(0, this.body.velocity.x - 80);
+        }
         
     };
     

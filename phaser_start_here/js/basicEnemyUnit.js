@@ -2,12 +2,18 @@
 //and each lane has its own group of friendly units and enemy units
 //lane is an int -- 1, 2 or 3
 
-let basicEnemyUnit = function(group, lane_x, lane_y, lane_id){
+let basicEnemyUnit = function(group, lane_x, lane_y, lane_id, pole, class_id){
 	this.lane_x = lane_x;
 	this.lane_y = lane_y;
-	this.speed = 100;
+    this.speed = 100;
+    this.pole = pole;
+    this.class_id = class_id;
 	this.create();
+    
 	this.unit.lane_id = lane_id;
+   
+   
+  
 	console.log("enemy unit constructor:");
 	console.log(group);
 	group.add(this.unit);
@@ -18,25 +24,52 @@ basicEnemyUnit.prototype.create = function(){
 	//go with murph for now
 	console.log("creating basic unit");
 	console.log(this);
+   
+     if(this.class_id === 1)
+         {
 	this.unit = game.add.sprite(this.lane_x, this.lane_y, "invader");
+         }
+    else{
+        this.unit = game.add.sprite(this.lane_x, this.lane_y, "invader2");
+    }
+     this.unit.class_id = this.class_id;
     // Create Animations 
     //this.unit.animations.add("spawn", [0,1,2,3,4,5,6,7,8], 10, false);
-    this.unit.animations.add("idle", [0], 10, true);
-    this.unit.animations.add("run", [1,2,3,4], 10, true);
-    this.unit.animations.add("combat", [5,0,6,7], 10, true);
-    this.unit.animations.add("death", [8,9,10], 10, false);
-    this.unit.animations.add("divineDeath", [11,12,13,14,15,16], 10, false);
+    if (this.class_id === 1) {
+        this.unit.animations.add("idle", [0], 10, true);
+        this.unit.animations.add("run", [1,2,3,4], 10, true);
+        this.unit.animations.add("combat", [5,0,6,7], 10, true);
+        this.unit.animations.add("death", [8,9,10], 10, false);
+        this.unit.animations.add("divineDeath", [11,12,13,14,15,16], 10, false);
+    }
+    else if (this.class_id === 2) {
+        this.unit.animations.add("idle", [0], 10, true);
+        this.unit.animations.add("run", [1,2,3,4], 10, true);
+        this.unit.animations.add("combat", [5,6,7,8], 10, true);
+        this.unit.animations.add("death", [9,10,11], 10, false);
+        this.unit.animations.add("divineDeath", [12,13,14,15,16,17], 10, false);
+    }
     this.unit.deadBySpell = false;
 	this.unit.in_fight = false;
 	this.unit.go_fight = false;
 	this.unit.attacking_enemy = null;
+    if(this.classid === 1){
     this.unit.atkspd = 500; //attack every 0.5 sec
+    }
+    else{
+        this.unit.atkspd = 250;
+    }
+    //pole related variable
 	this.unit.attacking_pole = false;
 	this.unit.go_atk_pole = false;
+   
+    
 	//make them weak for now
 	this.unit.health = 200;
     this.unit.maxHealth = 200;
 	this.unit.atkdmg = 50;
+    //archer stats
+    
 	game.physics.arcade.enable(this.unit);
 	this.unit.body.velocity.x = 0;
     this.unit.speed = this.speed;
@@ -48,6 +81,17 @@ basicEnemyUnit.prototype.create = function(){
 	this.unit.prev_velo_x = -100;
 	this.unit.prev_velo_y = -100;
     
+     if(this.class_id === 2)
+        {
+        this.unit.health = 150;
+        this.unit.maxHealth = 150;
+	    this.unit.atkdmg = 1;
+        this.unit.body.setSize( 1024, 180, -500, 0)
+		//530            sprite:196        298//  
+		//////////////////////
+		//                  //
+		//////////////////////
+        }
     // For wall
     this.unit.is_Stucked = false;
     this.unit.startStucked = function() {
@@ -55,7 +99,7 @@ basicEnemyUnit.prototype.create = function(){
             this.is_Stucked = true;
             this.prev_velo_x = this.body.velocity.x;
             this.prev_velo_y = this.body.velocity.y;
-
+			this.animations.play("idle");
             this.body.velocity.x = 0;
             this.body.velocity.y = 0;
         }
@@ -63,6 +107,7 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.stopStucked = function() {
         if (this.is_Stucked) {
             this.is_Stucked = false;
+			//this.animations.play("run");
             this.body.velocity.x = this.prev_velo_x;
             this.body.velocity.y = this.prev_velo_y;
         }
@@ -72,7 +117,8 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.meteorMask = game.add.sprite(140,200,"meteor");
     this.unit.meteorMask.origin = [-985,-925];
     this.unit.meteorMask.target = [140, 200];
-    this.unit.meteorMask.speed = 200;
+    this.unit.meteorMask.speed = 1300;
+    this.unit.meteorMask.dealtDamage = 10000;
     this.unit.meteorMask.anchor.set(0.5,1);
     this.unit.meteorMask.animations.add("flying",[0,1,2],8,true);
     this.unit.meteorMask.animations.add("impact", [3,4,5,6,7],8,false);
@@ -81,6 +127,7 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.addChild(this.unit.meteorMask);
     this.unit.meteorDamageAnim = function(amount) {
         //this.damage(amount);
+        this.meteorMask.dealtDamage = amount;
         this.meteorMask.position.x = this.meteorMask.origin[0];
         this.meteorMask.position.y = this.meteorMask.origin[1];
         this.meteorMask.alpha = 1;
@@ -119,9 +166,9 @@ basicEnemyUnit.prototype.create = function(){
     };
     
     // Debug UI
-    this.unit.isDebug = false;
+    this.unit.isDebug = true;
     if (this.unit.isDebug) {
-        this.unit.debugText = game.add.text(0,0,"health", {fontSize:"32px", fill:"#ffffff"});
+        this.unit.debugText = game.add.text(115,0,"health", {fontSize:"28px", fill:"#ffffff"});
         this.unit.addChild(this.unit.debugText);
     }
     // Override update function
@@ -129,7 +176,7 @@ basicEnemyUnit.prototype.create = function(){
         
         // Debug
         if (this.isDebug) {
-            this.debugText.text = this.health + " / " + this.maxHealth;
+            this.debugText.text = Math.max(0,Math.ceil(this.health)) + " / " + this.maxHealth;
         }
         
 		//console.log("unit health: " + this.health);
@@ -138,8 +185,22 @@ basicEnemyUnit.prototype.create = function(){
 			//dx = 1486
 			//dy = 270
         
-        // Hide healing effect
-        if (this.meteorMask.animations.currentAnim.isFinished) {
+        // Animate flying meteor
+        if (this.meteorMask.animations.currentAnim.name === "flying") {
+            console.log("meteor speed " + (this.meteorMask.speed * game.time.elapsed));
+            this.meteorMask.position.x += this.meteorMask.speed * game.time.elapsed / 1000;
+            this.meteorMask.position.y += this.meteorMask.speed * game.time.elapsed / 1000;
+            
+            if (this.meteorMask.position.x >= this.meteorMask.target[0] && this.meteorMask.position.y >= this.meteorMask.target[1]) {
+                this.meteorMask.position.x = this.meteorMask.target[0];
+                this.meteorMask.position.y = this.meteorMask.target[1];
+                this.meteorMask.animations.play("impact");
+                this.damage(this.meteorMask.dealtDamage);
+            }
+        }
+        
+        // Hide meteor effect
+        if (this.meteorMask.animations.currentAnim.name === "impact" && this.meteorMask.animations.currentAnim.isFinished) {
             this.meteorMask.alpha = 0;
         }
         
@@ -155,39 +216,92 @@ basicEnemyUnit.prototype.create = function(){
 		
 		this.velo_x_mult = 1486.0/325.0;
 		//start moving
-		if(this.animations.currentAnim.name === "idle"){
+		if(this.animations.currentAnim.name === "idle" && !(this.is_Stucked)){
 			this.body.velocity.x = -18 * (this.velo_x_mult) - 40;
 			this.animations.play("run");
 		}
            
 		//turn towards the pole
         if(this.lane_id === 0 && !(this.in_lane) && !(this.in_shift)){
-			if(this.body.x <= 498.48533333333285){
+            if(this.class_id === 1)
+                {
+			if(this.body.x <= 493.293538461538){
 				this.in_shift = true;
 				this.body.velocity.y = 135;
 				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
 			}
+                }
+            else 
+                {
+                    
+                    
+           if(this.body.x <= 493.293538461538 - 500){
+                
+				this.in_shift = true;
+				this.body.velocity.y = 135;
+				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
+                
+			}
+                }
         }
 		else if(this.lane_id === 2 && !(this.in_lane) && !(this.in_shift)){
+            if(this.class_id === 1)
+                {
 			if(this.body.x <= 502.63876923076873){
 				this.in_shift = true;
 				this.body.velocity.y = -135;
 				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
 			}
+                }
+            else
+                {
+            if(this.body.x <= 502.63876923076873 - 500){
+                 this.body.velocity.x = 0;
+               
+                
+				this.in_shift = true;
+				this.body.velocity.y = -135;
+				this.body.velocity.x = -((18 * (this.velo_x_mult)) - 20);
+                
+			}
+                    
+                }
 		}
 		//now at center lane
 		//this section should also be triggered once
 		if(this.body.y <= (402.5 - 60) && this.body.y >= (392.5 - 60) && this.lane_id !== 1 && !(this.in_lane)){
+            if(this.class_id === 1)
+                {
 			this.body.velocity.y = 0;
 			this.body.velocity.x = -18 * (this.velo_x_mult) - 40;
 			this.in_lane = true;
+                }
+              else
+                {
+            if(this.body.x <= 502.63876923076873 - 500){
+                 this.body.velocity.x = 0;
+                this.animations.play("idle");
+            }
 		}
+        }
 		
 		if(this.animations.currentAnim.name === "combat"){
 			if(this.animations.currentFrame.index === 7 && !(this.attacked)){
-				this.attacked = true;
+                if(this.class_id === 1)
+                    {
+				        this.attacked = true;
+                        this.attacking_enemy.damage(this.atkdmg);
+                    }
 				console.log("attack");
-				this.attacking_enemy.damage(this.atkdmg);
+                if(this.class_id === 2)
+                    {
+                        let arrow = game.add.sprite(this.body.x + 550, this.body.y + 88, "arrow");
+                        game.physics.arcade.enable(arrow);
+                        arrow.enableBody = true;
+                        arrow.body.velocity.x = -600;
+                        game.arrow.add(arrow);
+                    }
+			
 			}
 			else if(this.animations.currentFrame.index !== 7){
 				this.attacked = false;
@@ -227,7 +341,7 @@ basicEnemyUnit.prototype.create = function(){
 			this.alive = false;
             this.kill();
             this.parent.remove(this);
-            console.log(this.name + " is killed");
+            this.destroy();
         }
 		
     };
@@ -268,5 +382,9 @@ basicEnemyUnit.prototype.create = function(){
 		this.body.velocity.y = 0;
 	}
     // Play run animation
+    
     this.unit.animations.play("spawn");
+    
+    this.unit.events.onKilled.add(this.pole.addEnergyonKill, this.pole);
+
 };
