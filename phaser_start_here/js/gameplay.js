@@ -204,7 +204,7 @@ gameplayState.prototype.update = function(){
     this.scoreText.text = "Time Left: " + this.msToTime(this.gameplayTimer.duration);
     if(!(this.asherahPole.alive)){
 		console.log("oof");
-        this.bgm.fadeOut();
+        this.bgm.stop();
     	game.state.start("GGWP");
     }
     for(let i = 0; i < game.arrow.length; i++)
@@ -331,7 +331,7 @@ gameplayState.prototype.render = function(){
 };
 
 gameplayState.prototype.gotoGameWinState = function(){
-    this.bgm.fadeOut();
+    this.bgm.stop();
     game.state.start("GameWin");
 };
 
