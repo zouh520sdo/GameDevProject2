@@ -33,10 +33,10 @@ preloadState.prototype.preload = function () {
     game.load.image("Gold_BuildWall", "assets/Gold_BuildWall.png");
     game.load.image("Diamond_DamageAll", "assets/Diamond_DamageAll.png");
     game.load.image("Diamond_HealAll", "assets/Diamond_HealAll.png");
-    game.load.image("deck", "assets/Card_desk.png")
+    game.load.image("deck", "assets/Card_Desk.png")
     
     //Screen
-    game.load.image("titlescreen", "assets/titlescreen2.png");
+    game.load.image("titlescreen", "assets/TitleScreen2.png");
      game.load.image("gameover", "assets/Defeat_Screen.png");
      game.load.image("victory", "assets/Victory_Screen.png");
      game.load.image("intro", "assets/ExpositionScreen.png");
