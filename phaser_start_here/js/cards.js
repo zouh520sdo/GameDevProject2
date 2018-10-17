@@ -158,6 +158,7 @@ class Cards extends Phaser.Sprite{
             for(let i = 0; i < unitsGroup.length; i++)
             {
                 unitsGroup.children[i].atkdmg += 25;
+                unitsGroup.children[i].buff_snd.play();
                 console.log(unitsGroup.children[i].atkdmg);
                 
                 unitsGroup.children[i].helperattk();
@@ -179,6 +180,7 @@ class Cards extends Phaser.Sprite{
 					
 					*/
 					unitsGroup.children[i].extra_spd += 80;
+                    unitsGroup.children[i].buff_snd.play();
                     if (!unitsGroup.children[i].in_fight && !unitsGroup.children[i].is_Stucked) {
                         unitsGroup.children[i].body.velocity.x += 80;
                     }
@@ -193,6 +195,7 @@ class Cards extends Phaser.Sprite{
         {
             for(let i = 0; i < unitsGroup.length; i++)
             {
+                unitsGroup.children[i].buff_snd.play();
                 let ratio = unitsGroup.children[i].health / unitsGroup.children[i].maxHealth;
                 unitsGroup.children[i].maxHealth += 200;
                 unitsGroup.children[i].health = unitsGroup.children[i].maxHealth * ratio;

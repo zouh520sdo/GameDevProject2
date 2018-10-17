@@ -81,6 +81,11 @@ basicEnemyUnit.prototype.create = function(){
 	this.unit.prev_velo_x = -100;
 	this.unit.prev_velo_y = -100;
     
+    // Load sound effects
+    this.unit.attack_snd = game.add.audio("attack");
+    this.unit.attack_snd.volume = 0.75;
+    this.unit.fireball_snd = game.add.audio("fireball");
+    
      if(this.class_id === 2)
         {
         this.unit.health = 150;
@@ -161,6 +166,7 @@ basicEnemyUnit.prototype.create = function(){
     this.unit.killOnLane = function(id) {
         if (this.lane_id === id) {
             this.deadBySpell = true;
+            this.fireball_snd.play();
             this.damage(10000);
         }
     };
@@ -195,6 +201,7 @@ basicEnemyUnit.prototype.create = function(){
                 this.meteorMask.position.x = this.meteorMask.target[0];
                 this.meteorMask.position.y = this.meteorMask.target[1];
                 this.meteorMask.animations.play("impact");
+                this.fireball_snd.play();
                 this.damage(this.meteorMask.dealtDamage);
             }
         }
@@ -287,6 +294,7 @@ basicEnemyUnit.prototype.create = function(){
 		
 		if(this.animations.currentAnim.name === "combat"){
 			if(this.animations.currentFrame.index === 7 && !(this.attacked)){
+                this.attack_snd.play();
                 if(this.class_id === 1)
                     {
 				        this.attacked = true;
