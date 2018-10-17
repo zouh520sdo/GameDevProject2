@@ -44,6 +44,13 @@ basicUnit.prototype.create = function(){
 	this.unit.stopped_at_border = false;
 	this.unit.extra_spd = 0;
     
+    // Load sound effects
+    this.unit.attack_snd = game.add.audio("attack");
+    this.unit.attack_snd.volume = 0.75;
+    this.unit.buff_snd = game.add.audio("buff");
+    this.unit.heal_snd = game.add.audio("heal");
+    this.unit.heal_snd.volume = 0.4;
+    
     // For wall
     this.unit.is_Stucked = false;
     this.unit.startStucked = function() {
@@ -74,6 +81,7 @@ basicUnit.prototype.create = function(){
     
     this.unit.addChild(this.unit.healingMask);
     this.unit.healAnim = function(amount) {
+        this.heal_snd.play();
         this.heal(amount);
         this.healingMask.alpha = 1;
         this.healingMask.animations.play("heal");
@@ -265,6 +273,7 @@ basicUnit.prototype.create = function(){
 			if(this.animations.currentFrame.index === 15 && !(this.attacked)){
 				this.attacked = true;
 				console.log("attack");
+                this.attack_snd.play();
 				this.attacking_enemy.damage(this.atkdmg);
 			}
 			else if(this.animations.currentFrame.index !== 15){

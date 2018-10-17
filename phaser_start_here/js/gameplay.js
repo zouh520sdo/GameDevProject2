@@ -17,6 +17,10 @@ gameplayState.prototype.create = function() {
 	//gap = 72.5
 	//975/3 = 325 (lane height)
 	//325/2 = 162.5...
+    
+    // Load bgm
+    this.bgm = game.add.audio("bgm");
+    this.bgm.loopFull();
 	
     this.cardAreaHeight = 150;
  

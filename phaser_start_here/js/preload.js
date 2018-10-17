@@ -62,6 +62,14 @@ preloadState.prototype.preload = function () {
     game.load.spritesheet("tutbutton", "assets/TutorialButton_SpriteSheet.png", 450, 105);
     game.load.spritesheet("backbutton", "assets/BackButton_SpriteSheet.png", 450, 105);
     
+    // Sound 
+    game.load.audio("attack", "assets/sounds/Attack.mp3");
+    game.load.audio("buff", "assets/sounds/Buff.mp3");
+    game.load.audio("buttonPress", "assets/sounds/ButtonPress.mp3");
+    game.load.audio("fireball", "assets/sounds/Fireball.mp3");
+    game.load.audio("heal", "assets/sounds/Heal.mp3");
+    game.load.audio("bgm", "assets/sounds/War.mp3");
+    
 };
 
 preloadState.prototype.create = function () {
