@@ -10,6 +10,8 @@ gametutorial.prototype.create = function() {
     game.add.sprite(0,0, "titlescreen");
      this.tutorial = game.add.sprite( 0,0, "tutorial1");
     
+    this.button_snd = game.add.audio("buttonPress");
+    
  backbutton = game.add.button(game.world.centerX- 200 , 1000, 'menubutton', this.backactionOnClick, this, 2, 1, 0);
     moretutorial = game.add.button(game.world.centerX + 650, 1000, 'nextbutton', this.moretutorialOnClick, this, 2, 1, 0);
     
@@ -20,10 +22,12 @@ gametutorial.prototype.create = function() {
 
 gametutorial.prototype.backactionOnClick = function()
 {
+    this.button_snd.play();
   game.state.start("Title");
 }
 gametutorial.prototype.moretutorialOnClick = function()
 {
+    this.button_snd.play();
    if(this.pagenum <= 2)
        {
     this.pagenum +=1;
@@ -40,6 +44,7 @@ gametutorial.prototype.moretutorialOnClick = function()
 
 gametutorial.prototype.backtutorialOnClick = function()
 {
+    this.button_snd.play();
    if(this.pagenum >= 2)
        {
     this.pagenum -=1;
